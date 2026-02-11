@@ -1,0 +1,40 @@
+{
+  "items": [
+    {
+      "id": "w-goog",
+      "name": "Alphabet Inc.",
+      "ticker": "GOOGL",
+      "category": "stocks",
+      "currentPrice": 182.4,
+      "change24h": 0.6,
+      "note": "Watching for AI search monetization clarity"
+    },
+    {
+      "id": "w-avax",
+      "name": "Avalanche",
+      "ticker": "AVAX",
+      "category": "crypto",
+      "currentPrice": 42.8,
+      "change24h": -1.2,
+      "note": "Potential L1 diversification play"
+    },
+    {
+      "id": "w-pltr",
+      "name": "Palantir",
+      "ticker": "PLTR",
+      "category": "stocks",
+      "currentPrice": 78.5,
+      "change24h": 4.1,
+      "note": "Government AI contracts expanding. Valuation concern."
+    },
+    {
+      "id": "w-link",
+      "name": "Chainlink",
+      "ticker": "LINK",
+      "category": "crypto",
+      "currentPrice": 22.3,
+      "change24h": 1.8,
+      "note": "Oracle infrastructure for DeFi. Key enabler."
+    }
+  ]
+}

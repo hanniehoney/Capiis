@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Outer hexagon -->
+  <polygon points="32,4 58,18 58,46 32,60 6,46 6,18" stroke="#2d4a2b" stroke-width="2.5" fill="#faf9f6"/>
+  <!-- Inner hexagon -->
+  <polygon points="32,14 48,23 48,41 32,50 16,41 16,23" stroke="#2d4a2b" stroke-width="1.5" fill="rgba(45,74,43,0.08)"/>
+  <!-- Center hex -->
+  <polygon points="32,24 40,29 40,39 32,44 24,39 24,29" fill="rgba(45,74,43,0.2)" stroke="#2d4a2b" stroke-width="1"/>
+  <!-- Center dot -->
+  <circle cx="32" cy="34" r="4" fill="#2d4a2b"/>
+  <!-- Wing lines (bee motif) -->
+  <line x1="20" y1="20" x2="14" y2="14" stroke="#2d4a2b" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+  <line x1="44" y1="20" x2="50" y2="14" stroke="#2d4a2b" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+</svg>

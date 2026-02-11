@@ -1,0 +1,264 @@
+{
+  "lastUpdated": "2026-02-11T09:36:07.374Z",
+  "holdings": [
+    {
+      "id": "aapl",
+      "name": "Apple Inc.",
+      "ticker": "AAPL",
+      "category": "stocks",
+      "quantity": 150,
+      "avgCost": 178.5,
+      "currentPrice": 242.3,
+      "change24h": 1.8,
+      "sparkline7d": [
+        235,
+        238,
+        236,
+        240,
+        239,
+        241,
+        242.3
+      ],
+      "notes": "Long-term hold. Services revenue accelerating."
+    },
+    {
+      "id": "nvda",
+      "name": "NVIDIA Corp.",
+      "ticker": "NVDA",
+      "category": "stocks",
+      "quantity": 80,
+      "avgCost": 485,
+      "currentPrice": 892.5,
+      "change24h": 3.2,
+      "sparkline7d": [
+        845,
+        860,
+        855,
+        870,
+        878,
+        885,
+        892.5
+      ],
+      "notes": "AI infrastructure leader. High conviction."
+    },
+    {
+      "id": "msft",
+      "name": "Microsoft",
+      "ticker": "MSFT",
+      "category": "stocks",
+      "quantity": 100,
+      "avgCost": 310,
+      "currentPrice": 445.8,
+      "change24h": -0.5,
+      "sparkline7d": [
+        448,
+        450,
+        447,
+        446,
+        445,
+        446,
+        445.8
+      ],
+      "notes": "Cloud + AI play. Azure growth strong."
+    },
+    {
+      "id": "tsla",
+      "name": "Tesla Inc.",
+      "ticker": "TSLA",
+      "category": "stocks",
+      "quantity": 60,
+      "avgCost": 195,
+      "currentPrice": 385.2,
+      "change24h": -2.1,
+      "sparkline7d": [
+        395,
+        392,
+        390,
+        388,
+        387,
+        386,
+        385.2
+      ],
+      "notes": "Robotaxi catalyst pending. Volatile."
+    },
+    {
+      "id": "amzn",
+      "name": "Amazon",
+      "ticker": "AMZN",
+      "category": "stocks",
+      "quantity": 90,
+      "avgCost": 145,
+      "currentPrice": 228.6,
+      "change24h": 0.9,
+      "sparkline7d": [
+        224,
+        225,
+        226,
+        225,
+        227,
+        228,
+        228.6
+      ],
+      "notes": "AWS margins expanding. Advertising segment growing."
+    },
+    {
+      "id": "btc",
+      "name": "Bitcoin",
+      "ticker": "BTC",
+      "category": "crypto",
+      "quantity": 2.5,
+      "avgCost": 42000,
+      "currentPrice": 97500,
+      "change24h": -3.2,
+      "sparkline7d": [
+        101000,
+        99800,
+        98200,
+        99500,
+        98000,
+        97800,
+        97500
+      ],
+      "notes": "Core crypto position. DCA strategy. Halving cycle thesis."
+    },
+    {
+      "id": "eth",
+      "name": "Ethereum",
+      "ticker": "ETH",
+      "category": "crypto",
+      "quantity": 25,
+      "avgCost": 2200,
+      "currentPrice": 3180,
+      "change24h": -1.8,
+      "sparkline7d": [
+        3280,
+        3250,
+        3220,
+        3200,
+        3190,
+        3185,
+        3180
+      ],
+      "notes": "Layer 1 ecosystem. Staking yield ~4%. Long-term hold."
+    },
+    {
+      "id": "sol",
+      "name": "Solana",
+      "ticker": "SOL",
+      "category": "crypto",
+      "quantity": 200,
+      "avgCost": 45,
+      "currentPrice": 185,
+      "change24h": 2.5,
+      "sparkline7d": [
+        175,
+        178,
+        180,
+        182,
+        183,
+        184,
+        185
+      ],
+      "notes": "High-performance L1. DeFi/NFT ecosystem growth."
+    },
+    {
+      "id": "startup-nexaflow",
+      "name": "NexaFlow",
+      "ticker": "PRIVATE",
+      "category": "startups",
+      "quantity": 1,
+      "avgCost": 50000,
+      "currentPrice": 120000,
+      "change24h": 0,
+      "sparkline7d": [
+        120000,
+        120000,
+        120000,
+        120000,
+        120000,
+        120000,
+        120000
+      ],
+      "notes": "Seed round. AI-powered supply chain. Est. valuation $12M. 1% equity."
+    },
+    {
+      "id": "startup-carbonlens",
+      "name": "CarbonLens",
+      "ticker": "PRIVATE",
+      "category": "startups",
+      "quantity": 1,
+      "avgCost": 75000,
+      "currentPrice": 95000,
+      "change24h": 0,
+      "sparkline7d": [
+        95000,
+        95000,
+        95000,
+        95000,
+        95000,
+        95000,
+        95000
+      ],
+      "notes": "Series A. Carbon credit marketplace. Est. valuation $25M. 0.38% equity."
+    },
+    {
+      "id": "startup-vaultedge",
+      "name": "VaultEdge",
+      "ticker": "PRIVATE",
+      "category": "startups",
+      "quantity": 1,
+      "avgCost": 25000,
+      "currentPrice": 25000,
+      "change24h": 0,
+      "sparkline7d": [
+        25000,
+        25000,
+        25000,
+        25000,
+        25000,
+        25000,
+        25000
+      ],
+      "notes": "Pre-seed. Decentralized identity for fintech. Earliest stage, highest risk."
+    },
+    {
+      "id": "sse-test",
+      "name": "SSE Test",
+      "ticker": "SSE",
+      "category": "stocks",
+      "quantity": 1,
+      "avgCost": 1,
+      "currentPrice": 1,
+      "change24h": 0,
+      "sparkline7d": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": "startup-nexora",
+      "name": "Nexora",
+      "ticker": "PRIVATE",
+      "category": "startups",
+      "quantity": 1,
+      "avgCost": 5000,
+      "currentPrice": 5000,
+      "change24h": 0,
+      "sparkline7d": [
+        5000,
+        5000,
+        5000,
+        5000,
+        5000,
+        5000,
+        5000
+      ],
+      "notes": "SAFE. AI healthcare. Pre-seed stage."
+    }
+  ]
+}

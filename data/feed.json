@@ -1,0 +1,164 @@
+{
+  "items": [
+    {
+      "id": "f-001",
+      "source": "Bloomberg",
+      "headline": "Bitcoin Falls Below $98K as Crypto Market Faces Profit-Taking",
+      "summary": "Major cryptocurrencies declined overnight as traders locked in gains from the recent rally. BTC dropped 3.2% while ETH fell 1.8%.",
+      "url": "#",
+      "timestamp": "2026-02-11T08:00:00Z",
+      "category": "crypto",
+      "relevanceScore": 9
+    },
+    {
+      "id": "f-002",
+      "source": "Reuters",
+      "headline": "NVIDIA Set to Report Q4 Earnings Amid AI Spending Boom",
+      "summary": "Analysts expect NVIDIA to post record revenue of $38.5B, driven by surging demand for AI training chips from hyperscalers.",
+      "url": "#",
+      "timestamp": "2026-02-11T07:30:00Z",
+      "category": "earnings",
+      "relevanceScore": 9
+    },
+    {
+      "id": "f-003",
+      "source": "TechCrunch",
+      "headline": "AI Supply Chain Startup NexaFlow Enters Series A Discussions",
+      "summary": "NexaFlow, which uses AI to optimize supply chain logistics, is reportedly in talks with Tier 1 VCs for a $30M Series A round.",
+      "url": "#",
+      "timestamp": "2026-02-11T06:00:00Z",
+      "category": "startups",
+      "relevanceScore": 10
+    },
+    {
+      "id": "f-004",
+      "source": "CNBC",
+      "headline": "Fed Officials Signal Patience on Rate Cuts Amid Sticky Inflation",
+      "summary": "Federal Reserve governors emphasized data dependency, suggesting rate cuts may be delayed until clear evidence of inflation returning to target.",
+      "url": "#",
+      "timestamp": "2026-02-11T05:45:00Z",
+      "category": "macro",
+      "relevanceScore": 7
+    },
+    {
+      "id": "f-005",
+      "source": "CoinDesk",
+      "headline": "Solana DeFi TVL Hits All-Time High of $18B",
+      "summary": "Solana ecosystem DeFi protocols reached record total value locked, with Raydium and Marinade leading the charge.",
+      "url": "#",
+      "timestamp": "2026-02-10T22:00:00Z",
+      "category": "crypto",
+      "relevanceScore": 8
+    },
+    {
+      "id": "f-006",
+      "source": "WSJ",
+      "headline": "Apple Services Revenue Grows 18% as Hardware Sales Stabilize",
+      "summary": "Apple reported strong services growth driven by App Store, Apple TV+, and Apple Pay. iPhone sales showed modest recovery in Greater China.",
+      "url": "#",
+      "timestamp": "2026-02-10T20:00:00Z",
+      "category": "earnings",
+      "relevanceScore": 8
+    },
+    {
+      "id": "f-007",
+      "source": "Bloomberg",
+      "headline": "Tesla Robotaxi Approval Expected in Austin by Q2 2026",
+      "summary": "Regulatory sources indicate Tesla may receive its first autonomous ride-hailing permit in Austin, Texas, as early as April.",
+      "url": "#",
+      "timestamp": "2026-02-10T18:30:00Z",
+      "category": "earnings",
+      "relevanceScore": 8
+    },
+    {
+      "id": "f-008",
+      "source": "Financial Times",
+      "headline": "Global Carbon Credit Market Surges Past $1 Trillion",
+      "summary": "The voluntary carbon market has grown 40% year-over-year, with compliance markets driving institutional adoption and price discovery.",
+      "url": "#",
+      "timestamp": "2026-02-10T16:00:00Z",
+      "category": "startups",
+      "relevanceScore": 7
+    },
+    {
+      "id": "f-009",
+      "source": "Reuters",
+      "headline": "Microsoft Azure Revenue Grows 32% on AI Workload Demand",
+      "summary": "Microsoft cloud segment exceeded expectations with AI-related workloads accounting for over 10% of Azure consumption revenue.",
+      "url": "#",
+      "timestamp": "2026-02-10T14:00:00Z",
+      "category": "earnings",
+      "relevanceScore": 8
+    },
+    {
+      "id": "f-010",
+      "source": "CoinDesk",
+      "headline": "Ethereum Layer 2 Networks Process More Transactions Than Mainnet",
+      "summary": "Combined L2 throughput now exceeds Ethereum mainnet by 5x, with Arbitrum and Base leading in daily active addresses.",
+      "url": "#",
+      "timestamp": "2026-02-10T12:00:00Z",
+      "category": "crypto",
+      "relevanceScore": 6
+    },
+    {
+      "id": "f-011",
+      "source": "TechCrunch",
+      "headline": "Decentralized Identity Startup VaultEdge Joins Y Combinator W26",
+      "summary": "VaultEdge, building privacy-preserving identity verification for fintech, was accepted into Y Combinator Winter 2026 batch.",
+      "url": "#",
+      "timestamp": "2026-02-10T10:00:00Z",
+      "category": "startups",
+      "relevanceScore": 9
+    },
+    {
+      "id": "f-012",
+      "source": "Bloomberg",
+      "headline": "Amazon AWS Launches Next-Gen Graviton5 Chips",
+      "summary": "Amazon Web Services unveiled its latest custom silicon, promising 40% better price-performance for cloud workloads.",
+      "url": "#",
+      "timestamp": "2026-02-10T08:00:00Z",
+      "category": "earnings",
+      "relevanceScore": 7
+    },
+    {
+      "id": "f-013",
+      "source": "CNBC",
+      "headline": "US Consumer Confidence Rises for Third Straight Month",
+      "summary": "The Conference Board Consumer Confidence Index rose to 118.2, with consumers expressing optimism about the labor market.",
+      "url": "#",
+      "timestamp": "2026-02-09T20:00:00Z",
+      "category": "macro",
+      "relevanceScore": 5
+    },
+    {
+      "id": "f-014",
+      "source": "Financial Times",
+      "headline": "Japan Central Bank Hints at Further Rate Normalization",
+      "summary": "BOJ Governor signaled readiness for additional rate increases if wage growth continues, potentially strengthening the yen.",
+      "url": "#",
+      "timestamp": "2026-02-09T18:00:00Z",
+      "category": "macro",
+      "relevanceScore": 6
+    },
+    {
+      "id": "f-015",
+      "source": "CoinDesk",
+      "headline": "Bitcoin Mining Difficulty Reaches New All-Time High",
+      "summary": "Network difficulty adjusted upward 4.2% as hash rate continues to climb post-halving, squeezing less efficient miners.",
+      "url": "#",
+      "timestamp": "2026-02-09T14:00:00Z",
+      "category": "crypto",
+      "relevanceScore": 5
+    },
+    {
+      "id": "f-016",
+      "source": "WSJ",
+      "headline": "Private Markets See Record Dry Powder at $4.2 Trillion",
+      "summary": "PE and VC firms are sitting on unprecedented levels of uninvested capital, with AI and climate tech attracting the most interest.",
+      "url": "#",
+      "timestamp": "2026-02-09T10:00:00Z",
+      "category": "macro",
+      "relevanceScore": 6
+    }
+  ]
+}

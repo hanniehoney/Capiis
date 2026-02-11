@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  },
+  "hooks": {
+    "SessionEnd": [
+      {
+        "matcher": "auto-update-docs",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "請檢查這次會話中所有的程式碼變更，並更新專案的 README.md 和相關文件。確保文件內容與最新的程式碼實作同步。"
+          }
+        ]
+      }
+    ]
+  }
+}

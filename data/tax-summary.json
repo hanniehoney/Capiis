@@ -1,0 +1,83 @@
+{
+  "taxYear": 2026,
+  "jurisdiction": "US",
+  "realizedGains": 12450,
+  "realizedLosses": -3200,
+  "netRealizedGainLoss": 9250,
+  "unrealizedGains": 289750,
+  "unrealizedLosses": 0,
+  "estimatedTaxLiability": 2775,
+  "longTermRate": 0.15,
+  "shortTermRate": 0.3,
+  "taxLossHarvestingOpportunities": [
+    {
+      "asset": "TSLA",
+      "currentLoss": 0,
+      "potentialSavings": 0,
+      "note": "Monitor for short-term dips below cost basis"
+    }
+  ],
+  "taxableEvents": [
+    {
+      "date": "2026-01-15",
+      "type": "sell",
+      "asset": "TSLA",
+      "shares": 20,
+      "amount": 7800,
+      "costBasis": 3900,
+      "gain": 3900,
+      "term": "long"
+    },
+    {
+      "date": "2026-01-22",
+      "type": "sell",
+      "asset": "ETH",
+      "units": 5,
+      "amount": 16200,
+      "costBasis": 11000,
+      "gain": 5200,
+      "term": "short"
+    },
+    {
+      "date": "2026-02-01",
+      "type": "sell",
+      "asset": "BTC",
+      "units": 0.5,
+      "amount": 50000,
+      "costBasis": 21000,
+      "gain": 29000,
+      "term": "long"
+    },
+    {
+      "date": "2026-02-05",
+      "type": "sell",
+      "asset": "MSFT",
+      "shares": 10,
+      "amount": 4458,
+      "costBasis": 3100,
+      "gain": 1358,
+      "term": "long"
+    },
+    {
+      "date": "2026-01-10",
+      "type": "sell",
+      "asset": "SOL",
+      "units": 50,
+      "amount": 8500,
+      "costBasis": 2250,
+      "gain": 6250,
+      "term": "short"
+    },
+    {
+      "date": "2026-01-28",
+      "type": "loss",
+      "asset": "AVAX",
+      "units": 100,
+      "amount": 3800,
+      "costBasis": 7000,
+      "gain": -3200,
+      "term": "short"
+    }
+  ],
+  "notes": "Consider harvesting losses in volatile crypto positions before year-end. Long-term capital gains rate applies to holdings >1 year."
+}
