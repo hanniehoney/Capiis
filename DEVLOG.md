@@ -31,6 +31,7 @@ Hit a snag right away: API credits weren't showing up for everyone. Some partici
 ### Blockers
 
 - Need to decide frontend evolution path: stay vanilla JS, adopt Web Components, or migrate to React/Next.js — deferred until scope is clearer
+- `/capis` slash command only works inside the project directory — want it to be a global plugin any Claude Code user can invoke from anywhere, need to rethink the command/skill hierarchy
 
 ### Time spent
 
