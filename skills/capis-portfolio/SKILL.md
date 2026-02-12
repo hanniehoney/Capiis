@@ -13,7 +13,8 @@ Portfolio data is stored as Excel files in `data/`, one per asset category. Othe
 
 - `data/stocks.xlsx` -- Stock holdings
 - `data/crypto.xlsx` -- Crypto holdings
-- `data/startups.xlsx` -- Startup investments
+- `data/angel-investment.xlsx` -- Angel investments
+- `data/employee-equity.xlsx` -- Employee equity (RSUs/ISOs/ESPP)
 - `data/real-estate.xlsx` -- Real estate (template)
 - `data/signals.json` -- AI-generated alerts and investment signals
 - `data/watchlist.json` -- Tracked assets not yet in the portfolio
@@ -24,7 +25,9 @@ New categories are added by dropping a new `.xlsx` file into `data/`.
 
 ### Excel Column Schema
 
-Each `.xlsx` file uses these columns: `id`, `name`, `ticker`, `quantity`, `avgCost`, `currentPrice`, `change24h`, `notes`, `Day 1`–`Day 7` (optional sparkline).
+Each `.xlsx` file uses these columns: `id`, `name`, `ticker`, `quantity`, `avgCost`, `currentPrice`, `notes`, `lastUpdated` (optional).
+
+Employee equity (`employee-equity.xlsx`) has additional columns: `equityType` (RSU/ISO/ESPP), `grantDate`, `vestingSchedule`, `strikePrice`, `fmvAtGrant`.
 
 See `references/asset-schema.md` for full schema details.
 
@@ -32,7 +35,7 @@ See `references/asset-schema.md` for full schema details.
 
 When asked about portfolio status:
 1. Read the Excel files in `data/` (via the server API at `GET /api/portfolio` or directly)
-2. Calculate: total value, allocation percentages by category (stocks/crypto/startups/etc.), unrealized P&L per position and overall
+2. Calculate: total value, allocation percentages by category (stocks/crypto/angel-investment/employee-equity/etc.), unrealized P&L per position and overall
 3. Identify top performers and underperformers by % gain
 4. Present a clear summary with key metrics in a concise format
 
@@ -40,7 +43,7 @@ When asked about portfolio status:
 
 When analyzing the portfolio or market conditions:
 1. Read current holdings from the Excel files
-2. Compare current allocation to balanced targets (guideline: ~40% stocks, ~30% crypto, ~20% startups, ~10% cash)
+2. Compare current allocation to balanced targets (guideline: ~40% stocks, ~30% crypto, ~15% angel-invest, ~10% employee-equity, ~5% cash)
 3. Flag positions with significant daily moves (>3%)
 4. Identify concentration risks (any single position >20% of portfolio)
 5. Check for tax-loss harvesting opportunities
@@ -60,7 +63,7 @@ When analyzing the portfolio or market conditions:
 When the user wants to add, remove, or update a position:
 1. Read the appropriate Excel file in `data/` (e.g., `stocks.xlsx` for stocks)
 2. Apply the change using Claude Code's xlsx skill (add row, update values, or remove row)
-3. Maintain the schema: id, name, ticker, quantity, avgCost, currentPrice, change24h, notes
+3. Maintain the schema: id, name, ticker, quantity, avgCost, currentPrice, notes
 4. The server's file watcher will auto-detect changes and broadcast SSE to refresh the dashboard
 5. Generate any relevant signals triggered by the change
 

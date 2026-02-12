@@ -1,7 +1,8 @@
 const VIEW_TITLES = {
   portfolio: 'Wealth',
   feed: 'Intelligence Feed',
-  legal: 'Tax & Legal Planning'
+  legal: 'Tax',
+  profile: 'Profile'
 };
 
 export function renderHeader(container) {

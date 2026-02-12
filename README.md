@@ -28,6 +28,84 @@ Or from Claude Code:
 /capis status   # Check server status
 ```
 
+## Runtime Architecture Snapshot
+
+```text
+Claude Code
+  ├─ /capis slash command (.claude/commands/capis.md)
+  └─ capis-portfolio skill (skills/capis-portfolio/)
+          │
+          ▼
+Express server (server.js, :3333)
+  ├─ serves SPA (public/)
+  ├─ REST API (/api/*)
+  ├─ SSE stream (/api/events)
+  └─ fs.watch(data/) -> broadcasts: portfolio, profile, tax, signals
+          │
+          ▼
+Data layer (local files)
+  ├─ Excel: assets + liabilities (data/*.xlsx)
+  ├─ categories config: data/categories.json
+  └─ JSON: signals/feed/watchlist/tax-summary/profile
+```
+
+## Project Structure Snapshot
+
+```text
+Capis/
+├── .claude/
+│   └── commands/
+│       └── capis.md
+├── data/
+│   ├── cash.xlsx
+│   ├── savings.xlsx
+│   ├── stocks.xlsx
+│   ├── crypto.xlsx
+│   ├── startups.xlsx
+│   ├── real-estate.xlsx
+│   ├── vehicles.xlsx
+│   ├── jewelry.xlsx
+│   ├── art.xlsx
+│   ├── credit-cards.xlsx
+│   ├── mortgage.xlsx
+│   ├── auto-loan.xlsx
+│   ├── student-loan.xlsx
+│   ├── categories.json
+│   ├── signals.json
+│   ├── feed.json
+│   ├── watchlist.json
+│   ├── tax-summary.json
+│   └── profile.json
+├── lib/
+│   └── excel.js
+├── public/
+│   ├── index.html
+│   ├── css/styles.css
+│   └── js/
+│       ├── app.js
+│       ├── views/
+│       │   ├── portfolio.js
+│       │   ├── feed.js
+│       │   ├── legal.js
+│       │   └── profile.js
+│       ├── components/
+│       │   ├── sidebar.js
+│       │   ├── header.js
+│       │   └── charts.js
+│       └── utils/
+│           ├── api.js
+│           └── sse.js
+├── scripts/
+│   └── seed-data.js
+├── skills/
+│   └── capis-portfolio/
+│       ├── SKILL.md
+│       └── references/asset-schema.md
+├── server.js
+├── README.md
+└── DEVLOG.md
+```
+
 ## Data Architecture
 
 Capis uses a hybrid local data model:
@@ -63,8 +141,6 @@ Liability categories:
 - `watchlist.json`
 - `tax-summary.json`
 - `profile.json`
-
-Detailed architecture snapshots and structure notes were moved to `DEVLOG.md` (Day 2 supplement).
 
 ## Tech Stack
 

@@ -1,5 +1,6 @@
 import { renderSidebar, updateActiveNav } from './components/sidebar.js';
 import { renderPortfolio } from './views/portfolio.js';
+import { renderCategoryDetail } from './views/category-detail.js';
 import { renderFeed } from './views/feed.js';
 import { renderLegal } from './views/legal.js';
 import { renderProfile } from './views/profile.js';
@@ -13,7 +14,7 @@ const views = {
 };
 
 const resourceToViews = {
-  portfolio: ['portfolio', 'legal'],
+  portfolio: ['portfolio'],
   signals: ['feed'],
   profile: ['profile', 'legal'],
   tax: ['legal']
@@ -28,6 +29,14 @@ async function init() {
 
   subscribe((resource) => {
     const currentView = location.hash.slice(1) || 'portfolio';
+
+    // Handle category detail pages — refresh on portfolio changes
+    if (currentView.startsWith('category-') && resource === 'portfolio') {
+      const category = currentView.slice('category-'.length);
+      renderCategoryDetail(document.getElementById('main-content'), category);
+      return;
+    }
+
     const affectedViews = resourceToViews[resource] || [];
     if (affectedViews.includes(currentView)) {
       views[currentView](document.getElementById('main-content'));
@@ -49,19 +58,27 @@ function bindSidebarToggle() {
   });
 }
 
-function route() {
+async function route() {
   const hash = location.hash.slice(1) || 'portfolio';
   const mainContent = document.getElementById('main-content');
-  const renderView = views[hash];
+  const sidebar = document.getElementById('sidebar');
 
-  if (renderView) {
-    renderView(mainContent);
+  if (hash.startsWith('category-')) {
+    const category = hash.slice('category-'.length);
+    renderCategoryDetail(mainContent, category);
   } else {
-    // Fallback to portfolio
-    location.hash = '#portfolio';
-    return;
+    const renderView = views[hash];
+    if (renderView) {
+      renderView(mainContent);
+    } else {
+      location.hash = '#portfolio';
+      return;
+    }
   }
 
+  if (sidebar) {
+    await renderSidebar(sidebar);
+  }
   updateActiveNav();
 }
 

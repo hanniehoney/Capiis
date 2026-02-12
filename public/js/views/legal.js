@@ -1,14 +1,13 @@
-import { getTaxSummary, getProfile, getPortfolio, getStats } from '../utils/api.js';
+import { getTaxSummary, getProfile, getPortfolio } from '../utils/api.js';
 
 export async function renderLegal(container) {
   container.innerHTML = `<div class="loading-state"><div class="hex-spinner"></div><p>Loading tax data...</p></div>`;
 
   try {
-    const [tax, profile, portfolio, stats] = await Promise.all([
+    const [tax, profile, portfolio] = await Promise.all([
       getTaxSummary(),
       getProfile().catch(() => null),
-      getPortfolio().catch(() => null),
-      getStats().catch(() => null)
+      getPortfolio().catch(() => null)
     ]);
 
     const assets = portfolio ? portfolio.assets : [];
@@ -31,75 +30,57 @@ export async function renderLegal(container) {
         ` : ''}
 
         <!-- Tax Overview Stats -->
-        <div class="tax-grid">
-          <div class="stat-card highlight animate-in stagger-1">
-            <div class="stat-label">Net Realized Gain/Loss</div>
-            <div class="stat-value ${tax.netRealizedGainLoss >= 0 ? 'change-positive' : 'change-negative'}">
-              ${tax.netRealizedGainLoss >= 0 ? '+' : ''}$${formatNumber(tax.netRealizedGainLoss)}
-            </div>
-            <div class="stat-change" style="color:var(--text-tertiary)">
-              Tax year ${tax.taxYear}
-            </div>
-          </div>
-          <div class="stat-card animate-in stagger-2">
-            <div class="stat-label">Realized Gains</div>
-            <div class="stat-value change-positive">+$${formatNumber(tax.realizedGains)}</div>
-            <div class="stat-change" style="color:var(--text-tertiary)">
-              Long-term rate: ${(tax.longTermRate * 100).toFixed(0)}%
-            </div>
-          </div>
-          <div class="stat-card animate-in stagger-3">
-            <div class="stat-label">Realized Losses</div>
-            <div class="stat-value change-negative">-$${formatNumber(Math.abs(tax.realizedLosses))}</div>
-            <div class="stat-change" style="color:var(--text-tertiary)">
-              Short-term rate: ${(tax.shortTermRate * 100).toFixed(0)}%
-            </div>
-          </div>
-          <div class="stat-card animate-in stagger-4">
+        <div class="tax-priority-grid">
+          <div class="stat-card highlight tax-key-card animate-in stagger-1">
             <div class="stat-label">Est. Tax Liability</div>
             <div class="stat-value" style="color:var(--gold-primary)">$${formatNumber(tax.estimatedTaxLiability)}</div>
             <div class="stat-change" style="color:var(--text-tertiary)">
-              ${tax.jurisdiction} jurisdiction
+              Amount likely owed for tax year ${tax.taxYear} (${tax.jurisdiction})
             </div>
           </div>
-        </div>
 
-        <!-- Unrealized Gains -->
-        <div class="stats-grid" style="margin-bottom:28px">
-          <div class="stat-card animate-in stagger-5">
-            <div class="stat-label">Unrealized Gains</div>
-            <div class="stat-value change-positive">+$${formatNumber(tax.unrealizedGains)}</div>
-            <div class="stat-change" style="color:var(--text-tertiary)">
-              Not yet taxable
+          <div class="tax-support-grid">
+            <div class="stat-card animate-in stagger-2">
+              <div class="stat-label">Unrealized Gains</div>
+              <div class="stat-value change-positive">+$${formatNumber(tax.unrealizedGains)}</div>
+              <div class="stat-change" style="color:var(--text-tertiary)">
+                Not yet taxable
+              </div>
+            </div>
+
+            <div class="stat-card animate-in stagger-3">
+              <div class="stat-label">Net Realized Gain/Loss</div>
+              <div class="stat-value ${tax.netRealizedGainLoss >= 0 ? 'change-positive' : 'change-negative'}">
+                ${tax.netRealizedGainLoss >= 0 ? '+' : ''}$${formatNumber(tax.netRealizedGainLoss)}
+              </div>
+              <div class="stat-change" style="color:var(--text-tertiary)">
+                Realized this year
+              </div>
+            </div>
+
+            <div class="stat-card animate-in stagger-4">
+              <div class="stat-label">Realized Gains</div>
+              <div class="stat-value change-positive">+$${formatNumber(tax.realizedGains)}</div>
+              <div class="stat-change" style="color:var(--text-tertiary)">
+                Long-term rate: ${((profile ? profile.tax.longTermCapitalGainsRate : tax.longTermRate) * 100).toFixed(0)}%
+              </div>
+            </div>
+
+            <div class="stat-card animate-in stagger-5">
+              <div class="stat-label">Realized Losses</div>
+              <div class="stat-value change-negative">-$${formatNumber(Math.abs(tax.realizedLosses))}</div>
+              <div class="stat-change" style="color:var(--text-tertiary)">
+                Short-term rate: ${((profile ? profile.tax.shortTermCapitalGainsRate : tax.shortTermRate) * 100).toFixed(0)}%
+              </div>
             </div>
           </div>
         </div>
 
         <!-- Asset Location Analysis -->
-        ${renderAssetLocationAnalysis(assets, stats)}
+        ${renderAssetLocationAnalysis(assets)}
 
         <!-- Hidden Liability: Unrealized Capital Gains Tax -->
         ${renderHiddenTaxLiability(assets, profile)}
-
-        <!-- Tax-Loss Harvesting -->
-        ${tax.taxLossHarvestingOpportunities.length > 0 ? `
-          <div class="card animate-in stagger-5" style="margin-bottom:28px;border-color:var(--border-gold)">
-            <div class="card-header">
-              <span class="card-title" style="color:var(--gold-primary)">\u2618 Tax-Loss Harvesting Opportunities</span>
-            </div>
-            <div style="font-size:0.85rem;color:var(--text-secondary)">
-              <div style="padding:8px 0;border-bottom:1px solid var(--border-light);font-style:italic;color:var(--text-tertiary)">
-                Tax-loss harvesting only applies to holdings in taxable accounts.
-              </div>
-              ${tax.taxLossHarvestingOpportunities.map(opp => `
-                <div style="padding:8px 0;border-bottom:1px solid var(--border-light)">
-                  <strong style="color:var(--text-primary)">${opp.asset}</strong> \u2014 ${opp.note}
-                  ${opp.potentialSavings > 0 ? `<span style="color:var(--green);margin-left:8px">Potential savings: $${formatNumber(opp.potentialSavings)}</span>` : ''}
-                </div>
-              `).join('')}
-            </div>
-          </div>
-        ` : ''}
 
         <!-- Taxable Events Table -->
         <div class="section-header animate-in stagger-6">
@@ -139,25 +120,25 @@ export async function renderLegal(container) {
           </table>
         </div>
 
-        <!-- Notes -->
-        ${tax.notes ? `
-          <div class="card animate-in stagger-8" style="margin-top:28px">
-            <div class="card-header">
-              <span class="card-title">Planning Notes</span>
-            </div>
-            <p style="font-size:0.85rem;color:var(--text-secondary);line-height:1.6">${tax.notes}</p>
-          </div>
-        ` : ''}
       </div>
     `;
+
+    bindInfoTips(container);
   } catch (e) {
     container.innerHTML = `<div class="empty-state"><div class="empty-icon">\u26A0</div><p>Failed to load tax data</p></div>`;
     console.error(e);
   }
 }
 
-function renderAssetLocationAnalysis(assets, stats) {
+function renderAssetLocationAnalysis(assets) {
   if (!assets.length) return '';
+
+  const groupInfo = {
+    'Taxable': 'Gains are subject to capital gains tax when sold. Includes brokerage accounts, direct holdings, checking, and savings.',
+    'Tax-Deferred': 'No tax on gains until withdrawal. Contributions may be tax-deductible. Includes Traditional IRA and 401(k).',
+    'Tax-Exempt': 'Gains grow tax-free and qualified withdrawals are not taxed. Includes Roth IRA and Roth 401(k).',
+    'Special (Triple Tax-Advantaged)': 'Tax-deductible contributions, tax-free growth, and tax-free withdrawals for qualified expenses. Includes HSA and 529 plans.'
+  };
 
   const groups = {
     'Taxable': { types: ['taxable', 'direct', 'checking', 'savings'], value: 0, items: [] },
@@ -195,7 +176,7 @@ function renderAssetLocationAnalysis(assets, stats) {
       return `
         <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border-light)">
           <span style="width:10px;height:10px;border-radius:50%;background:${color};flex-shrink:0"></span>
-          <span style="flex:1;font-weight:500">${name}</span>
+          <span style="flex:1;font-weight:500;display:inline-flex;align-items:center;gap:6px">${name} ${renderInfoTip(groupInfo[name])}</span>
           <span class="mono" style="font-size:0.85rem">$${formatNumber(g.value)}</span>
           <span class="mono" style="font-size:0.78rem;color:var(--text-tertiary);width:50px;text-align:right">${pct}%</span>
         </div>
@@ -219,7 +200,7 @@ function renderHiddenTaxLiability(assets, profile) {
   if (!assets.length) return '';
 
   const taxableTypes = ['taxable', 'direct', 'checking', 'savings'];
-  const taxFreeTypes = ['roth-ira', 'roth-401k', 'hsa'];
+  const taxFreeTypes = ['roth-ira', 'roth-401k', 'hsa', '529'];
   const now = new Date();
 
   const ltcgRate = profile ? profile.tax.longTermCapitalGainsRate : 0.15;
@@ -290,7 +271,7 @@ function renderHiddenTaxLiability(assets, profile) {
         </div>
         ${taxFreeGains > 0 ? `
           <div class="stat-card" style="flex:1;min-width:180px">
-            <div class="stat-label">Tax-Free Gains (Roth/HSA)</div>
+            <div class="stat-label">Tax-Free Gains (Roth/HSA/529)</div>
             <div class="stat-value change-positive">+$${formatNumber(taxFreeGains)}</div>
             <div class="stat-change" style="color:var(--text-tertiary)">Sheltered from taxes</div>
           </div>
@@ -323,6 +304,44 @@ function renderHiddenTaxLiability(assets, profile) {
       ` : ''}
     </div>
   `;
+}
+
+function renderInfoTip(text) {
+  const safe = escapeHTML(text);
+  return `
+    <span class="info-popover">
+      <button type="button" class="inline-info-tip" aria-label="Show info">i</button>
+      <span class="inline-info-panel" role="note">${safe}</span>
+    </span>
+  `;
+}
+
+function bindInfoTips(container) {
+  if (container.dataset.infoTipsBound === 'true') return;
+  container.dataset.infoTipsBound = 'true';
+
+  container.addEventListener('click', (e) => {
+    const popover = e.target.closest('.info-popover');
+    const button = e.target.closest('.inline-info-tip');
+
+    if (!popover) {
+      container.querySelectorAll('.info-popover.open').forEach(p => p.classList.remove('open'));
+      return;
+    }
+    if (!button) return;
+
+    const isOpen = popover.classList.contains('open');
+    container.querySelectorAll('.info-popover.open').forEach(p => p.classList.remove('open'));
+    popover.classList.toggle('open', !isOpen);
+  });
+}
+
+function escapeHTML(text) {
+  return String(text || '')
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
 }
 
 function formatNumber(n) {

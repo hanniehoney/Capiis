@@ -14,25 +14,28 @@ Each `.xlsx` file has a single sheet named "Holdings" with these columns:
 |--------|------|----------|-------------|
 | `id` | string | yes | Unique lowercase ID (e.g., aapl, btc, startup-nexaflow) |
 | `name` | string | yes | Full asset name |
-| `ticker` | string | yes | Ticker symbol, or PRIVATE for startups |
-| `quantity` | number | yes | Number of shares/coins (1 for startup positions) |
-| `avgCost` | number | yes | Average cost per unit (total investment for startups) |
-| `currentPrice` | number | yes | Current price per unit (estimated value for startups) |
-| `change24h` | number | yes | 24h percentage change (0 for startups) |
+| `ticker` | string | yes | Ticker symbol, or PRIVATE for angel investments |
+| `quantity` | number | yes | Number of shares/coins/units |
+| `avgCost` | number | yes | Average cost per unit (total investment for angel investments) |
+| `currentPrice` | number | yes | Current price per unit (estimated value for angel investments) |
 | `notes` | string | yes | Investment thesis or notes |
 | `accountType` | string | no | Account type: taxable, roth-ira, traditional-401k, hsa, etc. Defaults to "taxable" |
 | `accountName` | string | no | Human-readable account name (e.g., "Schwab Brokerage") |
 | `costBasis` | number | no | Total cost basis. Defaults to quantity * avgCost |
 | `purchaseDate` | string | no | ISO date of purchase (e.g., "2023-03-15"). Used for short/long-term determination |
-| `Day 1` | number | no | Sparkline price day 1 (oldest) |
-| `Day 2` | number | no | Sparkline price day 2 |
-| `Day 3` | number | no | Sparkline price day 3 |
-| `Day 4` | number | no | Sparkline price day 4 |
-| `Day 5` | number | no | Sparkline price day 5 |
-| `Day 6` | number | no | Sparkline price day 6 |
-| `Day 7` | number | no | Sparkline price day 7 (newest) |
+| `lastUpdated` | string | no | ISO date when the row was last updated (e.g., "2026-02-11") |
 
-If Day 1-7 are missing, the dashboard shows a flat line at `currentPrice`.
+### Employee Equity Fields (Phase 1)
+
+These columns are specific to `employee-equity.xlsx`:
+
+| Column | Type | Required | Description |
+|--------|------|----------|-------------|
+| `equityType` | string | no | RSU, ISO, or ESPP |
+| `grantDate` | string | no | ISO date of the grant |
+| `vestingSchedule` | string | no | Human-readable vesting schedule (e.g., "4yr quarterly", "4yr with 1yr cliff") |
+| `strikePrice` | number | no | Strike/exercise price (0 for RSUs) |
+| `fmvAtGrant` | number | no | Fair market value per share at grant date |
 
 ### Current Excel Files
 
@@ -40,7 +43,8 @@ If Day 1-7 are missing, the dashboard shows a flat line at `currentPrice`.
 |------|----------|----------|
 | `stocks.xlsx` | stocks | Public stock holdings |
 | `crypto.xlsx` | crypto | Cryptocurrency holdings |
-| `startups.xlsx` | startups | Private startup investments |
+| `angel-investment.xlsx` | angel-investment | Angel investments |
+| `employee-equity.xlsx` | employee-equity | Employee equity (RSUs/ISOs/ESPP) |
 | `real-estate.xlsx` | real-estate | Real estate holdings |
 | `cash.xlsx` | cash | Cash & checking accounts |
 | `savings.xlsx` | savings | Savings & CDs |
@@ -123,7 +127,7 @@ Drop any new `.xlsx` with valid columns into `data/` to add a new category.
       "summary": "2-3 sentence summary",
       "url": "Link to source",
       "timestamp": "ISO 8601",
-      "category": "crypto | earnings | macro | startups",
+      "category": "crypto | earnings | macro | angel-investment",
       "relevanceScore": "1-10 integer"
     }
   ]

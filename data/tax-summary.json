@@ -1,14 +1,14 @@
 {
   "taxYear": 2026,
   "jurisdiction": "US",
-  "realizedGains": 12450,
+  "realizedGains": 45708,
   "realizedLosses": -3200,
-  "netRealizedGainLoss": 9250,
-  "unrealizedGains": 289750,
-  "unrealizedLosses": 0,
-  "estimatedTaxLiability": 2775,
+  "netRealizedGainLoss": 42508,
+  "unrealizedGains": 603542,
+  "unrealizedLosses": -7800,
+  "estimatedTaxLiability": 8734,
   "longTermRate": 0.15,
-  "shortTermRate": 0.3,
+  "shortTermRate": 0.24,
   "taxLossHarvestingOpportunities": [
     {
       "asset": "TSLA",

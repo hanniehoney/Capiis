@@ -18,7 +18,7 @@ export async function renderFeed(container) {
           <div class="filter-tab" data-filter="crypto">Crypto</div>
           <div class="filter-tab" data-filter="earnings">Earnings</div>
           <div class="filter-tab" data-filter="macro">Macro</div>
-          <div class="filter-tab" data-filter="startups">Startups</div>
+          <div class="filter-tab" data-filter="angel-investment">Angel Investment</div>
         </div>
 
         <!-- Feed Content -->

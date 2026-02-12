@@ -172,26 +172,17 @@ app.get('/api/stats', (req, res) => {
     const holdings = portfolio.assets;
     let totalValue = 0;
     let totalCost = 0;
-    let weightedChange = 0;
     const allocation = {};
     const allocationAbsolute = {};
-    let bestPerformer = { name: '-', change: -Infinity };
 
     for (const h of holdings) {
       const value = h.quantity * h.currentPrice;
       const cost = h.quantity * h.avgCost;
       totalValue += value;
       totalCost += cost;
-      weightedChange += value * (h.change24h / 100);
 
       allocation[h.category] = (allocation[h.category] || 0) + value;
-
-      if (h.change24h > bestPerformer.change) {
-        bestPerformer = { name: h.name, ticker: h.ticker, change: h.change24h };
-      }
     }
-
-    const change24hPct = totalValue > 0 ? (weightedChange / totalValue) * 100 : 0;
 
     const allocationPct = {};
     for (const [cat, val] of Object.entries(allocation)) {
@@ -247,12 +238,9 @@ app.get('/api/stats', (req, res) => {
       totalCost,
       totalGainLoss: totalValue - totalCost,
       totalGainLossPct: totalCost > 0 ? ((totalValue - totalCost) / totalCost) * 100 : 0,
-      change24h: weightedChange,
-      change24hPct,
       positions: holdings.length,
       allocation: allocationPct,
       allocationAbsolute,
-      bestPerformer,
       totalAssetValue: totalValue,
       totalLiabilities,
       totalMonthlyPayments,

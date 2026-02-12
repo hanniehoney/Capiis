@@ -7,12 +7,23 @@
         "savings"
       ]
     },
-    "investment": {
-      "label": "Investment Assets",
+    "public-markets": {
+      "label": "Public Markets",
       "categories": [
         "stocks",
-        "crypto",
-        "startups"
+        "crypto"
+      ]
+    },
+    "private-equity": {
+      "label": "Private Equity",
+      "categories": [
+        "angel-investment"
+      ]
+    },
+    "employee-equity": {
+      "label": "Employee Equity",
+      "categories": [
+        "employee-equity"
       ]
     },
     "fixed": {
@@ -119,9 +130,13 @@
       "label": "Crypto",
       "color": "#7d8471"
     },
-    "startups": {
-      "label": "Startups",
+    "angel-investment": {
+      "label": "Angel Investment",
       "color": "#a4ac86"
+    },
+    "employee-equity": {
+      "label": "Employee Equity",
+      "color": "#4a7c59"
     },
     "real-estate": {
       "label": "Real Estate",

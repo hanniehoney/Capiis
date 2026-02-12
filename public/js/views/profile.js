@@ -5,22 +5,18 @@ export async function renderProfile(container) {
 
   try {
     const profile = await getProfile();
+    const managedTip = 'To update profile data, use conversation in Claude Code.';
+    const taxTip = profile.tax && profile.tax.notes ? profile.tax.notes : '';
 
     container.innerHTML = `
       <div class="view-container">
-        <!-- Managed Banner -->
-        <div class="profile-managed-banner animate-in stagger-1">
-          <span class="managed-icon">\u2699</span>
-          <div>
-            <div class="managed-title">Managed by Claude Code</div>
-            <div class="managed-subtitle">Profile data is managed through conversation, not dashboard editing. Tell Claude Code to update your profile.</div>
-          </div>
-        </div>
-
         <!-- Personal Info -->
-        <div class="card animate-in stagger-2" style="margin-bottom:20px">
+        <div class="card animate-in stagger-1" style="margin-bottom:20px">
           <div class="card-header">
-            <span class="card-title">Personal Info</span>
+            <div class="card-title-row">
+              <span class="card-title">Personal Info</span>
+              ${renderInfoTip(managedTip)}
+            </div>
           </div>
           <div class="profile-grid">
             ${renderField('Name', profile.personal.name)}
@@ -32,9 +28,12 @@ export async function renderProfile(container) {
         </div>
 
         <!-- Location & Tax -->
-        <div class="card animate-in stagger-3" style="margin-bottom:20px">
+        <div class="card animate-in stagger-2" style="margin-bottom:20px">
           <div class="card-header">
-            <span class="card-title">Location & Tax</span>
+            <div class="card-title-row">
+              <span class="card-title">Location & Tax</span>
+              ${taxTip ? renderInfoTip(taxTip) : ''}
+            </div>
           </div>
           <div class="profile-grid">
             ${renderField('Country', profile.location.country)}
@@ -48,11 +47,10 @@ export async function renderProfile(container) {
             ${renderField('LTCG Rate', (profile.tax.longTermCapitalGainsRate * 100).toFixed(1) + '%')}
             ${renderField('STCG Rate', (profile.tax.shortTermCapitalGainsRate * 100).toFixed(0) + '%')}
           </div>
-          ${profile.tax.notes ? `<div class="profile-notes">${profile.tax.notes}</div>` : ''}
         </div>
 
         <!-- Accounts -->
-        <div class="card animate-in stagger-4">
+        <div class="card animate-in stagger-3">
           <div class="card-header">
             <span class="card-title">Accounts</span>
             <span style="font-size:0.78rem;color:var(--text-tertiary)">${profile.accounts.length} accounts</span>
@@ -73,6 +71,8 @@ export async function renderProfile(container) {
         </div>
       </div>
     `;
+
+    bindInfoTips(container);
   } catch (e) {
     container.innerHTML = `
       <div class="view-container">
@@ -87,6 +87,50 @@ export async function renderProfile(container) {
       </div>
     `;
   }
+}
+
+function renderInfoTip(text) {
+  const safe = escapeHTML(text);
+  return `
+    <span class="info-popover">
+      <button type="button" class="inline-info-tip" aria-label="Show info">i</button>
+      <span class="inline-info-panel" role="note">${safe}</span>
+    </span>
+  `;
+}
+
+function bindInfoTips(container) {
+  if (container.dataset.infoTipsBound === 'true') {
+    return;
+  }
+  container.dataset.infoTipsBound = 'true';
+
+  container.addEventListener('click', (e) => {
+    const popover = e.target.closest('.info-popover');
+    const button = e.target.closest('.inline-info-tip');
+
+    // Click outside any info popover closes all open panels.
+    if (!popover) {
+      container.querySelectorAll('.info-popover.open').forEach(p => p.classList.remove('open'));
+      return;
+    }
+
+    if (!button) {
+      return;
+    }
+
+    const isOpen = popover.classList.contains('open');
+    container.querySelectorAll('.info-popover.open').forEach(p => p.classList.remove('open'));
+    popover.classList.toggle('open', !isOpen);
+  });
+}
+
+function escapeHTML(text) {
+  return String(text || '')
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
 }
 
 function renderField(label, value) {

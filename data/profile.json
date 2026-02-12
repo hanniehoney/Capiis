@@ -21,7 +21,17 @@
     "longTermCapitalGainsRate": 0.15,
     "shortTermCapitalGainsRate": 0.24,
     "niit": 0.038,
-    "notes": "Texas resident — no state income tax. Federal bracket 24% (single, ~$100K–$191K)."
+    "niitThreshold": 200000,
+    "standardDeduction": 16100,
+    "contributionLimits": {
+      "traditional401k": 24500,
+      "catchUp401k": 8000,
+      "ira": 7500,
+      "catchUpIRA": 1000,
+      "hsaSelf": 4400,
+      "hsaFamily": 8750
+    },
+    "notes": "Texas resident — no state income tax. Federal bracket 24% (single, ~$100K–$191K). NIIT applies at $200K MAGI threshold. 2026 rates web-verified 2026-02-12."
   },
   "accounts": [
     {
@@ -67,5 +77,5 @@
       "institution": "Coinbase"
     }
   ],
-  "lastUpdated": "2026-02-11T00:00:00Z"
+  "lastUpdated": "2026-02-12T14:15:00Z"
 }
