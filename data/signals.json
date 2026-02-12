@@ -10,7 +10,7 @@
         "btc"
       ],
       "category": "rebalance",
-      "dismissed": true
+      "dismissed": false
     },
     {
       "id": "sig-002",

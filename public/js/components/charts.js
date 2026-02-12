@@ -1,18 +1,58 @@
-const CATEGORY_COLORS = {
+const FALLBACK_COLORS = ['#6b8e5a', '#9aad7b', '#b8c49a', '#7a9168', '#5c7a4d', '#8fa67e'];
+
+const DEFAULT_CATEGORY_COLORS = {
   stocks: '#5b7e4a',
   crypto: '#7d8471',
   startups: '#a4ac86',
-  cash: '#8a9178'
+  cash: '#8a9178',
+  'real-estate': '#6b7d5e',
+  savings: '#7d9470',
+  vehicles: '#6e8b5e',
+  jewelry: '#9a8c6e',
+  art: '#8b7d6b',
+  'credit-cards': '#b5443b',
+  mortgage: '#8b5e3c',
+  'auto-loan': '#a0734f',
+  'student-loan': '#7d6b5e'
 };
 
-const CATEGORY_LABELS = {
+const DEFAULT_CATEGORY_LABELS = {
   stocks: 'Stocks',
   crypto: 'Crypto',
   startups: 'Startups',
-  cash: 'Cash'
+  cash: 'Cash & Checking',
+  'real-estate': 'Real Estate',
+  savings: 'Savings & CDs',
+  vehicles: 'Vehicles',
+  jewelry: 'Jewelry',
+  art: 'Art & Collectibles',
+  'credit-cards': 'Credit Cards',
+  mortgage: 'Mortgage',
+  'auto-loan': 'Auto Loan',
+  'student-loan': 'Student Loan'
 };
 
-export function renderDonutChart(allocation, allocationAbsolute, totalValue) {
+let _categoryConfig = null;
+
+export function setCategoryConfig(config) {
+  _categoryConfig = config;
+}
+
+export function getCategoryColor(cat, idx) {
+  if (_categoryConfig && _categoryConfig.categoryMeta && _categoryConfig.categoryMeta[cat]) {
+    return _categoryConfig.categoryMeta[cat].color;
+  }
+  return DEFAULT_CATEGORY_COLORS[cat] || FALLBACK_COLORS[(idx || 0) % FALLBACK_COLORS.length];
+}
+
+export function getCategoryLabel(cat) {
+  if (_categoryConfig && _categoryConfig.categoryMeta && _categoryConfig.categoryMeta[cat]) {
+    return _categoryConfig.categoryMeta[cat].label;
+  }
+  return DEFAULT_CATEGORY_LABELS[cat] || cat.charAt(0).toUpperCase() + cat.slice(1).replace(/-/g, ' ');
+}
+
+export function renderDonutChart(allocation, allocationAbsolute, totalValue, centerLabel = 'Total') {
   const radius = 75;
   const cx = 100;
   const cy = 100;
@@ -23,8 +63,8 @@ export function renderDonutChart(allocation, allocationAbsolute, totalValue) {
     .sort((a, b) => b[1] - a[1]);
 
   let offset = 0;
-  const segments = categories.map(([cat, pct]) => {
-    const color = CATEGORY_COLORS[cat] || '#484f58';
+  const segments = categories.map(([cat, pct], idx) => {
+    const color = getCategoryColor(cat, idx);
     const dashLen = (pct / 100) * circumference;
     const dashArray = `${dashLen} ${circumference - dashLen}`;
     const dashOffset = -offset;
@@ -39,7 +79,7 @@ export function renderDonutChart(allocation, allocationAbsolute, totalValue) {
   const centerText = `
     <text x="${cx}" y="${cy - 6}" text-anchor="middle"
           font-family="var(--font-mono)" font-size="11" fill="#8a9178"
-          transform="rotate(90 ${cx} ${cy})">Total</text>
+          transform="rotate(90 ${cx} ${cy})">${centerLabel}</text>
     <text x="${cx}" y="${cy + 12}" text-anchor="middle"
           font-family="var(--font-mono)" font-size="16" font-weight="600" fill="#2d4a2b"
           transform="rotate(90 ${cx} ${cy})">$${formatCompact(totalValue)}</text>
@@ -50,9 +90,9 @@ export function renderDonutChart(allocation, allocationAbsolute, totalValue) {
     ${centerText}
   </svg>`;
 
-  const legend = categories.map(([cat, pct]) => {
-    const color = CATEGORY_COLORS[cat] || '#484f58';
-    const label = CATEGORY_LABELS[cat] || cat;
+  const legend = categories.map(([cat, pct], idx) => {
+    const color = getCategoryColor(cat, idx);
+    const label = getCategoryLabel(cat);
     const absVal = allocationAbsolute[cat] || 0;
     return `
       <div class="legend-item">

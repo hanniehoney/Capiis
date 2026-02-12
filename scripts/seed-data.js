@@ -1,87 +1,300 @@
 const fs = require('fs');
 const path = require('path');
+const XLSX = require('xlsx');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 
 if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
 
-function write(filename, data) {
+function writeJSON(filename, data) {
   fs.writeFileSync(path.join(DATA_DIR, filename), JSON.stringify(data, null, 2));
   console.log(`  wrote data/${filename}`);
 }
 
-// --- Portfolio ---
-const portfolio = {
-  lastUpdated: '2026-02-11T08:00:00Z',
-  holdings: [
-    {
-      id: 'aapl', name: 'Apple Inc.', ticker: 'AAPL', category: 'stocks',
-      quantity: 150, avgCost: 178.50, currentPrice: 242.30, change24h: 1.8,
-      sparkline7d: [235, 238, 236, 240, 239, 241, 242.3],
-      notes: 'Long-term hold. Services revenue accelerating.'
-    },
-    {
-      id: 'nvda', name: 'NVIDIA Corp.', ticker: 'NVDA', category: 'stocks',
-      quantity: 80, avgCost: 485.00, currentPrice: 892.50, change24h: 3.2,
-      sparkline7d: [845, 860, 855, 870, 878, 885, 892.5],
-      notes: 'AI infrastructure leader. High conviction.'
-    },
-    {
-      id: 'msft', name: 'Microsoft', ticker: 'MSFT', category: 'stocks',
-      quantity: 100, avgCost: 310.00, currentPrice: 445.80, change24h: -0.5,
-      sparkline7d: [448, 450, 447, 446, 445, 446, 445.8],
-      notes: 'Cloud + AI play. Azure growth strong.'
-    },
-    {
-      id: 'tsla', name: 'Tesla Inc.', ticker: 'TSLA', category: 'stocks',
-      quantity: 60, avgCost: 195.00, currentPrice: 385.20, change24h: -2.1,
-      sparkline7d: [395, 392, 390, 388, 387, 386, 385.2],
-      notes: 'Robotaxi catalyst pending. Volatile.'
-    },
-    {
-      id: 'amzn', name: 'Amazon', ticker: 'AMZN', category: 'stocks',
-      quantity: 90, avgCost: 145.00, currentPrice: 228.60, change24h: 0.9,
-      sparkline7d: [224, 225, 226, 225, 227, 228, 228.6],
-      notes: 'AWS margins expanding. Advertising segment growing.'
-    },
-    {
-      id: 'btc', name: 'Bitcoin', ticker: 'BTC', category: 'crypto',
-      quantity: 2.5, avgCost: 42000, currentPrice: 97500, change24h: -3.2,
-      sparkline7d: [101000, 99800, 98200, 99500, 98000, 97800, 97500],
-      notes: 'Core crypto position. DCA strategy. Halving cycle thesis.'
-    },
-    {
-      id: 'eth', name: 'Ethereum', ticker: 'ETH', category: 'crypto',
-      quantity: 25, avgCost: 2200, currentPrice: 3180, change24h: -1.8,
-      sparkline7d: [3280, 3250, 3220, 3200, 3190, 3185, 3180],
-      notes: 'Layer 1 ecosystem. Staking yield ~4%. Long-term hold.'
-    },
-    {
-      id: 'sol', name: 'Solana', ticker: 'SOL', category: 'crypto',
-      quantity: 200, avgCost: 45, currentPrice: 185, change24h: 2.5,
-      sparkline7d: [175, 178, 180, 182, 183, 184, 185],
-      notes: 'High-performance L1. DeFi/NFT ecosystem growth.'
-    },
-    {
-      id: 'startup-nexaflow', name: 'NexaFlow', ticker: 'PRIVATE', category: 'startups',
-      quantity: 1, avgCost: 50000, currentPrice: 120000, change24h: 0,
-      sparkline7d: [120000, 120000, 120000, 120000, 120000, 120000, 120000],
-      notes: 'Seed round. AI-powered supply chain. Est. valuation $12M. 1% equity.'
-    },
-    {
-      id: 'startup-carbonlens', name: 'CarbonLens', ticker: 'PRIVATE', category: 'startups',
-      quantity: 1, avgCost: 75000, currentPrice: 95000, change24h: 0,
-      sparkline7d: [95000, 95000, 95000, 95000, 95000, 95000, 95000],
-      notes: 'Series A. Carbon credit marketplace. Est. valuation $25M. 0.38% equity.'
-    },
-    {
-      id: 'startup-vaultedge', name: 'VaultEdge', ticker: 'PRIVATE', category: 'startups',
-      quantity: 1, avgCost: 25000, currentPrice: 25000, change24h: 0,
-      sparkline7d: [25000, 25000, 25000, 25000, 25000, 25000, 25000],
-      notes: 'Pre-seed. Decentralized identity for fintech. Earliest stage, highest risk.'
-    }
-  ]
-};
+function writeExcel(filename, rows) {
+  const headers = ['id', 'name', 'ticker', 'quantity', 'avgCost', 'currentPrice', 'change24h', 'notes', 'accountType', 'accountName', 'costBasis', 'purchaseDate', 'Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6', 'Day 7'];
+  const data = rows.map(r => {
+    const sp = r.sparkline7d || Array(7).fill(r.currentPrice);
+    return {
+      id: r.id, name: r.name, ticker: r.ticker,
+      quantity: r.quantity, avgCost: r.avgCost,
+      currentPrice: r.currentPrice, change24h: r.change24h,
+      notes: r.notes || '',
+      accountType: r.accountType || 'taxable',
+      accountName: r.accountName || '',
+      costBasis: (r.quantity || 0) * (r.avgCost || 0),
+      purchaseDate: r.purchaseDate || '',
+      'Day 1': sp[0], 'Day 2': sp[1], 'Day 3': sp[2], 'Day 4': sp[3],
+      'Day 5': sp[4], 'Day 6': sp[5], 'Day 7': sp[6]
+    };
+  });
+  const ws = XLSX.utils.json_to_sheet(data, { header: headers });
+  ws['!cols'] = [
+    { wch: 20 }, { wch: 20 }, { wch: 10 }, { wch: 10 }, { wch: 12 },
+    { wch: 14 }, { wch: 10 }, { wch: 50 },
+    { wch: 16 }, { wch: 22 }, { wch: 12 }, { wch: 12 },
+    { wch: 10 }, { wch: 10 }, { wch: 10 }, { wch: 10 }, { wch: 10 }, { wch: 10 }, { wch: 10 }
+  ];
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Holdings');
+  XLSX.writeFile(wb, path.join(DATA_DIR, filename));
+  console.log(`  wrote data/${filename} (${rows.length} rows)`);
+}
+
+function writeExcelLiability(filename, rows) {
+  const headers = ['id', 'name', 'type', 'originalAmount', 'currentBalance', 'interestRate', 'monthlyPayment', 'dueDate', 'notes'];
+  const data = rows.map(r => ({
+    id: r.id, name: r.name, type: r.type,
+    originalAmount: r.originalAmount, currentBalance: r.currentBalance,
+    interestRate: r.interestRate, monthlyPayment: r.monthlyPayment,
+    dueDate: r.dueDate, notes: r.notes || ''
+  }));
+  const ws = XLSX.utils.json_to_sheet(data, { header: headers });
+  ws['!cols'] = [
+    { wch: 20 }, { wch: 30 }, { wch: 15 }, { wch: 15 }, { wch: 15 },
+    { wch: 12 }, { wch: 15 }, { wch: 12 }, { wch: 50 }
+  ];
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Liabilities');
+  XLSX.writeFile(wb, path.join(DATA_DIR, filename));
+  console.log(`  wrote data/${filename} (${rows.length} rows)`);
+}
+
+// --- Stocks ---
+const stocks = [
+  {
+    id: 'aapl', name: 'Apple Inc.', ticker: 'AAPL',
+    quantity: 150, avgCost: 178.50, currentPrice: 242.30, change24h: 1.8,
+    sparkline7d: [235, 238, 236, 240, 239, 241, 242.3],
+    notes: 'Long-term hold. Services revenue accelerating.',
+    accountType: 'taxable', accountName: 'Schwab Brokerage', purchaseDate: '2023-03-15'
+  },
+  {
+    id: 'nvda', name: 'NVIDIA Corp.', ticker: 'NVDA',
+    quantity: 80, avgCost: 485.00, currentPrice: 892.50, change24h: 3.2,
+    sparkline7d: [845, 860, 855, 870, 878, 885, 892.5],
+    notes: 'AI infrastructure leader. High conviction.',
+    accountType: 'roth-ira', accountName: 'Fidelity Roth IRA', purchaseDate: '2023-06-20'
+  },
+  {
+    id: 'msft', name: 'Microsoft', ticker: 'MSFT',
+    quantity: 100, avgCost: 310.00, currentPrice: 445.80, change24h: -0.5,
+    sparkline7d: [448, 450, 447, 446, 445, 446, 445.8],
+    notes: 'Cloud + AI play. Azure growth strong.',
+    accountType: 'traditional-401k', accountName: 'Company 401(k)', purchaseDate: '2022-01-10'
+  },
+  {
+    id: 'tsla', name: 'Tesla Inc.', ticker: 'TSLA',
+    quantity: 60, avgCost: 195.00, currentPrice: 385.20, change24h: -2.1,
+    sparkline7d: [395, 392, 390, 388, 387, 386, 385.2],
+    notes: 'Robotaxi catalyst pending. Volatile.',
+    accountType: 'taxable', accountName: 'Schwab Brokerage', purchaseDate: '2024-02-28'
+  },
+  {
+    id: 'amzn', name: 'Amazon', ticker: 'AMZN',
+    quantity: 90, avgCost: 145.00, currentPrice: 228.60, change24h: 0.9,
+    sparkline7d: [224, 225, 226, 225, 227, 228, 228.6],
+    notes: 'AWS margins expanding. Advertising segment growing.',
+    accountType: 'roth-ira', accountName: 'Fidelity Roth IRA', purchaseDate: '2023-09-05'
+  }
+];
+
+// --- Crypto ---
+const crypto = [
+  {
+    id: 'btc', name: 'Bitcoin', ticker: 'BTC',
+    quantity: 2.5, avgCost: 42000, currentPrice: 97500, change24h: -3.2,
+    sparkline7d: [101000, 99800, 98200, 99500, 98000, 97800, 97500],
+    notes: 'Core crypto position. DCA strategy. Halving cycle thesis.',
+    accountType: 'taxable', accountName: 'Coinbase', purchaseDate: '2022-11-15'
+  },
+  {
+    id: 'eth', name: 'Ethereum', ticker: 'ETH',
+    quantity: 25, avgCost: 2200, currentPrice: 3180, change24h: -1.8,
+    sparkline7d: [3280, 3250, 3220, 3200, 3190, 3185, 3180],
+    notes: 'Layer 1 ecosystem. Staking yield ~4%. Long-term hold.',
+    accountType: 'taxable', accountName: 'Coinbase', purchaseDate: '2023-01-10'
+  },
+  {
+    id: 'sol', name: 'Solana', ticker: 'SOL',
+    quantity: 200, avgCost: 45, currentPrice: 185, change24h: 2.5,
+    sparkline7d: [175, 178, 180, 182, 183, 184, 185],
+    notes: 'High-performance L1. DeFi/NFT ecosystem growth.',
+    accountType: 'taxable', accountName: 'Coinbase', purchaseDate: '2023-08-22'
+  }
+];
+
+// --- Startups ---
+const startups = [
+  {
+    id: 'startup-nexaflow', name: 'NexaFlow', ticker: 'PRIVATE',
+    quantity: 1, avgCost: 50000, currentPrice: 120000, change24h: 0,
+    sparkline7d: [120000, 120000, 120000, 120000, 120000, 120000, 120000],
+    notes: 'Seed round. AI-powered supply chain. Est. valuation $12M. 1% equity.',
+    accountType: 'taxable', accountName: 'Direct Investment', purchaseDate: '2023-04-01'
+  },
+  {
+    id: 'startup-carbonlens', name: 'CarbonLens', ticker: 'PRIVATE',
+    quantity: 1, avgCost: 75000, currentPrice: 95000, change24h: 0,
+    sparkline7d: [95000, 95000, 95000, 95000, 95000, 95000, 95000],
+    notes: 'Series A. Carbon credit marketplace. Est. valuation $25M. 0.38% equity.',
+    accountType: 'taxable', accountName: 'Direct Investment', purchaseDate: '2024-01-15'
+  },
+  {
+    id: 'startup-vaultedge', name: 'VaultEdge', ticker: 'PRIVATE',
+    quantity: 1, avgCost: 25000, currentPrice: 25000, change24h: 0,
+    sparkline7d: [25000, 25000, 25000, 25000, 25000, 25000, 25000],
+    notes: 'Pre-seed. Decentralized identity for fintech. Earliest stage, highest risk.',
+    accountType: 'taxable', accountName: 'Direct Investment', purchaseDate: '2025-06-01'
+  }
+];
+
+// --- Real Estate ---
+const realEstate = [
+  {
+    id: 're-taipei-apt', name: 'Taipei Apartment (Da\'an)', ticker: 'RE-TPE',
+    quantity: 1, avgCost: 320000, currentPrice: 385000, change24h: 0,
+    sparkline7d: [383000, 383500, 384000, 384200, 384500, 384800, 385000],
+    notes: '2BR in Da\'an District. Rental yield ~2.8%. Purchased 2022.',
+    accountType: 'direct', accountName: 'Direct Ownership', purchaseDate: ''
+  },
+  {
+    id: 're-austin-house', name: 'Austin Rental House', ticker: 'RE-ATX',
+    quantity: 1, avgCost: 450000, currentPrice: 520000, change24h: 0,
+    sparkline7d: [518000, 518500, 519000, 519200, 519500, 519800, 520000],
+    notes: 'Single-family rental in East Austin. Rental yield ~5.1%. Purchased 2023.',
+    accountType: 'direct', accountName: 'Direct Ownership', purchaseDate: ''
+  },
+  {
+    id: 're-reit-vanguard', name: 'Vanguard Real Estate ETF', ticker: 'VNQ',
+    quantity: 300, avgCost: 82.50, currentPrice: 91.20, change24h: 0.3,
+    sparkline7d: [89.8, 90.1, 90.4, 90.6, 90.8, 91.0, 91.2],
+    notes: 'Broad REIT exposure. Dividend yield ~3.8%.',
+    accountType: 'taxable', accountName: 'Schwab Brokerage', purchaseDate: '2024-01-15'
+  }
+];
+
+// --- Cash ---
+const cash = [
+  {
+    id: 'chase-checking', name: 'Chase Checking', ticker: 'CASH',
+    quantity: 1, avgCost: 24500, currentPrice: 24500, change24h: 0,
+    sparkline7d: [24500, 24500, 24500, 24500, 24500, 24500, 24500],
+    notes: 'Primary checking account.',
+    accountType: 'checking', accountName: 'Chase Checking', purchaseDate: ''
+  },
+  {
+    id: 'schwab-cash', name: 'Schwab Brokerage Cash', ticker: 'CASH',
+    quantity: 1, avgCost: 8200, currentPrice: 8200, change24h: 0,
+    sparkline7d: [8200, 8200, 8200, 8200, 8200, 8200, 8200],
+    notes: 'Brokerage sweep account.',
+    accountType: 'taxable', accountName: 'Schwab Brokerage', purchaseDate: ''
+  }
+];
+
+// --- Savings ---
+const savings = [
+  {
+    id: 'marcus-hysa', name: 'Marcus HYSA', ticker: 'HYSA',
+    quantity: 1, avgCost: 51200, currentPrice: 51200, change24h: 0,
+    sparkline7d: [51200, 51200, 51200, 51200, 51200, 51200, 51200],
+    notes: 'High-yield savings. APY 4.5%.',
+    accountType: 'savings', accountName: 'Marcus HYSA', purchaseDate: ''
+  },
+  {
+    id: 'cd-12mo', name: '12-Month CD', ticker: 'CD',
+    quantity: 1, avgCost: 25750, currentPrice: 25750, change24h: 0,
+    sparkline7d: [25750, 25750, 25750, 25750, 25750, 25750, 25750],
+    notes: 'Matures Aug 2026. APY 4.8%.',
+    accountType: 'savings', accountName: 'Marcus HYSA', purchaseDate: ''
+  }
+];
+
+// --- Vehicles ---
+const vehicles = [
+  {
+    id: 'tesla-model3', name: 'Tesla Model 3', ticker: 'VEHICLE',
+    quantity: 1, avgCost: 42000, currentPrice: 35500, change24h: 0,
+    sparkline7d: [35500, 35500, 35500, 35500, 35500, 35500, 35500],
+    notes: '2024 Model 3 Long Range. Purchased new.',
+    accountType: 'direct', accountName: 'Personal Property', purchaseDate: ''
+  }
+];
+
+// --- Jewelry ---
+const jewelry = [
+  {
+    id: 'rolex-sub', name: 'Rolex Submariner', ticker: 'WATCH',
+    quantity: 1, avgCost: 12800, currentPrice: 16200, change24h: 0,
+    sparkline7d: [16200, 16200, 16200, 16200, 16200, 16200, 16200],
+    notes: 'Ref. 126610LN. Purchased 2023. Appreciating.',
+    accountType: 'direct', accountName: 'Personal Property', purchaseDate: ''
+  },
+  {
+    id: 'diamond-ring', name: 'Diamond Engagement Ring', ticker: 'JEWEL',
+    quantity: 1, avgCost: 8500, currentPrice: 7200, change24h: 0,
+    sparkline7d: [7200, 7200, 7200, 7200, 7200, 7200, 7200],
+    notes: '1.5ct round brilliant. Appraised value.',
+    accountType: 'direct', accountName: 'Personal Property', purchaseDate: ''
+  }
+];
+
+// --- Art ---
+const art = [
+  {
+    id: 'kaws-companion', name: 'KAWS Companion', ticker: 'ART',
+    quantity: 1, avgCost: 3200, currentPrice: 4800, change24h: 0,
+    sparkline7d: [4800, 4800, 4800, 4800, 4800, 4800, 4800],
+    notes: 'Open Edition. Secondary market value.',
+    accountType: 'direct', accountName: 'Personal Property', purchaseDate: ''
+  }
+];
+
+// --- Credit Cards (Liability) ---
+const creditCards = [
+  {
+    id: 'amex-gold', name: 'Amex Gold', type: 'Revolving',
+    originalAmount: 0, currentBalance: 3420, interestRate: 24.99,
+    monthlyPayment: 3420, dueDate: '2026-03-01',
+    notes: 'Paid in full monthly. Points earning card.'
+  },
+  {
+    id: 'chase-sapphire', name: 'Chase Sapphire Reserve', type: 'Revolving',
+    originalAmount: 0, currentBalance: 1850, interestRate: 22.49,
+    monthlyPayment: 1850, dueDate: '2026-03-15',
+    notes: 'Travel rewards card. Paid in full.'
+  }
+];
+
+// --- Mortgage (Liability) ---
+const mortgage = [
+  {
+    id: 'austin-mortgage', name: 'Austin Home Mortgage', type: 'Fixed 30yr',
+    originalAmount: 360000, currentBalance: 338500, interestRate: 6.25,
+    monthlyPayment: 2216, dueDate: '2053-09-01',
+    notes: 'Wells Fargo. Austin rental property. Purchased 2023.'
+  }
+];
+
+// --- Auto Loan (Liability) ---
+const autoLoan = [
+  {
+    id: 'tesla-loan', name: 'Tesla Model 3 Loan', type: 'Fixed 60mo',
+    originalAmount: 30000, currentBalance: 22400, interestRate: 4.99,
+    monthlyPayment: 566, dueDate: '2029-01-15',
+    notes: 'Tesla financing. $8K down payment.'
+  }
+];
+
+// --- Student Loan (Liability) ---
+const studentLoan = [
+  {
+    id: 'fed-loan', name: 'Federal Student Loan', type: 'Fixed 10yr',
+    originalAmount: 28000, currentBalance: 18200, interestRate: 4.50,
+    monthlyPayment: 290, dueDate: '2032-06-01',
+    notes: 'Direct unsubsidized. Standard repayment plan.'
+  }
+];
 
 // --- Signals ---
 const signals = {
@@ -134,86 +347,22 @@ const signals = {
 // --- Feed ---
 const feed = {
   items: [
-    {
-      id: 'f-001', source: 'Bloomberg', headline: 'Bitcoin Falls Below $98K as Crypto Market Faces Profit-Taking',
-      summary: 'Major cryptocurrencies declined overnight as traders locked in gains from the recent rally. BTC dropped 3.2% while ETH fell 1.8%.',
-      url: '#', timestamp: '2026-02-11T08:00:00Z', category: 'crypto', relevanceScore: 9
-    },
-    {
-      id: 'f-002', source: 'Reuters', headline: 'NVIDIA Set to Report Q4 Earnings Amid AI Spending Boom',
-      summary: 'Analysts expect NVIDIA to post record revenue of $38.5B, driven by surging demand for AI training chips from hyperscalers.',
-      url: '#', timestamp: '2026-02-11T07:30:00Z', category: 'earnings', relevanceScore: 9
-    },
-    {
-      id: 'f-003', source: 'TechCrunch', headline: 'AI Supply Chain Startup NexaFlow Enters Series A Discussions',
-      summary: 'NexaFlow, which uses AI to optimize supply chain logistics, is reportedly in talks with Tier 1 VCs for a $30M Series A round.',
-      url: '#', timestamp: '2026-02-11T06:00:00Z', category: 'startups', relevanceScore: 10
-    },
-    {
-      id: 'f-004', source: 'CNBC', headline: 'Fed Officials Signal Patience on Rate Cuts Amid Sticky Inflation',
-      summary: 'Federal Reserve governors emphasized data dependency, suggesting rate cuts may be delayed until clear evidence of inflation returning to target.',
-      url: '#', timestamp: '2026-02-11T05:45:00Z', category: 'macro', relevanceScore: 7
-    },
-    {
-      id: 'f-005', source: 'CoinDesk', headline: 'Solana DeFi TVL Hits All-Time High of $18B',
-      summary: 'Solana ecosystem DeFi protocols reached record total value locked, with Raydium and Marinade leading the charge.',
-      url: '#', timestamp: '2026-02-10T22:00:00Z', category: 'crypto', relevanceScore: 8
-    },
-    {
-      id: 'f-006', source: 'WSJ', headline: 'Apple Services Revenue Grows 18% as Hardware Sales Stabilize',
-      summary: 'Apple reported strong services growth driven by App Store, Apple TV+, and Apple Pay. iPhone sales showed modest recovery in Greater China.',
-      url: '#', timestamp: '2026-02-10T20:00:00Z', category: 'earnings', relevanceScore: 8
-    },
-    {
-      id: 'f-007', source: 'Bloomberg', headline: 'Tesla Robotaxi Approval Expected in Austin by Q2 2026',
-      summary: 'Regulatory sources indicate Tesla may receive its first autonomous ride-hailing permit in Austin, Texas, as early as April.',
-      url: '#', timestamp: '2026-02-10T18:30:00Z', category: 'earnings', relevanceScore: 8
-    },
-    {
-      id: 'f-008', source: 'Financial Times', headline: 'Global Carbon Credit Market Surges Past $1 Trillion',
-      summary: 'The voluntary carbon market has grown 40% year-over-year, with compliance markets driving institutional adoption and price discovery.',
-      url: '#', timestamp: '2026-02-10T16:00:00Z', category: 'startups', relevanceScore: 7
-    },
-    {
-      id: 'f-009', source: 'Reuters', headline: 'Microsoft Azure Revenue Grows 32% on AI Workload Demand',
-      summary: 'Microsoft cloud segment exceeded expectations with AI-related workloads accounting for over 10% of Azure consumption revenue.',
-      url: '#', timestamp: '2026-02-10T14:00:00Z', category: 'earnings', relevanceScore: 8
-    },
-    {
-      id: 'f-010', source: 'CoinDesk', headline: 'Ethereum Layer 2 Networks Process More Transactions Than Mainnet',
-      summary: 'Combined L2 throughput now exceeds Ethereum mainnet by 5x, with Arbitrum and Base leading in daily active addresses.',
-      url: '#', timestamp: '2026-02-10T12:00:00Z', category: 'crypto', relevanceScore: 6
-    },
-    {
-      id: 'f-011', source: 'TechCrunch', headline: 'Decentralized Identity Startup VaultEdge Joins Y Combinator W26',
-      summary: 'VaultEdge, building privacy-preserving identity verification for fintech, was accepted into Y Combinator Winter 2026 batch.',
-      url: '#', timestamp: '2026-02-10T10:00:00Z', category: 'startups', relevanceScore: 9
-    },
-    {
-      id: 'f-012', source: 'Bloomberg', headline: 'Amazon AWS Launches Next-Gen Graviton5 Chips',
-      summary: 'Amazon Web Services unveiled its latest custom silicon, promising 40% better price-performance for cloud workloads.',
-      url: '#', timestamp: '2026-02-10T08:00:00Z', category: 'earnings', relevanceScore: 7
-    },
-    {
-      id: 'f-013', source: 'CNBC', headline: 'US Consumer Confidence Rises for Third Straight Month',
-      summary: 'The Conference Board Consumer Confidence Index rose to 118.2, with consumers expressing optimism about the labor market.',
-      url: '#', timestamp: '2026-02-09T20:00:00Z', category: 'macro', relevanceScore: 5
-    },
-    {
-      id: 'f-014', source: 'Financial Times', headline: 'Japan Central Bank Hints at Further Rate Normalization',
-      summary: 'BOJ Governor signaled readiness for additional rate increases if wage growth continues, potentially strengthening the yen.',
-      url: '#', timestamp: '2026-02-09T18:00:00Z', category: 'macro', relevanceScore: 6
-    },
-    {
-      id: 'f-015', source: 'CoinDesk', headline: 'Bitcoin Mining Difficulty Reaches New All-Time High',
-      summary: 'Network difficulty adjusted upward 4.2% as hash rate continues to climb post-halving, squeezing less efficient miners.',
-      url: '#', timestamp: '2026-02-09T14:00:00Z', category: 'crypto', relevanceScore: 5
-    },
-    {
-      id: 'f-016', source: 'WSJ', headline: 'Private Markets See Record Dry Powder at $4.2 Trillion',
-      summary: 'PE and VC firms are sitting on unprecedented levels of uninvested capital, with AI and climate tech attracting the most interest.',
-      url: '#', timestamp: '2026-02-09T10:00:00Z', category: 'macro', relevanceScore: 6
-    }
+    { id: 'f-001', source: 'Bloomberg', headline: 'Bitcoin Falls Below $98K as Crypto Market Faces Profit-Taking', summary: 'Major cryptocurrencies declined overnight as traders locked in gains from the recent rally. BTC dropped 3.2% while ETH fell 1.8%.', url: '#', timestamp: '2026-02-11T08:00:00Z', category: 'crypto', relevanceScore: 9 },
+    { id: 'f-002', source: 'Reuters', headline: 'NVIDIA Set to Report Q4 Earnings Amid AI Spending Boom', summary: 'Analysts expect NVIDIA to post record revenue of $38.5B, driven by surging demand for AI training chips from hyperscalers.', url: '#', timestamp: '2026-02-11T07:30:00Z', category: 'earnings', relevanceScore: 9 },
+    { id: 'f-003', source: 'TechCrunch', headline: 'AI Supply Chain Startup NexaFlow Enters Series A Discussions', summary: 'NexaFlow, which uses AI to optimize supply chain logistics, is reportedly in talks with Tier 1 VCs for a $30M Series A round.', url: '#', timestamp: '2026-02-11T06:00:00Z', category: 'startups', relevanceScore: 10 },
+    { id: 'f-004', source: 'CNBC', headline: 'Fed Officials Signal Patience on Rate Cuts Amid Sticky Inflation', summary: 'Federal Reserve governors emphasized data dependency, suggesting rate cuts may be delayed until clear evidence of inflation returning to target.', url: '#', timestamp: '2026-02-11T05:45:00Z', category: 'macro', relevanceScore: 7 },
+    { id: 'f-005', source: 'CoinDesk', headline: 'Solana DeFi TVL Hits All-Time High of $18B', summary: 'Solana ecosystem DeFi protocols reached record total value locked, with Raydium and Marinade leading the charge.', url: '#', timestamp: '2026-02-10T22:00:00Z', category: 'crypto', relevanceScore: 8 },
+    { id: 'f-006', source: 'WSJ', headline: 'Apple Services Revenue Grows 18% as Hardware Sales Stabilize', summary: 'Apple reported strong services growth driven by App Store, Apple TV+, and Apple Pay. iPhone sales showed modest recovery in Greater China.', url: '#', timestamp: '2026-02-10T20:00:00Z', category: 'earnings', relevanceScore: 8 },
+    { id: 'f-007', source: 'Bloomberg', headline: 'Tesla Robotaxi Approval Expected in Austin by Q2 2026', summary: 'Regulatory sources indicate Tesla may receive its first autonomous ride-hailing permit in Austin, Texas, as early as April.', url: '#', timestamp: '2026-02-10T18:30:00Z', category: 'earnings', relevanceScore: 8 },
+    { id: 'f-008', source: 'Financial Times', headline: 'Global Carbon Credit Market Surges Past $1 Trillion', summary: 'The voluntary carbon market has grown 40% year-over-year, with compliance markets driving institutional adoption and price discovery.', url: '#', timestamp: '2026-02-10T16:00:00Z', category: 'startups', relevanceScore: 7 },
+    { id: 'f-009', source: 'Reuters', headline: 'Microsoft Azure Revenue Grows 32% on AI Workload Demand', summary: 'Microsoft cloud segment exceeded expectations with AI-related workloads accounting for over 10% of Azure consumption revenue.', url: '#', timestamp: '2026-02-10T14:00:00Z', category: 'earnings', relevanceScore: 8 },
+    { id: 'f-010', source: 'CoinDesk', headline: 'Ethereum Layer 2 Networks Process More Transactions Than Mainnet', summary: 'Combined L2 throughput now exceeds Ethereum mainnet by 5x, with Arbitrum and Base leading in daily active addresses.', url: '#', timestamp: '2026-02-10T12:00:00Z', category: 'crypto', relevanceScore: 6 },
+    { id: 'f-011', source: 'TechCrunch', headline: 'Decentralized Identity Startup VaultEdge Joins Y Combinator W26', summary: 'VaultEdge, building privacy-preserving identity verification for fintech, was accepted into Y Combinator Winter 2026 batch.', url: '#', timestamp: '2026-02-10T10:00:00Z', category: 'startups', relevanceScore: 9 },
+    { id: 'f-012', source: 'Bloomberg', headline: 'Amazon AWS Launches Next-Gen Graviton5 Chips', summary: 'Amazon Web Services unveiled its latest custom silicon, promising 40% better price-performance for cloud workloads.', url: '#', timestamp: '2026-02-10T08:00:00Z', category: 'earnings', relevanceScore: 7 },
+    { id: 'f-013', source: 'CNBC', headline: 'US Consumer Confidence Rises for Third Straight Month', summary: 'The Conference Board Consumer Confidence Index rose to 118.2, with consumers expressing optimism about the labor market.', url: '#', timestamp: '2026-02-09T20:00:00Z', category: 'macro', relevanceScore: 5 },
+    { id: 'f-014', source: 'Financial Times', headline: 'Japan Central Bank Hints at Further Rate Normalization', summary: 'BOJ Governor signaled readiness for additional rate increases if wage growth continues, potentially strengthening the yen.', url: '#', timestamp: '2026-02-09T18:00:00Z', category: 'macro', relevanceScore: 6 },
+    { id: 'f-015', source: 'CoinDesk', headline: 'Bitcoin Mining Difficulty Reaches New All-Time High', summary: 'Network difficulty adjusted upward 4.2% as hash rate continues to climb post-halving, squeezing less efficient miners.', url: '#', timestamp: '2026-02-09T14:00:00Z', category: 'crypto', relevanceScore: 5 },
+    { id: 'f-016', source: 'WSJ', headline: 'Private Markets See Record Dry Powder at $4.2 Trillion', summary: 'PE and VC firms are sitting on unprecedented levels of uninvested capital, with AI and climate tech attracting the most interest.', url: '#', timestamp: '2026-02-09T10:00:00Z', category: 'macro', relevanceScore: 6 }
   ]
 };
 
@@ -253,11 +402,129 @@ const taxSummary = {
   notes: 'Consider harvesting losses in volatile crypto positions before year-end. Long-term capital gains rate applies to holdings >1 year.'
 };
 
+// --- Profile ---
+const profile = {
+  personal: {
+    name: 'Alex Chen',
+    occupation: 'Software Engineer',
+    company: 'Tech Corp',
+    yearsOfExperience: 8,
+    title: 'Senior Engineer'
+  },
+  location: {
+    country: 'US',
+    state: 'TX',
+    city: 'Austin',
+    zipCode: '78701',
+    fullAddress: '1200 S Lamar Blvd, Austin, TX 78704'
+  },
+  tax: {
+    filingStatus: 'single',
+    dependents: 0,
+    federalTaxBracket: 0.24,
+    stateTaxRate: 0,
+    longTermCapitalGainsRate: 0.15,
+    shortTermCapitalGainsRate: 0.24,
+    niit: 0.038,
+    notes: 'Texas resident — no state income tax. Federal bracket 24% (single, ~$100K–$191K).'
+  },
+  accounts: [
+    { id: 'acct-chase-checking', name: 'Chase Checking', type: 'checking', institution: 'Chase' },
+    { id: 'acct-schwab-brokerage', name: 'Schwab Brokerage', type: 'taxable', institution: 'Charles Schwab' },
+    { id: 'acct-fidelity-roth', name: 'Fidelity Roth IRA', type: 'roth-ira', institution: 'Fidelity' },
+    { id: 'acct-vanguard-401k', name: 'Company 401(k)', type: 'traditional-401k', institution: 'Vanguard' },
+    { id: 'acct-fidelity-hsa', name: 'Health Savings Account', type: 'hsa', institution: 'Fidelity' },
+    { id: 'acct-marcus-savings', name: 'Marcus HYSA', type: 'savings', institution: 'Goldman Sachs' },
+    { id: 'acct-coinbase', name: 'Coinbase', type: 'taxable', institution: 'Coinbase' }
+  ],
+  lastUpdated: '2026-02-11T00:00:00Z'
+};
+
+// --- Categories config ---
+const categoriesConfig = {
+  assetClasses: {
+    liquid: { label: 'Liquid Assets', categories: ['cash', 'savings'] },
+    investment: { label: 'Investment Assets', categories: ['stocks', 'crypto', 'startups'] },
+    fixed: { label: 'Fixed Assets', categories: ['real-estate'] },
+    personal: { label: 'Personal Assets', categories: ['vehicles', 'jewelry', 'art'] }
+  },
+  liabilityClasses: {
+    'short-term': { label: 'Short-Term Liabilities', categories: ['credit-cards'] },
+    'long-term': { label: 'Long-Term Liabilities', categories: ['mortgage', 'auto-loan', 'student-loan'] }
+  },
+  accountTypes: {
+    'taxable': { label: 'Taxable', taxTreatment: 'taxable', description: 'Standard brokerage account — gains taxed when realized' },
+    'traditional-ira': { label: 'Traditional IRA', taxTreatment: 'tax-deferred', description: 'Tax-deferred — contributions may be deductible, withdrawals taxed as income' },
+    'roth-ira': { label: 'Roth IRA', taxTreatment: 'tax-exempt', description: 'Tax-exempt growth — qualified withdrawals are tax-free' },
+    'traditional-401k': { label: '401(k)', taxTreatment: 'tax-deferred', description: 'Employer-sponsored tax-deferred retirement account' },
+    'roth-401k': { label: 'Roth 401(k)', taxTreatment: 'tax-exempt', description: 'After-tax contributions, tax-free qualified withdrawals' },
+    'hsa': { label: 'HSA', taxTreatment: 'tax-advantaged', description: 'Triple tax-advantaged — deductible contributions, tax-free growth and medical withdrawals' },
+    '529': { label: '529 Plan', taxTreatment: 'tax-advantaged', description: 'Tax-free growth for qualified education expenses' },
+    'direct': { label: 'Direct', taxTreatment: 'varies', description: 'Directly held asset — tax treatment varies by type' },
+    'checking': { label: 'Checking', taxTreatment: 'taxable', description: 'Bank checking account — interest taxable' },
+    'savings': { label: 'Savings', taxTreatment: 'taxable', description: 'Savings account — interest taxable as ordinary income' }
+  },
+  categoryMeta: {
+    cash: { label: 'Cash & Checking', color: '#8a9178' },
+    savings: { label: 'Savings & CDs', color: '#7d9470' },
+    stocks: { label: 'Stocks', color: '#5b7e4a' },
+    crypto: { label: 'Crypto', color: '#7d8471' },
+    startups: { label: 'Startups', color: '#a4ac86' },
+    'real-estate': { label: 'Real Estate', color: '#6b7d5e' },
+    vehicles: { label: 'Vehicles', color: '#6e8b5e' },
+    jewelry: { label: 'Jewelry', color: '#9a8c6e' },
+    art: { label: 'Art & Collectibles', color: '#8b7d6b' },
+    'credit-cards': { label: 'Credit Cards', color: '#b5443b' },
+    mortgage: { label: 'Mortgage', color: '#8b5e3c' },
+    'auto-loan': { label: 'Auto Loan', color: '#a0734f' },
+    'student-loan': { label: 'Student Loan', color: '#7d6b5e' },
+    'taxable': { label: 'Taxable', color: '#b5443b' },
+    'traditional-ira': { label: 'Traditional IRA', color: '#a0734f' },
+    'roth-ira': { label: 'Roth IRA', color: '#3d7a3d' },
+    'traditional-401k': { label: '401(k)', color: '#a0734f' },
+    'roth-401k': { label: 'Roth 401(k)', color: '#3d7a3d' },
+    'hsa': { label: 'HSA', color: '#2d4a2b' },
+    '529': { label: '529 Plan', color: '#6b7d5e' },
+    'direct': { label: 'Direct', color: '#7d8471' },
+    'checking': { label: 'Checking', color: '#8a9178' }
+  }
+};
+
 // --- Write all ---
 console.log('\nSeeding Capis data...\n');
-write('portfolio.json', portfolio);
-write('signals.json', signals);
-write('feed.json', feed);
-write('watchlist.json', watchlist);
-write('tax-summary.json', taxSummary);
-console.log('\nDone. All mock data written to data/\n');
+
+// Categories config
+writeJSON('categories.json', categoriesConfig);
+
+// Excel files — Asset holdings
+writeExcel('stocks.xlsx', stocks);
+writeExcel('crypto.xlsx', crypto);
+writeExcel('startups.xlsx', startups);
+writeExcel('real-estate.xlsx', realEstate);
+writeExcel('cash.xlsx', cash);
+writeExcel('savings.xlsx', savings);
+writeExcel('vehicles.xlsx', vehicles);
+writeExcel('jewelry.xlsx', jewelry);
+writeExcel('art.xlsx', art);
+
+// Excel files — Liabilities
+writeExcelLiability('credit-cards.xlsx', creditCards);
+writeExcelLiability('mortgage.xlsx', mortgage);
+writeExcelLiability('auto-loan.xlsx', autoLoan);
+writeExcelLiability('student-loan.xlsx', studentLoan);
+
+// JSON files (non-portfolio data)
+writeJSON('signals.json', signals);
+writeJSON('feed.json', feed);
+writeJSON('watchlist.json', watchlist);
+writeJSON('tax-summary.json', taxSummary);
+writeJSON('profile.json', profile);
+
+// Remove old portfolio.json if it exists
+const oldPortfolio = path.join(DATA_DIR, 'portfolio.json');
+if (fs.existsSync(oldPortfolio)) {
+  fs.unlinkSync(oldPortfolio);
+  console.log('  removed data/portfolio.json (migrated to Excel)');
+}
+
+console.log('\nDone. 13 Excel files + categories.json + profile.json + other JSON data seeded.\n');

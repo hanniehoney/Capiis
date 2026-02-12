@@ -34,10 +34,6 @@ export function getWatchlist() { return fetchJSON('/watchlist'); }
 export function getStats() { return fetchJSON('/stats'); }
 export function dismissSignal(id) { return patchJSON(`/signals/${id}`, { dismissed: true }); }
 export function addSignal(signal) { return postJSON('/signals', signal); }
-export function addHolding(holding) { return postJSON('/portfolio', holding); }
-export function deleteHolding(id) {
-  return fetch(`${API_BASE}/portfolio/${id}`, { method: 'DELETE' }).then(r => {
-    if (!r.ok) throw new Error(`API error: ${r.status}`);
-    return r.json();
-  });
-}
+export function getCategories() { return fetchJSON('/portfolio/categories'); }
+export function getCategoryConfig() { return fetchJSON('/categories'); }
+export function getProfile() { return fetchJSON('/profile'); }

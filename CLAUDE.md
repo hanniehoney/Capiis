@@ -7,27 +7,59 @@ A wealth & asset management dashboard built on the Claude Code ecosystem.
 ## Quick Start
 
 - `npm start` -- starts Express server on http://localhost:3333
-- `npm run seed` -- resets all data files to mock defaults
+- `npm run seed` -- resets all data files to mock defaults (generates Excel + JSON)
 - `/capis` -- slash command to launch (starts server + opens browser)
 - `/capis stop` -- stops the server
 - `/capis reset` -- resets mock data
 
 ## Project Structure
 
-- `server.js` -- Express server (port 3333), serves static files + JSON API
+- `server.js` -- Express server (port 3333), serves static files + read-only JSON API
+- `lib/excel.js` -- Excel reader module (xlsx), converts .xlsx to JSON for the API
 - `public/` -- Frontend (vanilla HTML/CSS/JS, no build step, ES modules)
-- `data/` -- Local JSON storage (portfolio, signals, feed, watchlist, tax)
+- `data/` -- Excel files (portfolio) + JSON files (signals, feed, watchlist, tax)
 - `skills/capis-portfolio/` -- Portfolio intelligence skill
-- `scripts/seed-data.js` -- Mock data seeder
+- `scripts/seed-data.js` -- Mock data seeder (generates Excel + JSON)
+
+## Data Architecture (Hybrid)
+
+- **Portfolio data** lives in `data/*.xlsx` -- one Excel file per asset category (stocks.xlsx, crypto.xlsx, startups.xlsx, etc.)
+- **Other data** (signals, feed, watchlist, tax) remains in `data/*.json`
+- **Server** reads Excel files (via `lib/excel.js`) and serves as JSON API -- read-only for portfolio
+- **Claude Code** handles all portfolio writes using the xlsx skill (add, edit, delete holdings)
+- **Dashboard** is pure visualization -- no CRUD operations
+- Editing an Excel file in Numbers/Excel triggers auto-refresh via SSE file watcher
+
+## Data Files
+
+| File | Format | Description |
+|------|--------|-------------|
+| `data/stocks.xlsx` | Excel | Stock holdings |
+| `data/crypto.xlsx` | Excel | Crypto holdings |
+| `data/startups.xlsx` | Excel | Startup investments |
+| `data/real-estate.xlsx` | Excel | Real estate (template) |
+| `data/signals.json` | JSON | AI-generated signals |
+| `data/feed.json` | JSON | News feed |
+| `data/watchlist.json` | JSON | Watched assets |
+| `data/tax-summary.json` | JSON | Tax planning data |
+| `data/profile.json` | JSON | User profile (location, tax, accounts) |
+
+Drop any new `.xlsx` file into `data/` to add a new asset category automatically.
+
+## Excel Schema
+
+See `skills/capis-portfolio/references/asset-schema.md` for the full Excel column spec.
+
+Required columns: `id`, `name`, `ticker`, `quantity`, `avgCost`, `currentPrice`, `change24h`, `notes`
+
+Optional columns: `accountType`, `accountName`, `costBasis`, `purchaseDate`, `Day 1` through `Day 7` (sparkline data)
 
 ## API Endpoints
 
 | Method | Path | Description |
 |--------|------|-------------|
-| GET | `/api/portfolio` | All holdings |
-| POST | `/api/portfolio` | Add a new holding |
-| PUT | `/api/portfolio/:id` | Update a holding |
-| DELETE | `/api/portfolio/:id` | Remove a holding |
+| GET | `/api/portfolio` | All holdings (from Excel files) |
+| GET | `/api/portfolio/categories` | List detected asset categories |
 | GET | `/api/signals` | All AI signals |
 | POST | `/api/signals` | Add a new signal |
 | PATCH | `/api/signals/:id` | Update signal (e.g., dismiss) |
@@ -35,15 +67,12 @@ A wealth & asset management dashboard built on the Claude Code ecosystem.
 | GET | `/api/tax-summary` | Tax planning data |
 | GET | `/api/watchlist` | Watched assets |
 | GET | `/api/stats` | Computed portfolio statistics |
+| GET | `/api/profile` | User profile (location, tax, accounts) |
 | GET | `/api/events` | SSE stream for real-time browser sync |
 
 ## Real-Time Sync
 
-Data mutations (POST, PUT, DELETE, PATCH) broadcast SSE events to connected browsers via `/api/events`. The frontend subscribes on load and re-renders the active view automatically. Use the API endpoints (not direct file edits) to trigger live updates.
-
-## Data Files
-
-All data lives in `data/` as JSON. When reading or writing portfolio data, always use the exact schema defined in `skills/capis-portfolio/references/asset-schema.md`.
+The server watches `data/*.xlsx` for changes (500ms debounce) and broadcasts SSE events to connected browsers. Editing an Excel file in Numbers/Excel will auto-refresh the dashboard. Signals/feed mutations also broadcast SSE events.
 
 ## Theme: Forest Canopy
 
@@ -79,8 +108,11 @@ Light ivory + forest green earth tones. All theme tokens live in `:root` CSS var
 | Crypto | `#7d8471` |
 | Startups | `#a4ac86` |
 | Cash | `#8a9178` |
+| Real Estate | `#6b7d5e` |
 | Sparkline up | `#3d7a3d` |
 | Sparkline down | `#b5443b` |
+
+New categories get auto-assigned fallback colors from the forest palette.
 
 **Fonts** (loaded from Google Fonts in `public/index.html`)
 
@@ -92,7 +124,8 @@ Light ivory + forest green earth tones. All theme tokens live in `:root` CSS var
 
 ## Key Conventions
 
-- No external APIs or databases -- all data is local JSON files
+- No external APIs or databases -- portfolio in Excel, other data in JSON
+- Portfolio CRUD is done by Claude Code via xlsx skill, not via API
 - Frontend has no build step -- edit files directly in `public/`
 - Port 3333 is the standard port
 - Frontend uses ES modules (import/export)

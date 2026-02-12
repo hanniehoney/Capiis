@@ -1,0 +1,191 @@
+{
+  "assetClasses": {
+    "liquid": {
+      "label": "Liquid Assets",
+      "categories": [
+        "cash",
+        "savings"
+      ]
+    },
+    "investment": {
+      "label": "Investment Assets",
+      "categories": [
+        "stocks",
+        "crypto",
+        "startups"
+      ]
+    },
+    "fixed": {
+      "label": "Fixed Assets",
+      "categories": [
+        "real-estate"
+      ]
+    },
+    "personal": {
+      "label": "Personal Assets",
+      "categories": [
+        "vehicles",
+        "jewelry",
+        "art"
+      ]
+    }
+  },
+  "liabilityClasses": {
+    "short-term": {
+      "label": "Short-Term Liabilities",
+      "categories": [
+        "credit-cards"
+      ]
+    },
+    "long-term": {
+      "label": "Long-Term Liabilities",
+      "categories": [
+        "mortgage",
+        "auto-loan",
+        "student-loan"
+      ]
+    }
+  },
+  "accountTypes": {
+    "529": {
+      "label": "529 Plan",
+      "taxTreatment": "tax-advantaged",
+      "description": "Tax-free growth for qualified education expenses"
+    },
+    "taxable": {
+      "label": "Taxable",
+      "taxTreatment": "taxable",
+      "description": "Standard brokerage account — gains taxed when realized"
+    },
+    "traditional-ira": {
+      "label": "Traditional IRA",
+      "taxTreatment": "tax-deferred",
+      "description": "Tax-deferred — contributions may be deductible, withdrawals taxed as income"
+    },
+    "roth-ira": {
+      "label": "Roth IRA",
+      "taxTreatment": "tax-exempt",
+      "description": "Tax-exempt growth — qualified withdrawals are tax-free"
+    },
+    "traditional-401k": {
+      "label": "401(k)",
+      "taxTreatment": "tax-deferred",
+      "description": "Employer-sponsored tax-deferred retirement account"
+    },
+    "roth-401k": {
+      "label": "Roth 401(k)",
+      "taxTreatment": "tax-exempt",
+      "description": "After-tax contributions, tax-free qualified withdrawals"
+    },
+    "hsa": {
+      "label": "HSA",
+      "taxTreatment": "tax-advantaged",
+      "description": "Triple tax-advantaged — deductible contributions, tax-free growth and medical withdrawals"
+    },
+    "direct": {
+      "label": "Direct",
+      "taxTreatment": "varies",
+      "description": "Directly held asset — tax treatment varies by type"
+    },
+    "checking": {
+      "label": "Checking",
+      "taxTreatment": "taxable",
+      "description": "Bank checking account — interest taxable"
+    },
+    "savings": {
+      "label": "Savings",
+      "taxTreatment": "taxable",
+      "description": "Savings account — interest taxable as ordinary income"
+    }
+  },
+  "categoryMeta": {
+    "529": {
+      "label": "529 Plan",
+      "color": "#6b7d5e"
+    },
+    "cash": {
+      "label": "Cash & Checking",
+      "color": "#8a9178"
+    },
+    "savings": {
+      "label": "Savings & CDs",
+      "color": "#7d9470"
+    },
+    "stocks": {
+      "label": "Stocks",
+      "color": "#5b7e4a"
+    },
+    "crypto": {
+      "label": "Crypto",
+      "color": "#7d8471"
+    },
+    "startups": {
+      "label": "Startups",
+      "color": "#a4ac86"
+    },
+    "real-estate": {
+      "label": "Real Estate",
+      "color": "#6b7d5e"
+    },
+    "vehicles": {
+      "label": "Vehicles",
+      "color": "#6e8b5e"
+    },
+    "jewelry": {
+      "label": "Jewelry",
+      "color": "#9a8c6e"
+    },
+    "art": {
+      "label": "Art & Collectibles",
+      "color": "#8b7d6b"
+    },
+    "credit-cards": {
+      "label": "Credit Cards",
+      "color": "#b5443b"
+    },
+    "mortgage": {
+      "label": "Mortgage",
+      "color": "#8b5e3c"
+    },
+    "auto-loan": {
+      "label": "Auto Loan",
+      "color": "#a0734f"
+    },
+    "student-loan": {
+      "label": "Student Loan",
+      "color": "#7d6b5e"
+    },
+    "taxable": {
+      "label": "Taxable",
+      "color": "#b5443b"
+    },
+    "traditional-ira": {
+      "label": "Traditional IRA",
+      "color": "#a0734f"
+    },
+    "roth-ira": {
+      "label": "Roth IRA",
+      "color": "#3d7a3d"
+    },
+    "traditional-401k": {
+      "label": "401(k)",
+      "color": "#a0734f"
+    },
+    "roth-401k": {
+      "label": "Roth 401(k)",
+      "color": "#3d7a3d"
+    },
+    "hsa": {
+      "label": "HSA",
+      "color": "#2d4a2b"
+    },
+    "direct": {
+      "label": "Direct",
+      "color": "#7d8471"
+    },
+    "checking": {
+      "label": "Checking",
+      "color": "#8a9178"
+    }
+  }
+}

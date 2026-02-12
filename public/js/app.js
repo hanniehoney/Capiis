@@ -1,27 +1,29 @@
 import { renderSidebar, updateActiveNav } from './components/sidebar.js';
-import { renderHeader } from './components/header.js';
 import { renderPortfolio } from './views/portfolio.js';
 import { renderFeed } from './views/feed.js';
 import { renderLegal } from './views/legal.js';
+import { renderProfile } from './views/profile.js';
 import { subscribe } from './utils/sse.js';
 
 const views = {
   portfolio: renderPortfolio,
   feed: renderFeed,
-  legal: renderLegal
+  legal: renderLegal,
+  profile: renderProfile
 };
 
 const resourceToViews = {
   portfolio: ['portfolio', 'legal'],
-  signals: ['feed']
+  signals: ['feed'],
+  profile: ['profile', 'legal'],
+  tax: ['legal']
 };
 
 async function init() {
   const sidebar = document.getElementById('sidebar');
-  const header = document.getElementById('header');
 
   await renderSidebar(sidebar);
-  renderHeader(header);
+  bindSidebarToggle();
   route();
 
   subscribe((resource) => {
@@ -31,6 +33,19 @@ async function init() {
       views[currentView](document.getElementById('main-content'));
     }
     renderSidebar(document.getElementById('sidebar'));
+  });
+}
+
+function bindSidebarToggle() {
+  const toggle = document.getElementById('sidebar-toggle');
+  if (!toggle) {
+    return;
+  }
+  toggle.addEventListener('click', () => {
+    const sidebar = document.getElementById('sidebar');
+    if (sidebar) {
+      sidebar.classList.toggle('open');
+    }
   });
 }
 
@@ -48,7 +63,6 @@ function route() {
   }
 
   updateActiveNav();
-  renderHeader(document.getElementById('header'));
 }
 
 window.addEventListener('hashchange', route);

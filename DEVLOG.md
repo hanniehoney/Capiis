@@ -56,6 +56,116 @@ Hit a snag right away: API credits weren't showing up for everyone. Some partici
 
 ---
 
+## 2026-02-11 (Day 2)
+
+Focused on restructuring the project's core architecture around real-world portfolio workflows and local-first deployment.
+
+### What I did
+- Refactored the entire backend data architecture.
+- Reworked the overall wealth and asset management structure.
+- Designed the system to use Excel files as the data layer instead of introducing a separate database.
+
+### What's next
+- [ ] ~~Different chart types per asset category (stocks vs crypto vs startups shouldn't look the same)~~
+- [ ] ~~Rethink how assets are categorized, added, and removed~~
+- [ ] Automate the intelligence feed with real sources (kill the mock data)
+- [ ] Allocation advisor agent — suggest rebalancing actions
+- [ ] Tax planning agent
+
+### Blockers
+-
+
+### Time spent
+| Task | Duration |
+|------|----------|
+| | |
+
+### Thinking out loud
+
+Database vs. Excel file decision logic: I chose Excel files because most people in finance and investing still manage assets with spreadsheets. If users already keep their portfolio in spreadsheets, there is no strong reason to force a format migration, especially from an extensibility perspective. Also, personal wealth data is highly sensitive. Since this project is open source and intended for local deployment, there is less need to introduce an additional database service.
+
+### Supplement (Moved from README on 2026-02-12)
+
+#### Runtime architecture snapshot
+
+```
+Claude Code
+  ├─ /capis slash command (.claude/commands/capis.md)
+  └─ capis-portfolio skill (skills/capis-portfolio/)
+          │
+          ▼
+Express server (server.js, :3333)
+  ├─ serves SPA (public/)
+  ├─ REST API (/api/*)
+  ├─ SSE stream (/api/events)
+  └─ fs.watch(data/) -> broadcasts: portfolio, profile, tax, signals
+          │
+          ▼
+Data layer (local files)
+  ├─ Excel: assets + liabilities (data/*.xlsx)
+  ├─ categories config: data/categories.json
+  └─ JSON: signals/feed/watchlist/tax-summary/profile
+```
+
+#### Project structure snapshot
+
+```text
+Capis/
+├── .claude/
+│   └── commands/
+│       └── capis.md
+├── data/
+│   ├── cash.xlsx
+│   ├── savings.xlsx
+│   ├── stocks.xlsx
+│   ├── crypto.xlsx
+│   ├── startups.xlsx
+│   ├── real-estate.xlsx
+│   ├── vehicles.xlsx
+│   ├── jewelry.xlsx
+│   ├── art.xlsx
+│   ├── credit-cards.xlsx
+│   ├── mortgage.xlsx
+│   ├── auto-loan.xlsx
+│   ├── student-loan.xlsx
+│   ├── categories.json
+│   ├── signals.json
+│   ├── feed.json
+│   ├── watchlist.json
+│   ├── tax-summary.json
+│   └── profile.json
+├── lib/
+│   └── excel.js
+├── public/
+│   ├── index.html
+│   ├── css/styles.css
+│   └── js/
+│       ├── app.js
+│       ├── views/
+│       │   ├── portfolio.js
+│       │   ├── feed.js
+│       │   ├── legal.js
+│       │   └── profile.js
+│       ├── components/
+│       │   ├── sidebar.js
+│       │   ├── header.js
+│       │   └── charts.js
+│       └── utils/
+│           ├── api.js
+│           └── sse.js
+├── scripts/
+│   └── seed-data.js
+├── skills/
+│   └── capis-portfolio/
+│       ├── SKILL.md
+│       └── references/asset-schema.md
+├── server.js
+├── README.md
+└── DEVLOG.md
+```
+
+---
+
 <!-- Template for new entries:
 
 ## YYYY-MM-DD (Day N)

@@ -1,23 +1,16 @@
-import { getStats, getSignals } from '../utils/api.js';
+import { getSignals } from '../utils/api.js';
+
+let timeIntervalId = null;
 
 export async function renderSidebar(container) {
-  let stats = null;
   let signalCount = 0;
 
   try {
-    const [statsData, signalsData] = await Promise.all([getStats(), getSignals()]);
-    stats = statsData;
+    const signalsData = await getSignals();
     signalCount = signalsData.signals.filter(s => !s.dismissed).length;
   } catch (e) {
     console.warn('Failed to load sidebar data:', e);
   }
-
-  const totalValue = stats ? formatCurrency(stats.totalValue) : '--';
-  const changeValue = stats ? stats.change24h : 0;
-  const changePct = stats ? stats.change24hPct : 0;
-  const changeClass = changeValue >= 0 ? 'positive' : 'negative';
-  const changeSign = changeValue >= 0 ? '+' : '';
-  const changeArrow = changeValue >= 0 ? '\u25B2' : '\u25BC';
 
   container.innerHTML = `
     <div class="sidebar-brand">
@@ -33,32 +26,33 @@ export async function renderSidebar(container) {
     </div>
 
     <nav class="sidebar-nav">
-      <div class="nav-section-label">Dashboard</div>
       <a href="#portfolio" class="nav-item" data-view="portfolio">
         <span class="nav-icon">\u25C8</span>
-        Portfolio
+        Wealth
       </a>
       <a href="#feed" class="nav-item" data-view="feed">
         <span class="nav-icon">\u25C9</span>
-        Intel Feed
+        Feed
         ${signalCount > 0 ? `<span class="nav-badge">${signalCount}</span>` : ''}
       </a>
       <a href="#legal" class="nav-item" data-view="legal">
         <span class="nav-icon">\u25CA</span>
-        Tax & Legal
+        Tax
+      </a>
+      <a href="#profile" class="nav-item" data-view="profile">
+        <span class="nav-icon">\u2699</span>
+        Profile
       </a>
     </nav>
 
-    <div class="sidebar-summary">
-      <div class="summary-label">Portfolio Value</div>
-      <div class="summary-value">${totalValue}</div>
-      <div class="summary-change ${changeClass}">
-        ${changeArrow} ${changeSign}$${Math.abs(changeValue).toLocaleString('en-US', { maximumFractionDigits: 0 })} (${changeSign}${changePct.toFixed(2)}%) 24h
-      </div>
+    <div class="sidebar-footer">
+      <div class="sidebar-timestamp-label">Local Time</div>
+      <div class="sidebar-timestamp" id="sidebar-timestamp">--</div>
     </div>
   `;
 
   updateActiveNav();
+  ensureTimeTicker();
 }
 
 export function updateActiveNav() {
@@ -68,9 +62,21 @@ export function updateActiveNav() {
   });
 }
 
-function formatCurrency(n) {
-  if (n >= 1_000_000) {
-    return '$' + (n / 1_000_000).toFixed(2) + 'M';
+function ensureTimeTicker() {
+  updateSidebarTimestamp();
+  if (timeIntervalId) {
+    return;
   }
-  return '$' + n.toLocaleString('en-US', { maximumFractionDigits: 0 });
+  timeIntervalId = setInterval(updateSidebarTimestamp, 60_000);
+}
+
+function updateSidebarTimestamp() {
+  const el = document.getElementById('sidebar-timestamp');
+  if (!el) {
+    return;
+  }
+  const now = new Date();
+  const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+  const dateStr = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+  el.textContent = `${dateStr} ${timeStr}`;
 }

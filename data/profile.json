@@ -1,0 +1,71 @@
+{
+  "personal": {
+    "name": "Alex Chen",
+    "occupation": "Software Engineer",
+    "company": "Tech Corp",
+    "yearsOfExperience": 8,
+    "title": "Senior Engineer"
+  },
+  "location": {
+    "country": "US",
+    "state": "TX",
+    "city": "Austin",
+    "zipCode": "78701",
+    "fullAddress": "1200 S Lamar Blvd, Austin, TX 78704"
+  },
+  "tax": {
+    "filingStatus": "single",
+    "dependents": 0,
+    "federalTaxBracket": 0.24,
+    "stateTaxRate": 0,
+    "longTermCapitalGainsRate": 0.15,
+    "shortTermCapitalGainsRate": 0.24,
+    "niit": 0.038,
+    "notes": "Texas resident — no state income tax. Federal bracket 24% (single, ~$100K–$191K)."
+  },
+  "accounts": [
+    {
+      "id": "acct-chase-checking",
+      "name": "Chase Checking",
+      "type": "checking",
+      "institution": "Chase"
+    },
+    {
+      "id": "acct-schwab-brokerage",
+      "name": "Schwab Brokerage",
+      "type": "taxable",
+      "institution": "Charles Schwab"
+    },
+    {
+      "id": "acct-fidelity-roth",
+      "name": "Fidelity Roth IRA",
+      "type": "roth-ira",
+      "institution": "Fidelity"
+    },
+    {
+      "id": "acct-vanguard-401k",
+      "name": "Company 401(k)",
+      "type": "traditional-401k",
+      "institution": "Vanguard"
+    },
+    {
+      "id": "acct-fidelity-hsa",
+      "name": "Health Savings Account",
+      "type": "hsa",
+      "institution": "Fidelity"
+    },
+    {
+      "id": "acct-marcus-savings",
+      "name": "Marcus HYSA",
+      "type": "savings",
+      "institution": "Goldman Sachs"
+    },
+    {
+      "id": "acct-coinbase",
+      "name": "Coinbase",
+      "type": "taxable",
+      "institution": "Coinbase"
+    }
+  ],
+  "lastUpdated": "2026-02-11T00:00:00Z"
+}

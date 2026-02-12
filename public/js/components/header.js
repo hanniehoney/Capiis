@@ -1,5 +1,5 @@
 const VIEW_TITLES = {
-  portfolio: 'Portfolio & Assets',
+  portfolio: 'Wealth',
   feed: 'Intelligence Feed',
   legal: 'Tax & Legal Planning'
 };
