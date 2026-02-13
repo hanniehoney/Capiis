@@ -22,18 +22,26 @@ npm start
 Or from Claude Code:
 
 ```text
-/capis          # Launch dashboard
-/capis stop     # Stop server
-/capis reset    # Re-seed local data
-/capis status   # Check server status
+/capis                  # Launch dashboard
+/capis stop             # Stop server
+/capis reset            # Re-seed template data
+/capis status           # Check server status
+
+/capis-data             # Data management menu
+/capis-data clear       # Wipe all data (keeps schema + empty xlsx shells)
+/capis-data template    # Import demo data (Bay Area tech family)
+/capis-data setup       # Guided step-by-step data entry
 ```
 
 ## Runtime Architecture Snapshot
 
 ```text
 Claude Code
-  ├─ /capis slash command (.claude/commands/capis.md)
-  └─ capis-portfolio skill (skills/capis-portfolio/)
+  ├─ /capis command (.claude/commands/capis.md)        # launch / stop / status
+  ├─ /capis-data command (.claude/commands/capis-data.md)  # clear / template / setup
+  ├─ capis-portfolio skill (skills/capis-portfolio/)    # portfolio analysis & management
+  ├─ capis-onboarding skill (skills/capis-onboarding/)  # guided data entry (5-phase)
+  └─ capis-tax agent (.claude/agents/capis-tax.md)      # tax analysis
           │
           ▼
 Express server (server.js, :3333)
@@ -44,9 +52,9 @@ Express server (server.js, :3333)
           │
           ▼
 Data layer (local files)
-  ├─ Excel: assets + liabilities (data/*.xlsx)
-  ├─ categories config: data/categories.json
-  └─ JSON: signals/feed/watchlist/tax-summary/profile
+  ├─ Excel: 10 asset categories + 4 liability categories (data/*.xlsx)
+  ├─ categories config: data/categories.json (schema)
+  └─ JSON: profile, tax-summary, signals, feed, watchlist
 ```
 
 ## Project Structure Snapshot
@@ -54,31 +62,35 @@ Data layer (local files)
 ```text
 Capis/
 ├── .claude/
+│   ├── agents/
+│   │   └── capis-tax.md              # Tax analysis agent
 │   └── commands/
-│       └── capis.md
-├── data/
-│   ├── cash.xlsx
-│   ├── savings.xlsx
-│   ├── stocks.xlsx
-│   ├── crypto.xlsx
-│   ├── startups.xlsx
-│   ├── real-estate.xlsx
-│   ├── vehicles.xlsx
-│   ├── jewelry.xlsx
-│   ├── art.xlsx
-│   ├── credit-cards.xlsx
-│   ├── mortgage.xlsx
-│   ├── auto-loan.xlsx
-│   ├── student-loan.xlsx
-│   ├── categories.json
-│   ├── signals.json
-│   ├── feed.json
-│   ├── watchlist.json
-│   ├── tax-summary.json
-│   └── profile.json
+│       ├── capis.md                   # /capis — launch dashboard
+│       └── capis-data.md             # /capis-data — data management
+├── data/                              # All user data (Excel + JSON)
+│   ├── stocks.xlsx                    # Asset: stocks, ETFs
+│   ├── crypto.xlsx                    # Asset: cryptocurrency
+│   ├── angel-investment.xlsx          # Asset: startup investments
+│   ├── employee-equity.xlsx           # Asset: RSUs, ISOs, ESPP
+│   ├── real-estate.xlsx               # Asset: real estate, REITs
+│   ├── cash.xlsx                      # Asset: cash & checking
+│   ├── savings.xlsx                   # Asset: savings, CDs, 529
+│   ├── vehicles.xlsx                  # Asset: vehicles
+│   ├── jewelry.xlsx                   # Asset: jewelry & watches
+│   ├── art.xlsx                       # Asset: art & collectibles
+│   ├── credit-cards.xlsx              # Liability: credit cards
+│   ├── mortgage.xlsx                  # Liability: mortgage
+│   ├── auto-loan.xlsx                 # Liability: auto loans
+│   ├── student-loan.xlsx              # Liability: student loans
+│   ├── categories.json                # Schema: asset/liability classes, account types
+│   ├── profile.json                   # User profile (personal, family, tax, accounts)
+│   ├── tax-summary.json               # Tax data & taxable events
+│   ├── signals.json                   # AI-generated alerts
+│   ├── feed.json                      # News & market intelligence
+│   └── watchlist.json                 # Watched assets
 ├── lib/
-│   └── excel.js
-├── public/
+│   └── excel.js                       # Excel reader (xlsx → JSON for API)
+├── public/                            # Frontend (vanilla HTML/CSS/JS, no build step)
 │   ├── index.html
 │   ├── css/styles.css
 │   └── js/
@@ -96,12 +108,19 @@ Capis/
 │           ├── api.js
 │           └── sse.js
 ├── scripts/
-│   └── seed-data.js
+│   ├── seed-data.js                   # Template data seeder (Bay Area family)
+│   └── clear-data.js                  # Wipe data, keep schema + empty xlsx shells
 ├── skills/
-│   └── capis-portfolio/
+│   ├── capis-portfolio/               # Portfolio analysis & management skill
+│   │   ├── SKILL.md
+│   │   └── references/asset-schema.md
+│   ├── capis-onboarding/              # Guided data entry skill (5-phase)
+│   │   ├── SKILL.md
+│   │   └── references/data-schema.md
+│   └── tax-professional/              # US tax knowledge base skill
 │       ├── SKILL.md
-│       └── references/asset-schema.md
-├── server.js
+│       └── references/common-writeoffs.md
+├── server.js                          # Express server (port 3333)
 ├── README.md
 └── DEVLOG.md
 ```
@@ -116,22 +135,25 @@ Capis uses a hybrid local data model:
 
 ### Portfolio Files (Excel)
 
-Asset categories:
-- `cash.xlsx`
-- `savings.xlsx`
+Asset categories (10):
 - `stocks.xlsx`
 - `crypto.xlsx`
-- `startups.xlsx`
+- `angel-investment.xlsx`
+- `employee-equity.xlsx`
 - `real-estate.xlsx`
+- `cash.xlsx`
+- `savings.xlsx`
 - `vehicles.xlsx`
 - `jewelry.xlsx`
 - `art.xlsx`
 
-Liability categories:
+Liability categories (4):
 - `credit-cards.xlsx`
 - `mortgage.xlsx`
 - `auto-loan.xlsx`
 - `student-loan.xlsx`
+
+Drop any new `.xlsx` file into `data/` to add a new category automatically.
 
 ### Non-Portfolio Files (JSON)
 
@@ -152,27 +174,30 @@ Liability categories:
 | Storage | Excel + JSON (local files) |
 | Excel I/O | `xlsx` (SheetJS) |
 | Realtime | SSE (`/api/events`) + `fs.watch` |
-| AI Integration | Claude Code slash command + local skill |
+| AI Integration | Claude Code slash commands + skills + agents |
 
 ## Claude Code Integration
 
-### Slash Command
+### Slash Commands
 
-`/capis` is defined in `.claude/commands/capis.md` and supports:
+| Command | File | Purpose |
+|---------|------|---------|
+| `/capis` | `.claude/commands/capis.md` | Launch / stop / status / reset |
+| `/capis-data` | `.claude/commands/capis-data.md` | Data management: clear, template, guided setup |
 
-- launch
-- status
-- stop
-- reset
+### Skills
 
-### Portfolio Skill
+| Skill | Path | Purpose |
+|-------|------|---------|
+| **Portfolio Intelligence** | `skills/capis-portfolio/` | Portfolio analysis, position management, signal generation |
+| **Onboarding** | `skills/capis-onboarding/` | 5-phase guided data entry (profile → accounts → assets → liabilities → complete). Supports file import (xlsx/pdf/docs/csv/txt) |
+| **Tax Professional** | `skills/tax-professional/` | US tax knowledge base (deductions, strategies, audit risk) |
 
-Skill path: `skills/capis-portfolio/SKILL.md`
+### Agents
 
-Use cases:
-- portfolio analysis
-- signals and rebalancing support
-- Excel-backed portfolio updates through Claude workflows
+| Agent | File | Purpose |
+|-------|------|---------|
+| **Tax Agent** | `.claude/agents/capis-tax.md` | Reads tax + portfolio data, returns tax briefing |
 
 ## API Reference
 

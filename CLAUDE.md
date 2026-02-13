@@ -7,21 +7,30 @@ A wealth & asset management dashboard built on the Claude Code ecosystem.
 ## Quick Start
 
 - `npm start` -- starts Express server on http://localhost:3333
-- `npm run seed` -- resets all data files to mock defaults (generates Excel + JSON)
+- `npm run seed` -- resets all data files to template defaults (generates Excel + JSON)
+- `npm run clear` -- wipes all user data, preserves empty xlsx shells + categories.json
 - `/capis` -- slash command to launch (starts server + opens browser)
 - `/capis stop` -- stops the server
-- `/capis reset` -- resets mock data
+- `/capis reset` -- resets template data
+- `/capis-data` -- data management (clear / template / guided setup)
+- `/capis-data clear` -- wipes all data (confirms first)
+- `/capis-data template` -- imports Bay Area family demo data
+- `/capis-data setup` -- guided step-by-step data entry (invokes capis-onboarding skill)
 
 ## Project Structure
 
 - `server.js` -- Express server (port 3333), serves static files + read-only JSON API
 - `lib/excel.js` -- Excel reader module (xlsx), converts .xlsx to JSON for the API
 - `public/` -- Frontend (vanilla HTML/CSS/JS, no build step, ES modules)
-- `data/` -- Excel files (portfolio) + JSON files (signals, feed, watchlist, tax)
+- `data/` -- Excel files (portfolio) + JSON files (signals, feed, watchlist, tax, profile)
+- `.claude/commands/capis.md` -- Slash command: launch dashboard
+- `.claude/commands/capis-data.md` -- Slash command: data management (clear / template / setup)
 - `.claude/agents/` -- Independent subagents (tax, etc.) with isolated context
 - `skills/capis-portfolio/` -- Portfolio intelligence skill (interactive)
+- `skills/capis-onboarding/` -- Guided data entry skill (5-phase: profile → accounts → assets → liabilities → complete)
 - `skills/tax-professional/` -- General US tax knowledge base (reference skill)
-- `scripts/seed-data.js` -- Mock data seeder (generates Excel + JSON)
+- `scripts/seed-data.js` -- Template data seeder (Bay Area family: Google SWE, Cupertino, married, 2 kids)
+- `scripts/clear-data.js` -- Wipes user data, preserves schema (categories.json + header-only xlsx shells)
 
 ## Data Architecture (Hybrid)
 
@@ -34,24 +43,46 @@ A wealth & asset management dashboard built on the Claude Code ecosystem.
 
 ## Data Files
 
-| File | Format | Description |
-|------|--------|-------------|
-| `data/stocks.xlsx` | Excel | Stock holdings |
-| `data/crypto.xlsx` | Excel | Crypto holdings |
-| `data/angel-investment.xlsx` | Excel | Angel investments |
-| `data/employee-equity.xlsx` | Excel | Employee equity (RSUs/ISOs/ESPP) |
-| `data/real-estate.xlsx` | Excel | Real estate (template) |
-| `data/signals.json` | JSON | AI-generated signals |
-| `data/feed.json` | JSON | News feed |
-| `data/watchlist.json` | JSON | Watched assets |
-| `data/tax-summary.json` | JSON | Tax planning data |
-| `data/profile.json` | JSON | User profile (location, tax, accounts) |
+**Asset Excel files** (sheet: Holdings):
+
+| File | Category |
+|------|----------|
+| `data/stocks.xlsx` | Stocks, ETFs, index funds |
+| `data/crypto.xlsx` | Cryptocurrency |
+| `data/angel-investment.xlsx` | Angel / startup investments |
+| `data/employee-equity.xlsx` | RSUs, ISOs, ESPP |
+| `data/real-estate.xlsx` | Real estate, REITs |
+| `data/cash.xlsx` | Cash & checking |
+| `data/savings.xlsx` | Savings, CDs, 529 plans |
+| `data/vehicles.xlsx` | Vehicles |
+| `data/jewelry.xlsx` | Jewelry & watches |
+| `data/art.xlsx` | Art & collectibles |
+
+**Liability Excel files** (sheet: Liabilities):
+
+| File | Category |
+|------|----------|
+| `data/credit-cards.xlsx` | Credit cards |
+| `data/mortgage.xlsx` | Mortgage |
+| `data/auto-loan.xlsx` | Auto loans |
+| `data/student-loan.xlsx` | Student loans |
+
+**JSON files**:
+
+| File | Description |
+|------|-------------|
+| `data/profile.json` | User profile (personal, family, location, tax, accounts) |
+| `data/categories.json` | Schema: asset classes, liability classes, account types, category metadata |
+| `data/tax-summary.json` | Tax planning data and taxable events |
+| `data/signals.json` | AI-generated signals and alerts |
+| `data/feed.json` | News and market intelligence feed |
+| `data/watchlist.json` | Watched assets not in portfolio |
 
 Drop any new `.xlsx` file into `data/` to add a new asset category automatically.
 
 ## Excel Schema
 
-See `skills/capis-portfolio/references/asset-schema.md` for the full Excel column spec.
+See `skills/capis-onboarding/references/data-schema.md` for the full column spec (assets, liabilities, profile).
 
 Required columns: `id`, `name`, `ticker`, `quantity`, `avgCost`, `currentPrice`, `notes`
 
@@ -126,6 +157,10 @@ New categories get auto-assigned fallback colors from the forest palette.
 
 **When adding new UI**, use CSS variables (`var(--gold-primary)`, `var(--bg-card)`, etc.) instead of hardcoding hex values. The `--gold-*` variable names are kept for compatibility but map to forest green.
 
+## UI Notes
+
+- 在設計前端 UI 的時候要考量到有些資訊不用補充太多在 UI 上面,因為大部分的文字資訊是可以透過命令行那邊去做文字的補充的。比如說用戶想要知道什麼叫做 Tax-Free Gains,他就直接在命令行問了。
+
 ## Agent Architecture
 
 Capis uses independent subagents defined in `.claude/agents/`. Each agent has its own isolated context, reads data autonomously, and returns a structured analysis. Agents can run **in parallel** -- Claude delegates to multiple agents simultaneously.
@@ -176,6 +211,7 @@ Multiple agents run concurrently when invoked together. Each agent reads its own
 | Skill | Path | Purpose |
 |-------|------|---------|
 | **Portfolio Intelligence** | `skills/capis-portfolio/SKILL.md` | Interactive portfolio analysis, position management, signal generation |
+| **Onboarding** | `skills/capis-onboarding/SKILL.md` | Guided data entry: 5-phase flow (profile → accounts → assets → liabilities → complete). Supports dialogue + file import (xlsx/pdf/docs/csv/txt). Invoked by `/capis-data setup` |
 | **Tax Professional** | `skills/tax-professional/SKILL.md` | General US tax knowledge base (deductions, strategies, audit risk) |
 
 Agents can preload skills for domain knowledge via the `skills` frontmatter field. The Tax Agent preloads Tax Professional for deep tax law questions.
