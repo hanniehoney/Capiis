@@ -15,7 +15,7 @@ Based on $ARGUMENTS:
 
 - **clear**: Go to [Clear Data](#clear-data)
 - **template**: Go to [Import Template](#import-template)
-- **setup**: Invoke the `capis-onboarding` skill, then follow its instructions
+- **setup**: Invoke the `onboarding` skill, then follow its instructions
 - **No arguments**: Use AskUserQuestion to show a menu:
   - "What would you like to do with your Capis data?"
   - Options:

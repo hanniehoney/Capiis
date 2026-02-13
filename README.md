@@ -39,9 +39,10 @@ Or from Claude Code:
 Claude Code
   ├─ /capis command (.claude/commands/capis.md)        # launch / stop / status
   ├─ /capis-data command (.claude/commands/capis-data.md)  # clear / template / setup
-  ├─ capis-portfolio skill (skills/capis-portfolio/)    # portfolio analysis & management
-  ├─ capis-onboarding skill (skills/capis-onboarding/)  # guided data entry (5-phase)
-  └─ capis-tax agent (.claude/agents/capis-tax.md)      # tax analysis
+  ├─ portfolio-intel skill (skills/portfolio-intel/)      # portfolio analysis & management
+  ├─ onboarding skill (skills/onboarding/)               # guided data entry (5-phase)
+  ├─ tax-analyst agent (.claude/agents/tax-analyst.md)    # tax analysis
+  └─ price-tracker agent (.claude/agents/price-tracker.md) # live price updates
           │
           ▼
 Express server (server.js, :3333)
@@ -63,7 +64,7 @@ Data layer (local files)
 Capis/
 ├── .claude/
 │   ├── agents/
-│   │   └── capis-tax.md              # Tax analysis agent
+│   │   └── tax-analyst.md             # Tax analysis agent
 │   └── commands/
 │       ├── capis.md                   # /capis — launch dashboard
 │       └── capis-data.md             # /capis-data — data management
@@ -72,7 +73,7 @@ Capis/
 │   ├── crypto.xlsx                    # Asset: cryptocurrency
 │   ├── angel-investment.xlsx          # Asset: startup investments
 │   ├── employee-equity.xlsx           # Asset: RSUs, ISOs, ESPP
-│   ├── real-estate.xlsx               # Asset: real estate, REITs
+│   ├── real-estate.xlsx               # Asset: real estate (physical property)
 │   ├── cash.xlsx                      # Asset: cash & checking
 │   ├── savings.xlsx                   # Asset: savings, CDs, 529
 │   ├── vehicles.xlsx                  # Asset: vehicles
@@ -111,10 +112,10 @@ Capis/
 │   ├── seed-data.js                   # Template data seeder (Bay Area family)
 │   └── clear-data.js                  # Wipe data, keep schema + empty xlsx shells
 ├── skills/
-│   ├── capis-portfolio/               # Portfolio analysis & management skill
+│   ├── portfolio-intel/               # Portfolio analysis & management skill
 │   │   ├── SKILL.md
 │   │   └── references/asset-schema.md
-│   ├── capis-onboarding/              # Guided data entry skill (5-phase)
+│   ├── onboarding/                    # Guided data entry skill (5-phase)
 │   │   ├── SKILL.md
 │   │   └── references/data-schema.md
 │   └── tax-professional/              # US tax knowledge base skill
@@ -189,15 +190,16 @@ Drop any new `.xlsx` file into `data/` to add a new category automatically.
 
 | Skill | Path | Purpose |
 |-------|------|---------|
-| **Portfolio Intelligence** | `skills/capis-portfolio/` | Portfolio analysis, position management, signal generation |
-| **Onboarding** | `skills/capis-onboarding/` | 5-phase guided data entry (profile → accounts → assets → liabilities → complete). Supports file import (xlsx/pdf/docs/csv/txt) |
+| **Portfolio Intelligence** | `skills/portfolio-intel/` | Portfolio analysis, position management, signal generation |
+| **Onboarding** | `skills/onboarding/` | 5-phase guided data entry (profile → accounts → assets → liabilities → complete). Supports file import (xlsx/pdf/docs/csv/txt) |
 | **Tax Professional** | `skills/tax-professional/` | US tax knowledge base (deductions, strategies, audit risk) |
 
 ### Agents
 
 | Agent | File | Purpose |
 |-------|------|---------|
-| **Tax Agent** | `.claude/agents/capis-tax.md` | Reads tax + portfolio data, returns tax briefing |
+| **Tax Analyst** | `.claude/agents/tax-analyst.md` | Reads tax + portfolio data, returns tax briefing |
+| **Price Tracker** | `.claude/agents/price-tracker.md` | Fetches live market prices, updates portfolio xlsx |
 
 ## API Reference
 
@@ -234,17 +236,31 @@ Frontend view refresh map:
 
 ## Roadmap
 
-- [ ] Multi-segment product model: `Individual` / `Family` / `Institution`
-- [ ] Agent-first operating model: onboarding, tax, portfolio, wealth planning, and feed intelligence
-- [ ] Tax intelligence expansion from year-end summaries to full lifecycle planning (before / during / after holding)
-- [ ] Live market data and real-time valuation layer (MCP-integrated where possible)
-- [ ] Advanced profile and entity modeling for complex tax identities and ownership structures
-- [ ] Broader asset-management coverage (larger asset universe + scalable navigation IA)
-- [ ] Background monitoring agents for proactive signals
-- [ ] `/capis` evolution from slash command into MCP-native tooling
-- [ ] Multi-portfolio support
-- [ ] Open skill ecosystem for strategy extensions
+- [ ] Identity and Profile Architecture
+  - [ ] `Profile` mode selection: `Individual` / `Family` / `Institution`
+  - [ ] Detailed tax identity modeling across personal, pre-company, and company-owner states
+  - [ ] Advanced profile settings for entity-aware tax planning
 
----
+- [ ] Tax Intelligence and Planning Lifecycle
+  - [ ] Pre-acquisition tax planning (before entering positions)
+  - [ ] Holding-period tax opportunity/risk checks
+  - [ ] Post-transaction and year-end/finalization tax workflows
+  - [ ] Advanced tax optimization recommendations for high-complexity cases
 
-Built for Claude Code Hackathon
+- [ ] Asset Management Expansion
+  - [ ] Introduce higher-level asset classification (for example: equities, fixed income, commodities, cash/cash equivalents)
+  - [ ] Extend commodity coverage (for example gold, silver, copper) and map to clear portfolio buckets
+  - [ ] Expand fixed-income coverage (for example bonds and treasuries) as first-class portfolio categories
+  - [ ] Broader asset universe coverage (equities, bonds/treasuries, commodities/precious metals, cash equivalents)
+  - [ ] Scalable navigation IA as asset surfaces grow
+  - [ ] Multi-portfolio support
+
+- [ ] Agent System Expansion
+  - [ ] Onboarding investigation agent (for empty profile state; asks guided questions and backfills missing data)
+  - [ ] Profile/composition agent (responsible for identity/profile configuration workflow)
+  - [ ] Tax agent suite (split current tax agent into clearer sub-agents by stage/use case)
+  - [ ] Real-time portfolio query agent
+  - [ ] Wealth planning agent
+  - [ ] Feed intelligence agent
+
+- [ ] Commercial model for advanced tax outcomes (explore value-based pricing, for example savings-share style pricing instead of pure tier pricing)

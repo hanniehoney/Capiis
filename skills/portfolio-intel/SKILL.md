@@ -1,5 +1,5 @@
 ---
-name: capis-portfolio
+name: portfolio-intel
 description: Analyze and manage portfolio data for the Capis wealth management dashboard. Use this skill when the user asks about their investment portfolio, wants to check allocation, asks for rebalancing suggestions, wants to add/remove positions, or needs portfolio performance analysis. Also triggers when the user mentions stocks, crypto, startup investments, or asset allocation in the context of their personal finances.
 ---
 
@@ -74,7 +74,7 @@ When analyzing the portfolio or market conditions:
 ## Position Management
 
 When the user wants to add, remove, or update a position:
-1. **Classify first**: Determine the correct category using the classification rules in `../capis-onboarding/references/classification-rules.md`. Classify by trading mechanism, not thematic exposure (e.g., REIT ETFs → `stocks.xlsx`, not `real-estate.xlsx`). If ambiguous, ask the user.
+1. **Classify first**: Determine the correct category using the classification rules in `../onboarding/references/classification-rules.md`. Classify by trading mechanism, not thematic exposure (e.g., REIT ETFs → `stocks.xlsx`, not `real-estate.xlsx`). If ambiguous, ask the user.
 2. Read the appropriate Excel file in `data/` (e.g., `stocks.xlsx` for stocks)
 3. Apply the change using Claude Code's xlsx skill (add row, update values, or remove row)
 4. Maintain the schema: id, name, ticker, quantity, avgCost, currentPrice, notes

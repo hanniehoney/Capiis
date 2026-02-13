@@ -1,67 +1,58 @@
 {
   "personal": {
-    "name": "Alex",
-    "age": 37,
-    "nationality": "Taiwanese (ROC)",
-    "immigration": "Green card holder since 2019 (EB-2, Meta-sponsored). F-1 → OPT → H-1B → GC. 7 years as permanent resident — approaching 8-year long-term resident threshold for exit tax.",
-    "education": "BS Computer Science, UC Berkeley (2010-2014).",
-    "occupation": "Software Engineer",
-    "company": "Google",
-    "previousCompany": "Meta",
-    "previousTitle": "Senior Engineer (E6)",
-    "previousTenure": "6 years (2018-2024)",
-    "yearsOfExperience": 12,
-    "title": "Staff Engineer (L7)",
-    "baseSalary": 330000,
-    "totalCashFlow": 800000,
-    "cashFlowNotes": "Base $330K + annual stock sales (~$450-550K from META trimming + GOOG RSU sells). Total annual cash inflow ~$800K."
+    "name": "Sophia",
+    "age": 32,
+    "occupation": "Research Engineer",
+    "company": "Anthropic",
+    "previousCompany": "DeepMind (London)",
+    "previousTitle": "Research Scientist",
+    "previousTenure": "2 years (2020-2021)",
+    "yearsOfExperience": 6,
+    "title": "Staff Research Engineer",
+    "baseSalary": 280000,
+    "totalCashFlow": 530000,
+    "cashFlowNotes": "Base $280K (post-Staff promotion June 2025) + annual equity vest ~$200K (Anthropic RSUs, secondary sales when available) + $50K bonus. Early employee — large initial ISO grant at low strike.",
+    "nationality": "British",
+    "immigration": "O-1A visa. EB-1A green card pending (filed 2024). No green card yet — no exit tax clock started.",
+    "education": "PhD ML, University of Cambridge (2016-2020). BA Computer Science, Imperial College London (2012-2016)."
   },
   "family": {
-    "spouse": "Emily Chen",
-    "children": [
-      {
-        "name": "Ethan",
-        "age": 5
-      },
-      {
-        "name": "Mia",
-        "age": 3
-      }
-    ]
+    "spouse": null,
+    "children": []
   },
   "location": {
     "country": "US",
     "state": "CA",
-    "city": "Cupertino",
-    "zipCode": "95014",
-    "fullAddress": "10500 Vista Dr, Cupertino, CA 95014"
+    "city": "San Francisco",
+    "zipCode": "94102",
+    "fullAddress": "450 Hayes St, San Francisco, CA 94102"
   },
   "tax": {
-    "filingStatus": "married-joint",
-    "dependents": 2,
-    "federalTaxBracket": 0.35,
-    "stateTaxRate": 0.093,
+    "filingStatus": "single",
+    "dependents": 0,
+    "federalTaxBracket": 0.37,
+    "stateTaxRate": 0.113,
     "longTermCapitalGainsRate": 0.2,
-    "shortTermCapitalGainsRate": 0.35,
+    "shortTermCapitalGainsRate": 0.37,
     "niit": 0.038,
-    "niitThreshold": 250000,
-    "standardDeduction": 32200,
+    "niitThreshold": 200000,
+    "standardDeduction": 16100,
     "contributionLimits": {
       "traditional401k": 24500,
       "catchUp401k": 0,
       "ira": 7500,
       "catchUpIRA": 0,
       "hsaSelf": 4400,
-      "hsaFamily": 8750
+      "hsaFamily": 0
     },
-    "notes": "California resident — 9.3% state income tax. Federal bracket 35% (MFJ, ~$487K-$731K taxable income). LTCG rate 20% (income >$583K MFJ). NIIT 3.8% applies at $250K MAGI threshold. Google 401(k) match up to $9,500. Previously at Meta 6 years — holds ~$1.5M in vested META shares. Green card since 2019 — approaching 8-year long-term resident threshold (2027) for exit tax. NO US-Taiwan tax treaty — no treaty-based relief for double taxation. Must file FBAR for Taiwan bank account (~NTD 500K). Future inheritance from Taiwan parents (Taipei apartment ~$950K) will require Form 3520 reporting and enters US estate. Sends ~$10K/yr to parents (under $19K gift exclusion). 2026 rates."
+    "notes": "California resident — effective ~11.3% state tax. Federal 37% bracket (single, >$609K applies to total comp including equity events). LTCG 20%. NIIT 3.8% at $200K. Anthropic ISOs — AMT risk on exercise ($3 strike, $40 FMV, 105K unexercised). On O-1A visa, EB-1A green card pending. US-UK tax treaty applies — pension treatment under Article 17. Must file FBAR + FATCA for UK accounts (~£105K aggregate). UK DeepMind pension (~£35K) reportable as foreign trust (Form 3520). UK ISA loses tax-free status in US."
   },
   "accounts": [
     {
-      "id": "acct-chase-checking",
-      "name": "Chase Checking",
+      "id": "acct-schwab-checking",
+      "name": "Schwab Checking",
       "type": "checking",
-      "institution": "Chase"
+      "institution": "Charles Schwab"
     },
     {
       "id": "acct-schwab-brokerage",
@@ -76,22 +67,10 @@
       "institution": "Fidelity"
     },
     {
-      "id": "acct-google-401k",
-      "name": "Google 401(k)",
+      "id": "acct-fidelity-401k",
+      "name": "Fidelity 401(k)",
       "type": "traditional-401k",
-      "institution": "Vanguard"
-    },
-    {
-      "id": "acct-fidelity-hsa",
-      "name": "Health Savings Account",
-      "type": "hsa",
       "institution": "Fidelity"
-    },
-    {
-      "id": "acct-marcus-savings",
-      "name": "Marcus HYSA",
-      "type": "savings",
-      "institution": "Goldman Sachs"
     },
     {
       "id": "acct-coinbase",
@@ -100,28 +79,28 @@
       "institution": "Coinbase"
     },
     {
-      "id": "acct-etrade",
-      "name": "E*TRADE Equity",
+      "id": "acct-carta",
+      "name": "Carta (Anthropic Equity)",
       "type": "taxable",
-      "institution": "E*TRADE"
+      "institution": "Carta"
     },
     {
-      "id": "acct-529-ethan",
-      "name": "529 Plan — Ethan",
-      "type": "529",
-      "institution": "Vanguard"
+      "id": "acct-uk-pension",
+      "name": "DeepMind Workplace Pension",
+      "type": "foreign-pension",
+      "institution": "Aviva (UK)"
     },
     {
-      "id": "acct-529-mia",
-      "name": "529 Plan — Mia",
-      "type": "529",
-      "institution": "Vanguard"
+      "id": "acct-uk-isa",
+      "name": "Stocks & Shares ISA",
+      "type": "foreign-taxable",
+      "institution": "Hargreaves Lansdown (UK)"
     },
     {
-      "id": "acct-tw-savings",
-      "name": "Taiwan Bank Account",
+      "id": "acct-uk-savings",
+      "name": "UK Savings Account",
       "type": "foreign-savings",
-      "institution": "Cathay United Bank (Taiwan)"
+      "institution": "Barclays (UK)"
     }
   ],
   "lastUpdated": "2026-02-12T00:00:00Z"

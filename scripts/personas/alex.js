@@ -68,14 +68,14 @@ const stocks = [
   },
   {
     id: 'nvda', name: 'NVIDIA Corp.', ticker: 'NVDA',
-    quantity: 80, avgCost: 480, currentPrice: 892,
-    notes: 'AI infrastructure leader. High conviction position.',
+    quantity: 800, avgCost: 48, currentPrice: 187,
+    notes: 'AI infrastructure leader. High conviction position. Post 10:1 split (Jun 2024).',
     accountType: 'taxable', accountName: 'Schwab Brokerage', purchaseDate: '2023-06-20', lastUpdated: '2026-02-12'
   },
   {
     id: 'schd', name: 'Schwab US Dividend Equity ETF', ticker: 'SCHD',
-    quantity: 500, avgCost: 70, currentPrice: 82,
-    notes: 'Dividend ETF for passive income. Diversification from growth tilt.',
+    quantity: 1500, avgCost: 23.33, currentPrice: 31,
+    notes: 'Dividend ETF for passive income. Diversification from growth tilt. Post 3:1 split (Oct 2024).',
     accountType: 'taxable', accountName: 'Schwab Brokerage', purchaseDate: '2023-09-01', lastUpdated: '2026-02-12'
   },
   {
@@ -100,8 +100,8 @@ const stocks = [
   },
   {
     id: 'nvda-roth', name: 'NVIDIA Corp.', ticker: 'NVDA',
-    quantity: 25, avgCost: 480, currentPrice: 892,
-    notes: 'High-growth in Roth for tax-free gains. AI thesis.',
+    quantity: 250, avgCost: 48, currentPrice: 187,
+    notes: 'High-growth in Roth for tax-free gains. AI thesis. Post 10:1 split (Jun 2024).',
     accountType: 'roth-ira', accountName: 'Fidelity Roth IRA', purchaseDate: '2023-06-20', lastUpdated: '2026-02-12'
   },
   {
@@ -342,7 +342,7 @@ const signals = {
     {
       id: 'sig-006', timestamp: '2026-02-11T10:00:00Z', priority: 'medium',
       title: 'NVIDIA earnings next week (Feb 18)',
-      body: 'NVDA reports Q4 earnings on Feb 18. Your combined position (80 taxable + 25 Roth = 105 shares, ~$93.7K) is up 86%. Consider trimming 10-20% of the taxable lot before earnings to lock in gains.',
+      body: 'NVDA reports Q4 earnings on Feb 18. Your combined position (800 taxable + 250 Roth = 1,050 shares, ~$196K) is up 290%. Consider trimming 10-20% of the taxable lot before earnings to lock in gains.',
       relatedAssets: ['nvda', 'nvda-roth'], category: 'earnings', dismissed: false
     },
     {
@@ -406,7 +406,7 @@ const watchlist = {
     { id: 'w-goog', name: 'Alphabet Inc.', ticker: 'GOOGL', category: 'stocks', currentPrice: 185.00, change24h: 1.2, note: 'Employer stock — monitor for ESPP timing and RSU vest windows' },
     { id: 'w-avax', name: 'Avalanche', ticker: 'AVAX', category: 'crypto', currentPrice: 42.80, change24h: -1.2, note: 'Potential L1 diversification play' },
     { id: 'w-pltr', name: 'Palantir', ticker: 'PLTR', category: 'stocks', currentPrice: 78.50, change24h: 4.1, note: 'Government AI contracts expanding. Valuation concern.' },
-    { id: 'w-schd', name: 'Schwab US Dividend Equity', ticker: 'SCHD', category: 'stocks', currentPrice: 82.30, change24h: 0.3, note: 'Dividend ETF for passive income. Consider for taxable account.' }
+    { id: 'w-schd', name: 'Schwab US Dividend Equity', ticker: 'SCHD', category: 'stocks', currentPrice: 31.30, change24h: 0.3, note: 'Dividend ETF for passive income. Post 3:1 split (Oct 2024).' }
   ]
 };
 

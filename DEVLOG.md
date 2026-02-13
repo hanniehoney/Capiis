@@ -86,8 +86,7 @@ Focused on product roadmap framing: segmentation, tax intelligence scope expansi
 
 ### What's next
 - [ ] ~~Evaluate moving `Hidden Liability: Unrealized Capital Gains Tax` and `Taxable Events` into the Wealth sidebar (or sidebar-linked navigation) to reduce Tax page length; decision now, code change tomorrow.~~
-- [ ] Evaluate real-time price lookup path (Yahoo Finance first, then MCP feasibility)
-- [ ] Expand asset universe coverage (equities, bonds/treasuries, commodities/precious metals, cash equivalents)
+- [ ] ~~Evaluate real-time price lookup path (Yahoo Finance first, then MCP feasibility)~~
 - [ ] ~~Upgrade profile depth for advanced tax/entity identity and optimization planning~~
 - [ ] ~~Revisit information architecture as assets grow (whether Asset Management should remain under Wealth or be fully separated)~~
 - [ ] Automate the intelligence feed with real sources (kill the mock data)

@@ -1,5 +1,5 @@
 ---
-name: capis-tax
+name: tax-analyst
 description: "Tax analysis agent for the Capis wealth dashboard. Use when the user asks about taxes, tax implications, what their tax numbers mean, estimated payments, deadlines, or wants a tax briefing. Reads live portfolio, profile, and tax data to provide personalized, time-aware tax analysis."
 tools: Read, Grep, Bash, Glob, Write, WebSearch, WebFetch
 model: sonnet

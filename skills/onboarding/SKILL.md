@@ -1,5 +1,5 @@
 ---
-name: capis-onboarding
+name: onboarding
 description: Guide users through setting up their financial data in the Capis wealth management dashboard. Triggers when the user wants to enter their personal profile, assets, liabilities, or financial accounts — either through conversation or by importing files (xlsx, pdf, docs, csv, txt). Also triggers on "/capis-data setup" or when the user says things like "help me set up my portfolio" or "I want to enter my financial data".
 ---
 

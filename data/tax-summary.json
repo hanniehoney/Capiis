@@ -1,196 +1,147 @@
 {
   "taxYear": 2026,
   "jurisdiction": "US",
-  "realizedGains": 143150,
-  "realizedLosses": -3200,
-  "netRealizedGainLoss": 139950,
-  "unrealizedGains": 1200000,
-  "unrealizedLosses": -15000,
-  "estimatedTaxLiability": 48000,
+  "realizedGains": 18960,
+  "realizedLosses": -200,
+  "netRealizedGainLoss": 18760,
+  "unrealizedGains": 247000,
+  "unrealizedLosses": -1000,
+  "estimatedTaxLiability": 7500,
   "longTermRate": 0.2,
-  "shortTermRate": 0.35,
+  "shortTermRate": 0.37,
   "taxLossHarvestingOpportunities": [
     {
       "asset": "BND",
-      "currentLoss": -1200,
-      "potentialSavings": 450,
-      "note": "Bond ETF in 401(k) — not harvestable in tax-deferred. Monitor taxable lots."
-    },
-    {
-      "asset": "VXUS",
-      "currentLoss": 0,
-      "potentialSavings": 0,
-      "note": "Near breakeven. Monitor for dips below $52 cost basis for harvesting."
+      "currentLoss": -1000,
+      "potentialSavings": 370,
+      "note": "Bond ETF down from rate hikes. Small loss available."
     }
   ],
   "taxableEvents": [
     {
       "date": "2025-03-15",
+      "type": "exercise",
+      "asset": "Anthropic ISO",
+      "units": 15000,
+      "amount": 600000,
+      "costBasis": 45000,
+      "gain": 555000,
+      "term": "iso-exercise",
+      "note": "Batch 1 ISO exercise. 15K shares at $3 strike, FMV $40. AMT preference item of $555K. Paid $45K to exercise."
+    },
+    {
+      "date": "2025-06-10",
       "type": "sell",
-      "asset": "META",
-      "shares": 150,
-      "amount": 82500,
-      "costBasis": 27000,
-      "gain": 55500,
+      "asset": "AAPL",
+      "shares": 20,
+      "amount": 4600,
+      "costBasis": 3200,
+      "gain": 1400,
       "term": "long"
     },
     {
-      "date": "2025-04-01",
+      "date": "2025-09-15",
       "type": "sell",
-      "asset": "VTI",
-      "shares": 50,
-      "amount": 14500,
-      "costBasis": 12500,
-      "gain": 2000,
-      "term": "long"
+      "asset": "QQQ",
+      "shares": 10,
+      "amount": 5200,
+      "costBasis": 4800,
+      "gain": 400,
+      "term": "short"
     },
     {
-      "date": "2025-06-20",
-      "type": "sell",
-      "asset": "META",
-      "shares": 150,
-      "amount": 87000,
-      "costBasis": 27000,
-      "gain": 60000,
-      "term": "long"
+      "date": "2025-11-01",
+      "type": "tender",
+      "asset": "Anthropic RSU",
+      "units": 2000,
+      "amount": 90000,
+      "costBasis": 0,
+      "gain": 90000,
+      "term": "ordinary",
+      "note": "Anthropic organized secondary tender offer at $45/share. Sold 2,000 vested RSU shares."
     },
     {
-      "date": "2025-08-15",
+      "date": "2025-12-01",
       "type": "sell",
       "asset": "ETH",
-      "units": 3,
-      "amount": 8400,
-      "costBasis": 6600,
+      "units": 2,
+      "amount": 6200,
+      "costBasis": 4400,
       "gain": 1800,
       "term": "long"
     },
     {
-      "date": "2025-09-10",
+      "date": "2026-01-20",
       "type": "sell",
-      "asset": "META",
-      "shares": 200,
-      "amount": 108000,
-      "costBasis": 36000,
-      "gain": 72000,
+      "asset": "VTI",
+      "shares": 50,
+      "amount": 14000,
+      "costBasis": 10750,
+      "gain": 3250,
       "term": "long"
     },
     {
-      "date": "2025-11-20",
+      "date": "2026-02-03",
       "type": "sell",
-      "asset": "SOL",
-      "units": 100,
-      "amount": 16000,
-      "costBasis": 4500,
-      "gain": 11500,
-      "term": "short"
+      "asset": "NVDA",
+      "shares": 100,
+      "amount": 13100,
+      "costBasis": 4900,
+      "gain": 8200,
+      "term": "long"
     },
     {
       "date": "2026-01-15",
       "type": "sell",
-      "asset": "META",
-      "shares": 200,
-      "amount": 119000,
-      "costBasis": 36000,
-      "gain": 83000,
-      "term": "long"
-    },
-    {
-      "date": "2026-01-22",
-      "type": "sell",
       "asset": "ETH",
-      "units": 5,
-      "amount": 16200,
-      "costBasis": 11000,
-      "gain": 5200,
+      "units": 2,
+      "amount": 6360,
+      "costBasis": 4400,
+      "gain": 1960,
       "term": "short"
     },
     {
-      "date": "2026-02-01",
+      "date": "2026-02-08",
       "type": "sell",
       "asset": "BTC",
-      "units": 0.3,
-      "amount": 29250,
-      "costBasis": 12600,
-      "gain": 16650,
+      "units": 0.1,
+      "amount": 9750,
+      "costBasis": 4200,
+      "gain": 5550,
       "term": "long"
-    },
-    {
-      "date": "2026-02-05",
-      "type": "sell",
-      "asset": "META",
-      "shares": 100,
-      "amount": 59500,
-      "costBasis": 18000,
-      "gain": 41500,
-      "term": "long"
-    },
-    {
-      "date": "2026-01-10",
-      "type": "sell",
-      "asset": "SOL",
-      "units": 50,
-      "amount": 9250,
-      "costBasis": 2250,
-      "gain": 7000,
-      "term": "short"
     },
     {
       "date": "2026-01-28",
       "type": "loss",
-      "asset": "AVAX",
+      "asset": "BND",
       "units": 100,
-      "amount": 3800,
-      "costBasis": 7000,
-      "gain": -3200,
+      "amount": 7200,
+      "costBasis": 7400,
+      "gain": -200,
       "term": "short"
     }
   ],
-  "priorYear": {
-    "taxYear": 2025,
-    "totalGrossIncome": 772000,
-    "w2Income": 510000,
-    "rsuVestIncome": 262000,
-    "capitalGains": {
-      "longTerm": 191300,
-      "shortTerm": 11500,
-      "total": 202800
-    },
-    "realizedGains": 202800,
-    "realizedLosses": 0,
-    "netRealizedGainLoss": 202800,
-    "totalTaxableIncome": 680000,
-    "federalTaxOwed": 178000,
-    "stateTaxOwed": 63200,
-    "totalTaxOwed": 241200,
-    "totalWithheld": 186000,
-    "estimatedPaymentsMade": 89000,
-    "totalPaid": 275000,
-    "refundOrOwed": -33800,
-    "effectiveFederalRate": 0.262,
-    "effectiveTotalRate": 0.355,
-    "notes": "MFJ with 2 dependents. W-2 income: Alex $330K base + $262K RSU vests + Emily $180K = $772K gross. Capital gains from META diversification ($277.5K proceeds, $187.5K LTCG) plus ETH/VTI/SOL sales. Maxed 401(k) ($23.5K), backdoor Roth ($14K both spouses), HSA ($8.3K), 529s ($20K). SALT capped at $10K. Standard deduction $29,200 was less favorable than itemizing (mortgage interest ~$120K + SALT $10K + charitable $15K). Estimated overpayment of ~$33.8K — applied to 2026 estimated taxes."
-  },
   "estimatedPayments": [
     {
       "date": "2025-04-15",
       "quarter": "2025-Q1",
-      "amount": 25000,
+      "amount": 35000,
       "status": "paid",
-      "note": "Federal estimated payment. Covers Q1 RSU vest + capital gains from META sales."
+      "note": "Federal estimated payment. Elevated due to ISO exercise AMT preference item ($555K)."
     },
     {
       "date": "2025-06-15",
       "quarter": "2025-Q2",
-      "amount": 22000,
+      "amount": 20000,
       "status": "paid",
       "note": "Federal estimated payment."
     },
     {
       "date": "2025-09-15",
       "quarter": "2025-Q3",
-      "amount": 22000,
+      "amount": 20000,
       "status": "paid",
-      "note": "Federal estimated payment. Includes gain from Sept META sale."
+      "note": "Federal estimated payment."
     },
     {
       "date": "2026-01-15",
@@ -202,285 +153,253 @@
     {
       "date": "2025-04-15",
       "quarter": "2025-Q1-CA",
-      "amount": 8000,
+      "amount": 12000,
       "status": "paid",
-      "note": "California estimated payment."
+      "note": "California estimated payment. Higher due to ISO exercise income."
     },
     {
       "date": "2025-06-15",
       "quarter": "2025-Q2-CA",
-      "amount": 7500,
+      "amount": 6000,
       "status": "paid",
       "note": "California estimated payment."
     },
     {
       "date": "2025-09-15",
       "quarter": "2025-Q3-CA",
-      "amount": 7500,
+      "amount": 6000,
       "status": "paid",
       "note": "California estimated payment."
     },
     {
       "date": "2026-01-15",
       "quarter": "2025-Q4-CA",
-      "amount": 7000,
+      "amount": 6000,
       "status": "paid",
       "note": "California estimated payment for Q4 2025."
     },
     {
       "date": "2026-04-15",
       "quarter": "2026-Q1",
-      "amount": 28000,
+      "amount": 12000,
       "status": "scheduled",
-      "note": "Federal estimated payment. Higher due to increased META sales + crypto gains in Q1."
+      "note": "Federal estimated payment. Lower than 2025 — no ISO exercise planned for 2026."
     },
     {
       "date": "2026-04-15",
       "quarter": "2026-Q1-CA",
-      "amount": 9000,
+      "amount": 4000,
       "status": "scheduled",
       "note": "California estimated payment for Q1 2026."
     },
     {
       "date": "2026-06-15",
       "quarter": "2026-Q2",
-      "amount": 25000,
+      "amount": 12000,
       "status": "upcoming",
       "note": "Federal estimated payment Q2."
     },
     {
       "date": "2026-06-15",
       "quarter": "2026-Q2-CA",
-      "amount": 8000,
+      "amount": 4000,
       "status": "upcoming",
       "note": "California estimated payment Q2."
     }
   ],
   "ordinaryIncomeEvents": [
     {
-      "date": "2025-03-01",
-      "type": "rsu-vest",
-      "asset": "GOOG",
-      "shares": 375,
-      "vestValue": 62500,
-      "withheld": 27500,
-      "note": "Q1 2025 Google RSU vest. 375 shares at ~$167/share. Fed+CA+FICA withheld."
-    },
-    {
-      "date": "2025-06-01",
-      "type": "rsu-vest",
-      "asset": "GOOG",
-      "shares": 375,
-      "vestValue": 65600,
-      "withheld": 28900,
-      "note": "Q2 2025 Google RSU vest. 375 shares at ~$175/share."
-    },
-    {
-      "date": "2025-09-01",
-      "type": "rsu-vest",
-      "asset": "GOOG",
-      "shares": 375,
-      "vestValue": 66400,
-      "withheld": 29200,
-      "note": "Q3 2025 Google RSU vest. 375 shares at ~$177/share."
-    },
-    {
-      "date": "2025-12-01",
-      "type": "rsu-vest",
-      "asset": "GOOG",
-      "shares": 375,
-      "vestValue": 67500,
-      "withheld": 29700,
-      "note": "Q4 2025 Google RSU vest. 375 shares at ~$180/share."
-    },
-    {
-      "date": "2026-03-01",
-      "type": "rsu-vest",
-      "asset": "GOOG",
-      "shares": 375,
-      "vestValue": 69400,
-      "withheld": 30500,
-      "note": "Q1 2026 Google RSU vest. 375 shares at ~$185/share."
-    },
-    {
-      "date": "2025-06-30",
-      "type": "espp-purchase",
-      "asset": "GOOG",
-      "shares": 120,
-      "purchasePrice": 148.75,
-      "fmv": 175,
-      "discount": 3150,
-      "note": "ESPP purchase at 15% discount. Ordinary income on discount portion ($3,150)."
-    },
-    {
       "date": "2025-12-31",
       "type": "w2",
-      "source": "Emily — Startup",
-      "grossIncome": 180000,
-      "withheld": 54000,
-      "note": "Emily W-2 income from startup. $180K gross, ~$54K total fed+state+FICA withheld."
+      "source": "Anthropic",
+      "grossIncome": 280000,
+      "withheld": 98000,
+      "note": "Sophia W-2 base salary. $280K gross (post-promotion to Staff in June). ~$98K total fed+state+FICA withheld."
     },
     {
-      "date": "2025-12-31",
-      "type": "w2",
-      "source": "Alex — Google",
-      "grossIncome": 330000,
-      "withheld": 132000,
-      "note": "Alex W-2 base salary. $330K gross, ~$132K total fed+state+FICA withheld. RSU income reported separately."
+      "date": "2025-11-01",
+      "type": "tender-sale",
+      "asset": "Anthropic RSU",
+      "shares": 2000,
+      "amount": 90000,
+      "withheld": 36000,
+      "note": "Tender offer sale of 2,000 RSU shares at $45/share. Ordinary income treatment. $36K withheld at supplemental rate."
+    },
+    {
+      "date": "2025-03-15",
+      "type": "iso-exercise",
+      "asset": "Anthropic ISO",
+      "shares": 15000,
+      "strikePrice": 3,
+      "fmv": 40,
+      "amtPreference": 555000,
+      "cashOutlay": 45000,
+      "note": "Exercised 15K ISOs. No regular tax at exercise (ISO), but $555K AMT preference item. AMT liability ~$72K."
+    },
+    {
+      "date": "2026-02-28",
+      "type": "w2-ytd",
+      "source": "Anthropic",
+      "grossIncome": 46700,
+      "withheld": 16300,
+      "note": "2026 YTD W-2 through February. On track for $280K annual."
     }
   ],
   "retirementContributions": [
     {
       "year": 2025,
       "type": "401k",
-      "account": "Google 401(k)",
+      "account": "Anthropic 401(k)",
       "amount": 23500,
-      "employerMatch": 9500,
-      "note": "Maxed out 2025 401(k) limit ($23,500). Google matches 50% up to $9,500."
+      "employerMatch": 0,
+      "note": "Maxed out 2025 401(k) limit ($23,500). Anthropic does not match."
     },
     {
       "year": 2025,
       "type": "backdoor-roth",
       "account": "Fidelity Roth IRA",
       "amount": 7000,
-      "note": "Backdoor Roth IRA for Alex. Contributed to traditional IRA then converted (income too high for direct Roth)."
-    },
-    {
-      "year": 2025,
-      "type": "backdoor-roth",
-      "account": "Emily Roth IRA",
-      "amount": 7000,
-      "note": "Backdoor Roth IRA for Emily."
-    },
-    {
-      "year": 2025,
-      "type": "hsa",
-      "account": "Fidelity HSA",
-      "amount": 8300,
-      "note": "Maxed family HSA ($8,300 for 2025). Invested in VTI inside HSA."
-    },
-    {
-      "year": 2025,
-      "type": "529",
-      "account": "529 — Ethan",
-      "amount": 10000,
-      "note": "CA state deduction up to $10K per beneficiary."
-    },
-    {
-      "year": 2025,
-      "type": "529",
-      "account": "529 — Mia",
-      "amount": 10000,
-      "note": "CA state deduction up to $10K per beneficiary."
+      "note": "Backdoor Roth IRA. Income too high for direct Roth contribution."
     },
     {
       "year": 2026,
       "type": "401k",
-      "account": "Google 401(k)",
+      "account": "Anthropic 401(k)",
       "amount": 4100,
-      "employerMatch": 1580,
-      "note": "2026 contributions through Feb. On track to max ($24,500 limit for 2026). Google match ongoing."
+      "employerMatch": 0,
+      "note": "2026 contributions through Feb. On track to max ($24,500 limit for 2026)."
     },
     {
       "year": 2026,
       "type": "backdoor-roth",
       "account": "Fidelity Roth IRA",
       "amount": 7500,
-      "note": "Completed backdoor Roth for 2026 in January. New limit $7,500."
-    },
-    {
-      "year": 2026,
-      "type": "hsa",
-      "account": "Fidelity HSA",
-      "amount": 1460,
-      "note": "2026 HSA contributions through Feb. Family limit $8,750 for 2026."
-    },
-    {
-      "year": 2026,
-      "type": "529",
-      "account": "529 — Ethan",
-      "amount": 0,
-      "note": "Not yet contributed for 2026. Plan to fund $10K by Dec."
-    },
-    {
-      "year": 2026,
-      "type": "529",
-      "account": "529 — Mia",
-      "amount": 0,
-      "note": "Not yet contributed for 2026. Plan to fund $10K by Dec."
+      "note": "Completed 2026 backdoor Roth in January. New limit $7,500."
     }
   ],
   "crossBorderFiling": {
-    "nationality": "Taiwan (ROC)",
-    "residencyStatus": "US permanent resident (green card since 2019)",
-    "taxTreaty": "NONE — no US-Taiwan income tax treaty",
+    "nationality": "British (UK)",
+    "residencyStatus": "US non-immigrant (O-1A visa). EB-1A green card pending since Jan 2024.",
+    "taxTreaty": "US-UK Income Tax Treaty (active). Article 17 governs pension taxation. Article 1 savings clause preserves US taxing rights on US residents.",
     "exitTaxRisk": {
-      "thresholdDate": "2027-06-01",
-      "status": "approaching",
-      "netWorth": 5500000,
-      "unrealizedGains": 1200000,
-      "note": "IRC 877A: 8-year long-term resident threshold hits ~2027. Relinquishing green card after this date triggers mark-to-market exit tax on worldwide assets. With $5.5M NW and $1.2M unrealized gains, estimated exit tax could be $200K-$300K. Must decide before 2027."
+      "status": "not-applicable",
+      "note": "On O-1A visa, not a long-term resident. No exit tax risk under IRC 877A. However, if EB-1A is approved and green card obtained, the 8-year clock starts. Monitor."
     },
     "fbar": {
       "required": true,
       "accounts": [
         {
-          "institution": "Cathay United Bank",
-          "country": "Taiwan",
-          "maxBalance2025": 16000,
-          "currency": "NTD ~500K"
+          "institution": "Barclays",
+          "country": "UK",
+          "maxBalance2025": 53000,
+          "currency": "£42K"
+        },
+        {
+          "institution": "Hargreaves Lansdown ISA",
+          "country": "UK",
+          "maxBalance2025": 35000,
+          "currency": "£28K"
+        },
+        {
+          "institution": "Aviva Pension",
+          "country": "UK",
+          "maxBalance2025": 44000,
+          "currency": "£35K"
         }
       ],
+      "aggregateMax2025": 132000,
       "filed2024": {
-        "date": "2025-03-20",
+        "date": "2025-03-25",
         "status": "filed",
-        "note": "Filed for 2024 tax year."
+        "note": "Filed for 2024 tax year. 3 UK accounts reported."
       },
       "due2025": {
         "deadline": "2026-04-15",
         "autoExtension": "2026-10-15",
         "status": "not-filed",
-        "note": "Must file by April 15, 2026 for 2025 tax year. Auto-extension to Oct 15 available."
+        "note": "Must file by April 15, 2026 for 2025 tax year."
       }
     },
     "fatca": {
-      "required": false,
-      "note": "FATCA Form 8938 threshold is $100K for MFJ at year-end. Taiwan account ~$16K — below threshold. Not required."
+      "required": true,
+      "threshold": 50000,
+      "totalForeignAssets2025": 132000,
+      "note": "FATCA Form 8938 required. Single filer threshold $50K at year-end / $75K at any time. UK accounts total ~$132K — well above threshold. File with 1040."
+    },
+    "ukPension": {
+      "provider": "Aviva",
+      "type": "workplace-defined-contribution",
+      "value": 44000,
+      "treatyArticle": "Article 17",
+      "reporting": "May require Form 3520/3520-A if treated as foreign trust. Treaty position: not a trust, but IRS view is ambiguous. Conservative approach: file Form 3520.",
+      "note": "UK workplace pension from DeepMind. No contributions since leaving UK (2022). Growing at ~5% from investments. US tax on growth deferred under treaty Article 17 — but CA does not conform to treaty, so CA may tax annual growth."
+    },
+    "ukIsa": {
+      "provider": "Hargreaves Lansdown",
+      "value": 35000,
+      "note": "UK ISA has NO US tax-free status. All interest, dividends, and capital gains fully taxable for US purposes. Should consider liquidating and transferring to US accounts to simplify reporting."
+    },
+    "ukSelfAssessment": {
+      "required": true,
+      "status2025": "extension-filed",
+      "deadline": "2026-01-31",
+      "note": "UK self-assessment required for UK-source income (pension growth, ISA gains, bank interest). Filed extension. No UK tax due on US salary (not UK-source). Foreign tax credit available for any UK tax paid."
     },
     "foreignTaxCredit": {
-      "paid2025": 0,
-      "note": "No Taiwan-source income in 2025. No foreign tax credit claimed. If Taiwan inheritance materializes, Form 3520 reporting required."
+      "paid2025": 850,
+      "note": "UK tax on Barclays savings interest (~£1,200 interest, 20% UK basic rate = ~£240 / ~$300). Plus small UK tax on ISA gains reported on self-assessment (~$550). Total FTC available: ~$850."
+    }
+  },
+  "amtAnalysis": {
+    "isoExercised2025": {
+      "shares": 15000,
+      "strikePrice": 3,
+      "fmvAtExercise": 40,
+      "amtPreference": 555000
     },
-    "giftToParents": {
-      "amount2025": 10000,
-      "amount2026": 0,
-      "note": "Sends ~$10K/year to parents in Taipei. Under $19K gift tax exclusion per recipient — no Form 709 required."
+    "amtLiability2025": 72000,
+    "amtCreditCarryforward": 72000,
+    "amtCreditUsed2026": 0,
+    "note": "Exercised 15K ISOs in 2025 creating $555K AMT preference item. Paid ~$72K AMT above regular tax. This generates a minimum tax credit (MTC) carryforward of $72K that can offset regular tax in future years when regular tax exceeds tentative minimum tax. Plan: do NOT exercise more ISOs in 2026 — let AMT credit recover first. Remaining 105K unexercised ISOs can be spread over 2027-2033.",
+    "isoExerciseStrategy": {
+      "totalGranted": 120000,
+      "exercised": 15000,
+      "remaining": 105000,
+      "strikePrice": 3,
+      "currentFmv": 40,
+      "unrealizedSpread": 3885000,
+      "recommendedPace": "15K shares/year over 7 years to keep AMT manageable",
+      "vestingExpiry": "2032-01-15",
+      "note": "At current FMV ($40), each 15K batch creates ~$555K AMT preference. Spreading over 7 years keeps annual AMT ~$70K. If Anthropic IPOs, strategy changes — may want to exercise+sell same day (disqualifying disposition, ordinary income, no AMT)."
     }
   },
-  "propertyTax": {
-    "property": "10500 Vista Dr, Cupertino, CA 95014",
-    "assessedValue": 3000000,
-    "taxRate": 0.0125,
-    "annualAmount": 37500,
-    "payments": [
-      {
-        "date": "2025-11-01",
-        "amount": 18750,
-        "status": "paid",
-        "note": "First installment 2025-26 property tax. Due Nov 1, delinquent Dec 10."
-      },
-      {
-        "date": "2026-02-01",
-        "amount": 18750,
-        "status": "paid",
-        "note": "Second installment 2025-26 property tax. Due Feb 1, delinquent Apr 10."
-      }
-    ],
-    "saltDeduction": {
-      "cap": 10000,
-      "claimed2025": 10000,
-      "note": "SALT deduction capped at $10K (MFJ). Property tax $37.5K + state income tax far exceeds cap."
-    }
+  "priorYear": {
+    "taxYear": 2025,
+    "totalGrossIncome": 370000,
+    "w2Income": 280000,
+    "tenderOfferIncome": 90000,
+    "capitalGains": {
+      "longTerm": 3200,
+      "shortTerm": 400,
+      "total": 3600
+    },
+    "realizedGains": 93600,
+    "realizedLosses": 0,
+    "netRealizedGainLoss": 93600,
+    "amtPreferenceItems": 555000,
+    "regularTaxableIncome": 340000,
+    "regularTax": 85000,
+    "tentativeMinimumTax": 157000,
+    "amtLiability": 72000,
+    "stateTaxOwed": 38000,
+    "totalTaxOwed": 195000,
+    "totalWithheld": 134000,
+    "estimatedPaymentsMade": 95000,
+    "totalPaid": 229000,
+    "refundOrOwed": -34000,
+    "effectiveFederalRate": 0.338,
+    "effectiveTotalRate": 0.419,
+    "notes": "Single filer. W-2: $280K base + $90K tender offer = $370K gross ordinary income. Capital gains: small stock/crypto trades ($3.6K). Major tax event: ISO exercise creating $555K AMT preference item. Regular tax $85K vs tentative minimum tax $157K = $72K AMT. CA conformity: CA has its own AMT at 7%. Total fed+state+AMT = ~$195K. Overpaid by ~$34K — applied to 2026 estimated taxes. AMT credit of $72K carries forward."
   },
-  "notes": "California state income tax applies on all gains. Federal LTCG rate 20% (income >$583K MFJ). NIIT 3.8% applies. RSU vesting creates ordinary income — verify withholding covers marginal rate (35% fed + 9.3% CA). Plan multi-year META diversification to spread tax impact. No US-Taiwan tax treaty — rely on foreign tax credit only. FBAR required for Taiwan account. Green card 8-year long-term resident threshold approaching (2027)."
+  "notes": "Single filer, CA resident. Federal 37% bracket. Key tax risk: AMT from ISO exercise. Exercised 15K ISOs in Mar 2025 — $555K AMT preference, $72K AMT paid. 105K unexercised ISOs remain. Plan multi-year exercise strategy (15K/year over 7 years). Nov 2025: sold 2K RSU shares at $45/share ($90K, ordinary income). 2026 YTD: $18.8K net realized gains. UK cross-border: FBAR + FATCA for 3 UK accounts (~$132K aggregate). On O-1A visa, EB-1A pending."
 }

@@ -36,6 +36,8 @@ These columns are specific to `employee-equity.xlsx`:
 | `vestingSchedule` | string | Human-readable (e.g., "4yr quarterly", "4yr with 1yr cliff") |
 | `strikePrice` | number | Strike/exercise price (0 for RSUs) |
 | `fmvAtGrant` | number | Fair market value per share at grant date |
+| `fmvAtExercise` | number | (ISO only) FMV at exercise date — locks AMT basis. Immutable. |
+| `fmvAtVest` | number | (RSU only) FMV at vest date — becomes cost basis (already W-2 income). Immutable. |
 
 ### Liability Excel Column Schema
 

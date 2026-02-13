@@ -15,7 +15,7 @@ A wealth & asset management dashboard built on the Claude Code ecosystem.
 - `/capis-data` -- data management (clear / template / guided setup)
 - `/capis-data clear` -- wipes all data (confirms first)
 - `/capis-data template` -- imports demo data (choose from multiple personas)
-- `/capis-data setup` -- guided step-by-step data entry (invokes capis-onboarding skill)
+- `/capis-data setup` -- guided step-by-step data entry (invokes onboarding skill)
 
 ## Project Structure
 
@@ -26,8 +26,8 @@ A wealth & asset management dashboard built on the Claude Code ecosystem.
 - `.claude/commands/capis.md` -- Slash command: launch dashboard
 - `.claude/commands/capis-data.md` -- Slash command: data management (clear / template / setup)
 - `.claude/agents/` -- Independent subagents (tax, etc.) with isolated context
-- `skills/capis-portfolio/` -- Portfolio intelligence skill (interactive)
-- `skills/capis-onboarding/` -- Guided data entry skill (5-phase: profile → accounts → assets → liabilities → complete)
+- `skills/portfolio-intel/` -- Portfolio intelligence skill (interactive)
+- `skills/onboarding/` -- Guided data entry skill (5-phase: profile → accounts → assets → liabilities → complete)
 - `skills/tax-professional/` -- General US tax knowledge base (reference skill)
 - `scripts/seed-data.js` -- Multi-persona template seeder. Supports `--list` flag. Personas in `scripts/personas/`.
 - `scripts/personas/` -- Persona data modules (alex.js, sophia.js, etc.)
@@ -62,7 +62,7 @@ Import with: `node scripts/seed-data.js [persona-key]` or use `/capis-data templ
 | `data/crypto.xlsx` | Cryptocurrency |
 | `data/angel-investment.xlsx` | Angel / startup investments |
 | `data/employee-equity.xlsx` | RSUs, ISOs, ESPP |
-| `data/real-estate.xlsx` | Real estate, REITs |
+| `data/real-estate.xlsx` | Real estate (physical property only; REIT ETFs go in stocks) |
 | `data/cash.xlsx` | Cash & checking |
 | `data/savings.xlsx` | Savings, CDs, 529 plans |
 | `data/vehicles.xlsx` | Vehicles |
@@ -99,7 +99,7 @@ Drop any new `.xlsx` file into `data/` to add a new asset category automatically
 
 ## Excel Schema
 
-See `skills/capis-onboarding/references/data-schema.md` for the full column spec (assets, liabilities, profile).
+See `skills/onboarding/references/data-schema.md` for the full column spec (assets, liabilities, profile).
 
 Required columns: `id`, `name`, `ticker`, `quantity`, `avgCost`, `currentPrice`, `notes`
 
@@ -187,8 +187,8 @@ Capis uses independent subagents defined in `.claude/agents/`. Each agent has it
 
 | Agent | File | Purpose |
 |-------|------|---------|
-| **Tax Agent** | `.claude/agents/capis-tax.md` | Reads tax + portfolio data, calculates time-sensitive deadlines, returns tax briefing |
-| *(more agents coming)* | | |
+| **Tax Analyst** | `.claude/agents/tax-analyst.md` | Reads tax + portfolio data, calculates time-sensitive deadlines, returns tax briefing |
+| **Price Tracker** | `.claude/agents/price-tracker.md` | Fetches live market prices for stocks/ETFs/crypto, updates portfolio xlsx files |
 
 ### How Agents Work
 
@@ -196,12 +196,12 @@ Agents are Markdown files with YAML frontmatter in `.claude/agents/`:
 
 ```yaml
 ---
-name: capis-tax
+name: tax-analyst
 description: Tax analysis agent...
-tools: Read, Grep, Bash, Glob
+tools: Read, Grep, Bash, Glob, WebSearch
 model: sonnet
 memory: project
-maxTurns: 15
+maxTurns: 20
 skills: tax-professional
 ---
 
@@ -210,7 +210,7 @@ skills: tax-professional
 
 Claude auto-delegates based on the `description` field, or you can request explicitly:
 - "Analyze my tax situation" (auto-delegation)
-- "Use the capis-tax agent to check my taxes" (explicit)
+- "Use the tax-analyst agent to check my taxes" (explicit)
 - "Run tax and portfolio agents in parallel" (parallel execution)
 
 ### Parallel Execution
@@ -228,8 +228,8 @@ Multiple agents run concurrently when invoked together. Each agent reads its own
 
 | Skill | Path | Purpose |
 |-------|------|---------|
-| **Portfolio Intelligence** | `skills/capis-portfolio/SKILL.md` | Interactive portfolio analysis, position management, signal generation |
-| **Onboarding** | `skills/capis-onboarding/SKILL.md` | Guided data entry: 5-phase flow (profile → accounts → assets → liabilities → complete). Supports dialogue + file import (xlsx/pdf/docs/csv/txt). Invoked by `/capis-data setup` |
+| **Portfolio Intelligence** | `skills/portfolio-intel/SKILL.md` | Interactive portfolio analysis, position management, signal generation |
+| **Onboarding** | `skills/onboarding/SKILL.md` | Guided data entry: 5-phase flow (profile → accounts → assets → liabilities → complete). Supports dialogue + file import (xlsx/pdf/docs/csv/txt). Invoked by `/capis-data setup` |
 | **Tax Professional** | `skills/tax-professional/SKILL.md` | General US tax knowledge base (deductions, strategies, audit risk) |
 
 Agents can preload skills for domain knowledge via the `skills` frontmatter field. The Tax Agent preloads Tax Professional for deep tax law questions.
@@ -263,6 +263,38 @@ Agents can preload skills for domain knowledge via the `skills` frontmatter fiel
 ### Web Verification
 
 Agents with web search access (e.g., Tax Agent) should verify data against current sources on every run. Web-verified data is the source of truth; stored data is the cache. If they differ, update the cache.
+
+## Compliance Guardrails
+
+Capis is a **Personal Financial Management (PFM)** tool — it organizes, visualizes, and analyzes the user's own data. It is NOT an investment advisor. All agents and skills must stay within these boundaries.
+
+### Role: Financial Analyst Assistant
+
+- **Present facts, not recommendations.** "Your tech allocation is 65%" (fact) vs "You should reduce tech exposure" (advice — avoid).
+- **Describe deviations, don't prescribe actions.** "Your cash is 5%, below the typical 10-20% range" (insight with external benchmark) vs "Move money to cash now" (CTA — forbidden).
+- **Scenario analysis is OK, directives are not.** "If NVDA drops 20%, your portfolio impact would be ~$X" (simulation) vs "Sell NVDA before earnings" (trade recommendation — forbidden).
+
+### Required Disclaimers
+
+When any agent or skill outputs analysis that touches investment decisions, tax strategy, or portfolio changes, append:
+
+> *This analysis is for informational purposes only and does not constitute investment, tax, or legal advice. Consult a qualified professional before making financial decisions.*
+
+### Fact vs Insight Labeling
+
+Agents should distinguish between:
+- **Fact**: derived directly from user data or verified external sources ("Your realized gains are $140K")
+- **Insight**: interpretation using external benchmarks or general principles ("A 20%+ single-stock concentration is above typical diversification thresholds")
+
+Never present AI-generated interpretations as facts.
+
+### Forbidden Patterns
+
+- No "call to action" (CTA): never say "buy", "sell", "hold", "switch to", "move into"
+- No return predictions: never forecast specific price targets or percentage returns
+- No urgency language: never say "act now", "before it's too late", "don't miss this"
+- No product recommendations: never suggest specific financial products, brokers, or services
+- If future features add advisory capabilities, they MUST include proper disclaimers and avoid triggering fiduciary duty under the Investment Advisers Act of 1940
 
 ## Key Conventions
 

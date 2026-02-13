@@ -23,7 +23,7 @@ const DISPLAY_PROFILES = {
 
   'cash-like': {
     columns: [
-      { key: 'account', label: 'Account', align: 'left' },
+      { key: 'cashAccount', label: 'Account', align: 'left' },
       { key: 'type', label: 'Type', align: 'left' },
       { key: 'balance', label: 'Balance', align: 'right' }
     ],
@@ -36,7 +36,7 @@ const DISPLAY_PROFILES = {
 
   'yield-bearing': {
     columns: [
-      { key: 'account', label: 'Account', align: 'left' },
+      { key: 'cashAccount', label: 'Account', align: 'left' },
       { key: 'type', label: 'Type', align: 'left' },
       { key: 'balance', label: 'Balance', align: 'right' },
       { key: 'growth', label: 'Growth', align: 'right' }

@@ -47,14 +47,14 @@ const stocks = [
   },
   {
     id: 'nvda', name: 'NVIDIA Corp.', ticker: 'NVDA',
-    quantity: 50, avgCost: 490, currentPrice: 892,
-    notes: 'AI infrastructure leader. High conviction — understands the compute moat deeply.',
+    quantity: 500, avgCost: 49, currentPrice: 187,
+    notes: 'AI infrastructure leader. High conviction — understands the compute moat deeply. Post 10:1 split (Jun 2024).',
     accountType: 'taxable', accountName: 'Schwab Brokerage', purchaseDate: '2025-01-20', lastUpdated: '2026-02-12'
   },
   {
     id: 'schd', name: 'Schwab US Dividend Equity ETF', ticker: 'SCHD',
-    quantity: 300, avgCost: 70, currentPrice: 82,
-    notes: 'Dividend ETF for passive income. Diversification from growth tilt.',
+    quantity: 900, avgCost: 23.33, currentPrice: 31,
+    notes: 'Dividend ETF for passive income. Diversification from growth tilt. Post 3:1 split (Oct 2024).',
     accountType: 'taxable', accountName: 'Schwab Brokerage', purchaseDate: '2025-06-01', lastUpdated: '2026-02-12'
   },
   // === 401(k) — Fidelity ===
@@ -85,8 +85,8 @@ const stocks = [
   },
   {
     id: 'nvda-roth', name: 'NVIDIA Corp.', ticker: 'NVDA',
-    quantity: 15, avgCost: 490, currentPrice: 892,
-    notes: 'High-growth in Roth for tax-free gains. AI thesis.',
+    quantity: 150, avgCost: 49, currentPrice: 187,
+    notes: 'High-growth in Roth for tax-free gains. AI thesis. Post 10:1 split (Jun 2024).',
     accountType: 'roth-ira', accountName: 'Fidelity Roth IRA', purchaseDate: '2023-06-20', lastUpdated: '2026-02-12'
   },
   {
@@ -125,26 +125,48 @@ const angelInvestment = [
 ];
 
 // --- Employee Equity ---
-// Anthropic stock — the core of her wealth (~$3.32M)
+// Anthropic stock — the core of her wealth
+// ISO grant: 120K total, $3 strike, 4yr vest from Jan 2022 (all vested by Jan 2026)
+// Exercised: 15K (Mar 2025 at FMV $40). Remaining: 105K unexercised.
+// RSU refresh: 20K total granted (2023-2025), 10K vested at avg ~$25/share, sold 2K tender. 8K held.
+//
+// KEY CONCEPT: Each row is a TAX LOT with its own basis.
+//   - currentPrice: latest company valuation (updated by price-tracker)
+//   - fmvAtExercise (ISO): FMV when exercised — locks AMT basis, never changes
+//   - avgCost (RSU): FMV at vest = cost basis (already taxed as W-2 income)
+//   - strikePrice (ISO): the price paid to exercise — never changes
+//   Price-tracker updates ONLY currentPrice. Historical fields are immutable.
 const employeeEquity = [
   {
-    id: 'eq-anthropic-iso', name: 'Anthropic ISOs (Vested)', ticker: 'ANTH-PRIV',
-    quantity: 75000, avgCost: 3, currentPrice: 40,
-    notes: 'Initial grant: 120K ISOs over 4 years (joined Jan 2022). ~90K vested, sold ~15K through 2024 tender offer. Holding 75K. Strike $3, 409A FMV $40. AMT exposure on exercise.',
+    id: 'eq-anthropic-iso-exercised', name: 'Anthropic ISOs (Exercised)', ticker: 'ANTH-PRIV',
+    quantity: 15000, avgCost: 3, currentPrice: 40,
+    notes: 'Exercised Mar 2025 (batch 1). 15K shares at $3 strike, FMV $40 at exercise. Cost basis $45K. Holding for qualifying disposition (need 1yr from exercise + 2yr from grant). AMT preference $555K already recognized.',
+    accountType: 'taxable', accountName: 'Carta (Anthropic Equity)',
+    purchaseDate: '2025-03-15', lastUpdated: '2026-02-12',
+    equityType: 'ISO', grantDate: '2022-01-15', vestingSchedule: 'Exercised',
+    strikePrice: 3, fmvAtGrant: 5, fmvAtExercise: 40
+  },
+  {
+    id: 'eq-anthropic-iso-unexercised', name: 'Anthropic ISOs (Unexercised)', ticker: 'ANTH-PRIV',
+    quantity: 105000, avgCost: 3, currentPrice: 40,
+    notes: '105K fully vested ISOs. Strike $3, current FMV $40. Exercise requires $315K cash outlay + triggers AMT. Spread at current FMV: $3.885M. Recommended pace: 15K/year over 7 years. Vesting expiry: Jan 2032.',
     accountType: 'taxable', accountName: 'Carta (Anthropic Equity)',
     purchaseDate: '2022-01-15', lastUpdated: '2026-02-12',
-    equityType: 'ISO', grantDate: '2022-01-15', vestingSchedule: '4yr with 1yr cliff, monthly after', strikePrice: 3, fmvAtGrant: 5
+    equityType: 'ISO', grantDate: '2022-01-15', vestingSchedule: 'Fully vested',
+    strikePrice: 3, fmvAtGrant: 5
   },
   {
     id: 'eq-anthropic-refresh', name: 'Anthropic RSUs (Refresh)', ticker: 'ANTH-PRIV',
-    quantity: 8000, avgCost: 0, currentPrice: 40,
-    notes: 'Refresh grants 2023-2025. ~8K vested and held. Additional ~12K unvested over next 2-3 years.',
+    quantity: 8000, avgCost: 25, currentPrice: 40,
+    notes: 'Refresh grants 2023-2025. 20K total, ~10K vested (avg FMV ~$25 at vest, already taxed as W-2). Sold 2K in Nov 2025 tender at $45/share ($90K). 8K held. Unrealized cap gain: ($40-$25)×8K = $120K.',
     accountType: 'taxable', accountName: 'Carta (Anthropic Equity)',
     purchaseDate: '2023-06-01', lastUpdated: '2026-02-12',
-    equityType: 'RSU', grantDate: '2023-06-01', vestingSchedule: '4yr quarterly', strikePrice: 0, fmvAtGrant: 20
+    equityType: 'RSU', grantDate: '2023-06-01', vestingSchedule: '4yr quarterly',
+    strikePrice: 0, fmvAtGrant: 20, fmvAtVest: 25
   }
 ];
-// Total employee equity: 83K shares x $40 = $3.32M
+// Total employee equity: 128K shares/options (15K exercised ISO + 105K unexercised ISO + 8K RSU)
+// Economic value at $40/share: $5.12M gross. Net of exercise cost ($315K): ~$4.8M.
 
 // --- Real Estate ---
 // Renter — no property
@@ -213,21 +235,21 @@ const signals = {
   signals: [
     {
       id: 'sig-001', timestamp: '2026-02-12T08:30:00Z', priority: 'high',
-      title: 'Anthropic concentration: $3.3M = 70%+ of net worth',
-      body: 'Your 83,000 Anthropic shares (75K ISOs + 8K RSUs) are worth ~$3.32M at current 409A FMV ($40/share). This private stock concentration is ~77% of your total net worth ($4.3M). You cannot freely sell — watch for the next tender offer window to reduce concentration.',
-      relatedAssets: ['eq-anthropic-iso', 'eq-anthropic-refresh'], category: 'risk', dismissed: false
+      title: 'Anthropic concentration: ~$5.1M = 75%+ of net worth',
+      body: 'Your Anthropic equity (15K exercised ISOs + 105K unexercised ISOs + 8K RSUs) is worth ~$5.12M at current 409A FMV ($40/share). Net of $315K exercise cost for unexercised ISOs: ~$4.8M. This private stock concentration is ~75% of net worth. You cannot freely sell — watch for the next tender offer window.',
+      relatedAssets: ['eq-anthropic-iso-exercised', 'eq-anthropic-iso-unexercised', 'eq-anthropic-refresh'], category: 'risk', dismissed: false
     },
     {
       id: 'sig-002', timestamp: '2026-02-12T07:15:00Z', priority: 'high',
-      title: 'AMT risk: exercising remaining ISOs could trigger $200K+ in AMT',
-      body: 'You hold 75K vested ISOs with $3 strike and $40 FMV. The AMT spread is $37/share. Exercising all at once would create $2.775M in AMT preference income, triggering massive AMT liability. Consider partial exercise strategy — spread over 3-4 tax years. Note: on O-1A visa — if you leave the US, you typically have 90 days to exercise vested ISOs before they convert to NSOs. Plan exercises while employed. Consult cross-border tax advisor given UK ties.',
-      relatedAssets: ['eq-anthropic-iso'], category: 'tax', dismissed: false
+      title: 'AMT risk: 105K unexercised ISOs = $3.9M AMT preference',
+      body: 'You have 105K fully vested, unexercised ISOs with $3 strike and $40 FMV. The AMT spread is $37/share. Exercising all at once would create $3.885M in AMT preference income. Recommended: 15K/year over 7 years (~$555K AMT preference per batch, ~$72K AMT per year). Already exercised 15K in Mar 2025. Note: on O-1A visa — if you leave the US, you typically have 90 days to exercise vested ISOs. Plan while employed.',
+      relatedAssets: ['eq-anthropic-iso-unexercised'], category: 'tax', dismissed: false
     },
     {
       id: 'sig-003', timestamp: '2026-02-11T22:00:00Z', priority: 'medium',
       title: 'Next Anthropic tender offer window — plan your strategy',
-      body: 'Anthropic has historically offered annual secondary sale opportunities. The last tender was Nov 2025 at ~$38/share. With the new $60B valuation round, the next tender could be at $45-50/share. Plan which lots to sell (ISOs vs RSUs) and estimate tax implications. Target selling $500-750K worth to reduce concentration.',
-      relatedAssets: ['eq-anthropic-iso', 'eq-anthropic-refresh'], category: 'startup', dismissed: false
+      body: 'Anthropic has historically offered annual secondary sale opportunities. The last tender was Nov 2025 at $45/share (sold 2K RSU shares for $90K). With the new $60B valuation round, the next tender could be at $50-60/share. Plan which lots to sell (ISOs vs RSUs) and estimate tax implications. Target selling $500-750K worth to reduce concentration.',
+      relatedAssets: ['eq-anthropic-iso-exercised', 'eq-anthropic-iso-unexercised', 'eq-anthropic-refresh'], category: 'startup', dismissed: false
     },
     {
       id: 'sig-004', timestamp: '2026-02-11T16:00:00Z', priority: 'medium',
@@ -243,8 +265,8 @@ const signals = {
     },
     {
       id: 'sig-006', timestamp: '2026-02-11T10:00:00Z', priority: 'medium',
-      title: 'NVIDIA earnings Feb 18 — combined position ~$58K',
-      body: 'NVDA reports Q4 earnings on Feb 18. Your combined position (50 taxable + 15 Roth = 65 shares, ~$58K) is up 82% from avg cost. Consider trimming 10-20% of the taxable lot before earnings to lock in gains and rebalance.',
+      title: 'NVIDIA earnings Feb 18 — combined position ~$122K',
+      body: 'NVDA reports Q4 earnings on Feb 18. Your combined position (500 taxable + 150 Roth = 650 shares, ~$122K at $187) is up 282% from avg cost ($49 post-split).',
       relatedAssets: ['nvda', 'nvda-roth'], category: 'earnings', dismissed: false
     },
     {
@@ -264,13 +286,13 @@ const signals = {
       id: 'sig-009', timestamp: '2025-03-20T10:00:00Z', priority: 'high',
       title: 'ISO Exercise Complete — AMT Impact',
       body: 'Exercised 15,000 Anthropic ISOs at $3 strike (FMV $40). AMT preference item: $555K. Estimated AMT liability ~$72K. Verify quarterly estimated payments cover exposure.',
-      relatedAssets: ['eq-anthropic-iso'], category: 'tax', dismissed: true
+      relatedAssets: ['eq-anthropic-iso-exercised'], category: 'tax', dismissed: true
     },
     {
       id: 'sig-010', timestamp: '2025-11-05T14:00:00Z', priority: 'medium',
       title: 'Anthropic Tender Offer — Participated',
-      body: 'Sold 2,000 RSU shares at $45/share in November tender offer ($90K proceeds). Ordinary income treatment. Reduced Anthropic concentration from 78% to ~70%.',
-      relatedAssets: ['eq-anthropic-iso', 'eq-anthropic-refresh'], category: 'startup', dismissed: true
+      body: 'Sold 2,000 RSU shares at $45/share in November tender offer ($90K proceeds). Ordinary income treatment.',
+      relatedAssets: ['eq-anthropic-refresh'], category: 'startup', dismissed: true
     },
     {
       id: 'sig-011', timestamp: '2025-12-18T10:00:00Z', priority: 'medium',
@@ -281,7 +303,7 @@ const signals = {
     {
       id: 'sig-012', timestamp: '2025-03-25T09:00:00Z', priority: 'low',
       title: 'FBAR Filed — 2024 Tax Year',
-      body: 'FinCEN Form 114 filed for UK accounts: Barclays savings (£42K), Hargreaves Lansdown ISA (£28K), Aviva pension (£85K). Total ~$198K equivalent. Filed March 25.',
+      body: 'FinCEN Form 114 filed for UK accounts: Barclays savings (£42K), Hargreaves Lansdown ISA (£28K), Aviva pension (£35K). Total ~$132K equivalent. Filed March 25.',
       relatedAssets: [], category: 'tax', dismissed: true
     },
     {
@@ -342,12 +364,12 @@ const watchlist = {
 const taxSummary = {
   taxYear: 2026,
   jurisdiction: 'US',
-  realizedGains: 35000,
-  realizedLosses: -2400,
-  netRealizedGainLoss: 32600,
-  unrealizedGains: 180000,
-  unrealizedLosses: -8000,
-  estimatedTaxLiability: 12000,
+  realizedGains: 18960,
+  realizedLosses: -200,
+  netRealizedGainLoss: 18760,
+  unrealizedGains: 247000,
+  unrealizedLosses: -1000,
+  estimatedTaxLiability: 7500,
   longTermRate: 0.20,
   shortTermRate: 0.37,
   taxLossHarvestingOpportunities: [
@@ -362,7 +384,7 @@ const taxSummary = {
     { date: '2025-12-01', type: 'sell', asset: 'ETH', units: 2, amount: 6200, costBasis: 4400, gain: 1800, term: 'long' },
     // --- 2026 events ---
     { date: '2026-01-20', type: 'sell', asset: 'VTI', shares: 50, amount: 14000, costBasis: 10750, gain: 3250, term: 'long' },
-    { date: '2026-02-03', type: 'sell', asset: 'NVDA', shares: 10, amount: 8920, costBasis: 4900, gain: 4020, term: 'long' },
+    { date: '2026-02-03', type: 'sell', asset: 'NVDA', shares: 100, amount: 13100, costBasis: 4900, gain: 8200, term: 'long' },
     { date: '2026-01-15', type: 'sell', asset: 'ETH', units: 2, amount: 6360, costBasis: 4400, gain: 1960, term: 'short' },
     { date: '2026-02-08', type: 'sell', asset: 'BTC', units: 0.1, amount: 9750, costBasis: 4200, gain: 5550, term: 'long' },
     { date: '2026-01-28', type: 'loss', asset: 'BND', units: 100, amount: 7200, costBasis: 7400, gain: -200, term: 'short' }
@@ -456,17 +478,17 @@ const taxSummary = {
     amtLiability2025: 72000,
     amtCreditCarryforward: 72000,
     amtCreditUsed2026: 0,
-    note: 'Exercised 15K ISOs in 2025 creating $555K AMT preference item. Paid ~$72K AMT above regular tax. This generates a minimum tax credit (MTC) carryforward of $72K that can offset regular tax in future years when regular tax exceeds tentative minimum tax. Plan: do NOT exercise more ISOs in 2026 — let AMT credit recover first. Remaining 60K unexercised ISOs can be spread over 2027-2030.',
+    note: 'Exercised 15K ISOs in 2025 creating $555K AMT preference item. Paid ~$72K AMT above regular tax. This generates a minimum tax credit (MTC) carryforward of $72K that can offset regular tax in future years when regular tax exceeds tentative minimum tax. Plan: do NOT exercise more ISOs in 2026 — let AMT credit recover first. Remaining 105K unexercised ISOs can be spread over 2027-2033.',
     isoExerciseStrategy: {
-      totalGranted: 75000,
+      totalGranted: 120000,
       exercised: 15000,
-      remaining: 60000,
+      remaining: 105000,
       strikePrice: 3,
       currentFmv: 40,
-      unrealizedSpread: 2220000,
-      recommendedPace: '15K shares/year over 4 years to keep AMT manageable',
+      unrealizedSpread: 3885000,
+      recommendedPace: '15K shares/year over 7 years to keep AMT manageable',
       vestingExpiry: '2032-01-15',
-      note: 'At current FMV ($40), each 15K batch creates ~$555K AMT preference. Spreading over 4 years keeps annual AMT ~$70K. If Anthropic IPOs, strategy changes — may want to exercise+sell same day (disqualifying disposition, ordinary income, no AMT).'
+      note: 'At current FMV ($40), each 15K batch creates ~$555K AMT preference. Spreading over 7 years keeps annual AMT ~$70K. If Anthropic IPOs, strategy changes — may want to exercise+sell same day (disqualifying disposition, ordinary income, no AMT).'
     }
   },
   priorYear: {
@@ -493,7 +515,7 @@ const taxSummary = {
     effectiveTotalRate: 0.419,
     notes: 'Single filer. W-2: $280K base + $90K tender offer = $370K gross ordinary income. Capital gains: small stock/crypto trades ($3.6K). Major tax event: ISO exercise creating $555K AMT preference item. Regular tax $85K vs tentative minimum tax $157K = $72K AMT. CA conformity: CA has its own AMT at 7%. Total fed+state+AMT = ~$195K. Overpaid by ~$34K — applied to 2026 estimated taxes. AMT credit of $72K carries forward.'
   },
-  notes: 'Single filer, CA resident. Federal 37% bracket. Key tax risk: AMT from ISO exercise. 2024 tender offer sale of 15K Anthropic shares was taxed as ISO disposition — verify AMT credit carryforward. Plan multi-year ISO exercise strategy to minimize AMT impact. UK cross-border obligations: FBAR (FinCEN 114) for 3 UK accounts >$10K aggregate. FATCA Form 8938 (threshold $200K for single filers abroad, $50K domestic). UK pension (Aviva, ~£35K) reportable as foreign trust — Form 3520/3520-A may apply. US-UK tax treaty Article 17 governs pension taxation. UK ISA has no US tax-free status — gains/income fully taxable. On O-1A visa, EB-1A pending — no long-term resident status yet, so no exit tax risk currently.'
+  notes: 'Single filer, CA resident. Federal 37% bracket. Key tax risk: AMT from ISO exercise. Exercised 15K ISOs in Mar 2025 — $555K AMT preference, $72K AMT paid. 105K unexercised ISOs remain. Plan multi-year exercise strategy (15K/year over 7 years). Nov 2025: sold 2K RSU shares at $45/share ($90K, ordinary income). 2026 YTD: $18.8K net realized gains. UK cross-border: FBAR + FATCA for 3 UK accounts (~$132K aggregate). On O-1A visa, EB-1A pending.'
 };
 
 // --- Profile ---
@@ -508,9 +530,9 @@ const profile = {
     previousTenure: '2 years (2020-2021)',
     yearsOfExperience: 6,
     title: 'Staff Research Engineer',
-    baseSalary: 450000,
-    totalCashFlow: 875000,
-    cashFlowNotes: 'Base $450K + annual equity vest ~$375K (Anthropic options, secondary sales when available) + $50K bonus. Early employee — large initial grant at low strike.',
+    baseSalary: 280000,
+    totalCashFlow: 530000,
+    cashFlowNotes: 'Base $280K (post-Staff promotion June 2025) + annual equity vest ~$200K (Anthropic RSUs, secondary sales when available) + $50K bonus. Early employee — large initial ISO grant at low strike.',
     nationality: 'British',
     immigration: 'O-1A visa. EB-1A green card pending (filed 2024). No green card yet — no exit tax clock started.',
     education: 'PhD ML, University of Cambridge (2016-2020). BA Computer Science, Imperial College London (2012-2016).'
@@ -544,7 +566,7 @@ const profile = {
       hsaSelf: 4400,
       hsaFamily: 0
     },
-    notes: 'California resident — effective ~11.3% state tax. Federal 37% bracket (single, >$609K). LTCG 20%. NIIT 3.8% at $200K. Anthropic ISO/NSO mix — AMT risk on ISO exercise. On O-1A visa, EB-1A green card pending. US-UK tax treaty applies — pension treatment under Article 17. Must file FBAR + FATCA for UK bank accounts (ISA + savings ~£50K). UK DeepMind pension (~£35K) reportable as foreign trust (Form 3520). UK ISA loses tax-free status in US. No UK tax on US income while US-resident (UK SRT non-resident).'
+    notes: 'California resident — effective ~11.3% state tax. Federal 37% bracket (single, >$609K applies to total comp including equity events). LTCG 20%. NIIT 3.8% at $200K. Anthropic ISOs — AMT risk on exercise ($3 strike, $40 FMV, 105K unexercised). On O-1A visa, EB-1A green card pending. US-UK tax treaty applies — pension treatment under Article 17. Must file FBAR + FATCA for UK accounts (~£105K aggregate). UK DeepMind pension (~£35K) reportable as foreign trust (Form 3520). UK ISA loses tax-free status in US.'
   },
   accounts: [
     { id: 'acct-schwab-checking', name: 'Schwab Checking', type: 'checking', institution: 'Charles Schwab' },
@@ -680,16 +702,15 @@ const profileMemory = `# Sophia — Profile Memory
 - **O-1A vs H-1B?** O-1A was the only realistic option — Anthropic couldn't do L-1 transfer (not same company as DeepMind). Strong publication record made O-1A straightforward.
 - **Why no property?** SF too expensive for a single buyer. Doesn't want to anchor herself if she might return to the UK.
 - **UK pension:** Small amount (~£35K) from DeepMind. Not worth transferring to the US — would lose tax advantages. But creates annual reporting burden. Considering just leaving it until retirement.
-- **ISO exercise strategy:** Has exercised ~30K ISOs in batches across tax years to manage AMT. Planning more in 2026-2027. The AMT trap is her #1 tax anxiety.
+- **ISO exercise strategy:** Exercised 15K ISOs in Mar 2025 (batch 1). 105K unexercised remain (all vested). Planning 15K/year batches over 7 years. The AMT trap is her #1 tax anxiety.
 - **Exit tax awareness:** Knows about the 8-year long-term resident rule. Her green card (once approved) starts the clock. If she decides to return to UK, she has an 8-year window before exit tax applies to Anthropic equity.
 
 ## Recent Changes & Events
-- **2026-02-03**: Sold 10 NVDA shares ($8.9K) to rebalance.
+- **2026-02-03**: Sold 100 NVDA shares ($13.1K) to rebalance.
 - **2026-01-20**: Sold 50 VTI shares ($14K) to fund Q1 estimated tax payment.
-- **2025-11**: Anthropic tender offer — sold 15K ISOs at ~$38/share ($570K gross). Deployed into VTI + HYSA for taxes.
-- **2025-06**: Promoted to Staff Research Engineer (IC5). 10K RSU refresh grant.
-- **2024-11**: Anthropic tender offer — sold 10K ISOs at ~$30/share ($300K gross). First major liquidity event.
-- **2024-03**: Exercised 15K ISOs (batch 1). Triggered ~$80K AMT.
+- **2025-11**: Anthropic tender offer — sold 2,000 RSU shares at $45/share ($90K gross). Ordinary income.
+- **2025-06**: Promoted to Staff Research Engineer (IC5). New comp: $280K base. 10K RSU refresh grant.
+- **2025-03**: Exercised 15K ISOs (batch 1). $3 strike, FMV $40. AMT preference $555K. AMT liability ~$72K.
 - **2024-01**: Filed EB-1A green card petition. Pending.
 - **2022-01**: Joined Anthropic on O-1A visa. Grant: 120K ISOs, strike $3, 4yr vest.
 - **2020-09**: Joined DeepMind London. Started DeepMind workplace pension.
@@ -700,7 +721,7 @@ module.exports = {
   meta: {
     key: 'sophia',
     name: 'Sophia Zhang',
-    tagline: 'British-Chinese, ex-DeepMind London → Anthropic SF on O-1A, Staff RE, single, NW ~$4.3M'
+    tagline: 'British-Chinese, ex-DeepMind London → Anthropic SF on O-1A, Staff RE, single, NW ~$6.6M (incl. unexercised ISOs)'
   },
   stocks,
   crypto,

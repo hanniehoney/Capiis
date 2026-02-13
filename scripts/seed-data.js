@@ -16,7 +16,7 @@ function writeExcel(filename, rows) {
   const headers = [
     'id', 'name', 'ticker', 'quantity', 'avgCost', 'currentPrice', 'notes',
     'accountType', 'accountName', 'costBasis', 'purchaseDate', 'lastUpdated',
-    ...(hasEquityFields ? ['equityType', 'grantDate', 'vestingSchedule', 'strikePrice', 'fmvAtGrant'] : [])
+    ...(hasEquityFields ? ['equityType', 'grantDate', 'vestingSchedule', 'strikePrice', 'fmvAtGrant', 'fmvAtExercise', 'fmvAtVest'] : [])
   ];
   const data = rows.map(r => {
     const row = {
@@ -36,6 +36,8 @@ function writeExcel(filename, rows) {
       row.vestingSchedule = r.vestingSchedule || '';
       row.strikePrice = r.strikePrice != null ? r.strikePrice : '';
       row.fmvAtGrant = r.fmvAtGrant != null ? r.fmvAtGrant : '';
+      row.fmvAtExercise = r.fmvAtExercise != null ? r.fmvAtExercise : '';
+      row.fmvAtVest = r.fmvAtVest != null ? r.fmvAtVest : '';
     }
     return row;
   });
@@ -46,7 +48,7 @@ function writeExcel(filename, rows) {
     { wch: 16 }, { wch: 22 }, { wch: 12 }, { wch: 12 }, { wch: 12 }
   ];
   if (hasEquityFields) {
-    cols.push({ wch: 10 }, { wch: 12 }, { wch: 20 }, { wch: 12 }, { wch: 12 });
+    cols.push({ wch: 10 }, { wch: 12 }, { wch: 20 }, { wch: 12 }, { wch: 12 }, { wch: 14 }, { wch: 14 });
   }
   ws['!cols'] = cols;
   const wb = XLSX.utils.book_new();

@@ -16,7 +16,10 @@
       "Bash(git commit:*)",
       "Bash(git push:*)",
       "mcp__perplexity__reason",
-      "mcp__perplexity__search"
+      "mcp__perplexity__search",
+      "WebFetch(domain:localhost)",
+      "mcp__filesystem__read_multiple_files",
+      "Skill(capis)"
     ]
   }
 }

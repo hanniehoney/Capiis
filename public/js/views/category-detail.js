@@ -199,6 +199,18 @@ function renderCell(col, h, row) {
           </div>
         </td>`;
 
+    case 'cashAccount':
+      return `
+        <td>
+          <div class="asset-name-cell">
+            <div class="asset-icon ${h.category}">${h.name.slice(0, 2)}</div>
+            <div>
+              <div class="asset-name">${h.name}</div>
+              ${h.accountName && h.accountName !== h.name ? `<div class="asset-ticker">${h.accountName}</div>` : ''}
+            </div>
+          </div>
+        </td>`;
+
     case 'account': {
       const badgeClass = getAccountBadgeClass(h.accountType);
       const badgeLabel = getAccountShortLabel(h.accountType);
