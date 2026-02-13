@@ -219,6 +219,26 @@ Multiple agents run concurrently when invoked together. Each agent reads its own
 
 **Important**: Agents cannot spawn other agents (no nesting). All parallel agents are launched from the main conversation.
 
+### Session Hook: Auto-Orchestration
+
+A `SessionStart` hook (`.claude/hooks/session-check.sh`) runs on every new/resumed session. It checks data freshness and upcoming deadlines, then outputs `[capis-auto]` triggers.
+
+**When you see `[capis-auto]` output, act on it:**
+
+| Trigger | Action |
+|---------|--------|
+| `STALE_PRICES` | Run the price-tracker agent (`.claude/agents/price-tracker.md`) |
+| `TAX_SEASON` | Run the tax-analyst agent (`.claude/agents/capis-tax.md`) |
+| Both triggers | Run both agents **in parallel**, then merge results into a unified briefing |
+
+**Unified briefing format** (when both agents return):
+1. Most impactful change first (e.g., valuation event, large price move)
+2. Time-sensitive action items (e.g., ISO holding period milestone, tax deadline)
+3. Tax position summary (deadlines, estimated liability, cross-border obligations)
+4. Market moves (significant movers, portfolio impact)
+
+Do NOT present two separate reports. Merge agent results into one coherent, priority-ordered briefing. The user doesn't need to know which agent produced which data.
+
 ### Agent vs Skill
 
 - **Agent** (in `.claude/agents/`): independent subagent with isolated context, returns complete analysis. Cannot have back-and-forth conversation. Used for structured briefings and parallel execution.

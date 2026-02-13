@@ -1,6 +1,107 @@
 {
   "signals": [
     {
+      "id": "move-VTI-2026-02-13",
+      "priority": "medium",
+      "title": "VTI +20.0% since last update",
+      "body": "Vanguard Total Stock Market ETF moved from $280 to $336.01 (+20.0%). Combined taxable (1,200 shares) + Roth (100 shares) holdings gained ~$72.8K.",
+      "relatedAssets": [
+        "vti",
+        "vti-roth"
+      ],
+      "category": "momentum",
+      "dismissed": false,
+      "timestamp": "2026-02-13T11:03:42.682Z"
+    },
+    {
+      "id": "move-VXUS-2026-02-13",
+      "priority": "medium",
+      "title": "VXUS +36.9% since last update",
+      "body": "Vanguard Total International Stock ETF moved from $60 to $82.13 (+36.9%). Combined taxable (1,500 shares) + 401(k) (400 shares) holdings gained ~$42K.",
+      "relatedAssets": [
+        "vxus",
+        "vxus-401k"
+      ],
+      "category": "momentum",
+      "dismissed": false,
+      "timestamp": "2026-02-13T11:03:42.682Z"
+    },
+    {
+      "id": "move-QQQ-2026-02-13",
+      "priority": "medium",
+      "title": "QQQ +13.3% since last update",
+      "body": "Invesco QQQ Trust moved from $530 to $600.64 (+13.3%). Position (250 shares) gained ~$17.7K.",
+      "relatedAssets": [
+        "qqq"
+      ],
+      "category": "momentum",
+      "dismissed": false,
+      "timestamp": "2026-02-13T11:03:42.682Z"
+    },
+    {
+      "id": "move-VOO-2026-02-13",
+      "priority": "medium",
+      "title": "VOO +20.5% since last update",
+      "body": "Vanguard S&P 500 ETF moved from $520 to $626.49 (+20.5%). 401(k) holdings (450 shares) gained ~$47.9K.",
+      "relatedAssets": [
+        "voo-401k"
+      ],
+      "category": "momentum",
+      "dismissed": false,
+      "timestamp": "2026-02-13T11:03:42.682Z"
+    },
+    {
+      "id": "move-AAPL-2026-02-13",
+      "priority": "medium",
+      "title": "AAPL +8.2% since last update",
+      "body": "Apple Inc. moved from $242 to $261.73 (+8.2%). Combined taxable (150 shares) + Roth (35 shares) holdings gained ~$3.6K.",
+      "relatedAssets": [
+        "aapl",
+        "aapl-roth"
+      ],
+      "category": "momentum",
+      "dismissed": false,
+      "timestamp": "2026-02-13T11:03:42.682Z"
+    },
+    {
+      "id": "move-BTC-2026-02-13",
+      "priority": "high",
+      "title": "BTC -31.4% since last update",
+      "body": "Bitcoin dropped from $97,500 to $66,927.65 (-31.4%). Your 0.5 BTC position declined by $15.3K. Current value: $33.5K. This is a significant correction from recent highs.",
+      "relatedAssets": [
+        "btc"
+      ],
+      "category": "momentum",
+      "dismissed": false,
+      "timestamp": "2026-02-13T11:03:42.682Z"
+    },
+    {
+      "id": "move-ETH-2026-02-13",
+      "priority": "high",
+      "title": "ETH -38.4% since last update",
+      "body": "Ethereum dropped from $3,180 to $1,957.72 (-38.4%). Your 8 ETH position declined by $9.8K. Current value: $15.7K. This represents a major drawdown.",
+      "relatedAssets": [
+        "eth"
+      ],
+      "category": "momentum",
+      "dismissed": false,
+      "timestamp": "2026-02-13T11:03:42.682Z"
+    },
+    {
+      "id": "valuation-ANTH-PRIV-2026-02-13",
+      "priority": "high",
+      "title": "Anthropic Series G valuation: $50/share estimated",
+      "body": "Anthropic raised a Series G round. Estimated share price increased from $40 to $50 (+25%). Your combined holdings (15K exercised ISOs + 105K unexercised ISOs + 8K RSUs = 128K shares) gained ~$1.28M in paper value to ~$6.4M total. Note: This is illiquid private stock. Actual tender offer price may differ. Your Anthropic concentration is now ~79% of net worth.",
+      "relatedAssets": [
+        "eq-anthropic-iso-exercised",
+        "eq-anthropic-iso-unexercised",
+        "eq-anthropic-refresh"
+      ],
+      "category": "valuation",
+      "dismissed": false,
+      "timestamp": "2026-02-13T11:03:42.682Z"
+    },
+    {
       "id": "sig-001",
       "timestamp": "2026-02-12T08:30:00Z",
       "priority": "high",
