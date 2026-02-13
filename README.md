@@ -234,8 +234,13 @@ Frontend view refresh map:
 
 ## Roadmap
 
-- [ ] MCP-backed live market data connectors
-- [ ] Background monitoring agents for signals
+- [ ] Multi-segment product model: `Individual` / `Family` / `Institution`
+- [ ] Agent-first operating model: onboarding, tax, portfolio, wealth planning, and feed intelligence
+- [ ] Tax intelligence expansion from year-end summaries to full lifecycle planning (before / during / after holding)
+- [ ] Live market data and real-time valuation layer (MCP-integrated where possible)
+- [ ] Advanced profile and entity modeling for complex tax identities and ownership structures
+- [ ] Broader asset-management coverage (larger asset universe + scalable navigation IA)
+- [ ] Background monitoring agents for proactive signals
 - [ ] `/capis` evolution from slash command into MCP-native tooling
 - [ ] Multi-portfolio support
 - [ ] Open skill ecosystem for strategy extensions

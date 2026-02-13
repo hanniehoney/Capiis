@@ -79,53 +79,91 @@ export async function renderLegal(container) {
         <!-- Asset Location Analysis -->
         ${renderAssetLocationAnalysis(assets)}
 
-        <!-- Hidden Liability: Unrealized Capital Gains Tax -->
-        ${renderHiddenTaxLiability(assets, profile)}
-
-        <!-- Taxable Events Table -->
-        <div class="section-header animate-in stagger-6">
-          <span class="section-title">Taxable Events</span>
-          <span class="section-subtitle">${tax.taxableEvents.length} events in ${tax.taxYear}</span>
-        </div>
-        <div class="animate-in stagger-7">
-          <table class="tax-events-table">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Type</th>
-                <th>Asset</th>
-                <th class="align-right">Amount</th>
-                <th class="align-right">Cost Basis</th>
-                <th class="align-right">Gain/Loss</th>
-                <th>Term</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${tax.taxableEvents.map(evt => {
-                const isGain = evt.gain >= 0;
-                const gainClass = isGain ? 'change-positive' : 'change-negative';
-                return `
-                  <tr>
-                    <td class="mono">${formatDate(evt.date)}</td>
-                    <td><span class="feed-category-tag ${evt.type === 'loss' ? 'crypto' : 'earnings'}">${evt.type.toUpperCase()}</span></td>
-                    <td><strong>${evt.asset}</strong></td>
-                    <td class="mono align-right">$${formatNumber(evt.amount)}</td>
-                    <td class="mono align-right">$${formatNumber(evt.costBasis)}</td>
-                    <td class="mono align-right ${gainClass}">${isGain ? '+' : ''}$${formatNumber(evt.gain)}</td>
-                    <td><span class="feed-category-tag">${evt.term}</span></td>
-                  </tr>
-                `;
-              }).join('')}
-            </tbody>
-          </table>
-        </div>
-
       </div>
     `;
 
     bindInfoTips(container);
   } catch (e) {
     container.innerHTML = `<div class="empty-state"><div class="empty-icon">\u26A0</div><p>Failed to load tax data</p></div>`;
+    console.error(e);
+  }
+}
+
+export async function renderTaxHiddenLiability(container) {
+  container.innerHTML = `<div class="loading-state"><div class="hex-spinner"></div><p>Loading hidden tax liability...</p></div>`;
+
+  try {
+    const [profile, portfolio] = await Promise.all([
+      getProfile().catch(() => null),
+      getPortfolio().catch(() => ({ assets: [] }))
+    ]);
+    const assets = portfolio ? portfolio.assets : [];
+    const hiddenTax = calculateHiddenTaxLiability(assets, profile);
+
+    container.innerHTML = `
+      <div class="view-container">
+        <div class="section-header animate-in stagger-1">
+          <span class="section-title card-title-row">
+            Hidden Liabilities
+            ${renderInfoTip('Estimated tax if all taxable-account gains were realized today. Applies profile tax rates to taxable unrealized gains.')}
+          </span>
+        </div>
+
+        <div class="tax-priority-grid">
+          <div class="stat-card highlight tax-key-card animate-in stagger-2">
+            <div class="stat-label">Est. Total Tax</div>
+            <div class="stat-value change-negative">$${formatNumber(hiddenTax.totalEstTax)}</div>
+          </div>
+          <div class="tax-support-grid">
+            <div class="stat-card animate-in stagger-3">
+              <div class="stat-label">Total Unrealized Gains</div>
+              <div class="stat-value change-positive">+$${formatNumber(hiddenTax.totalUnrealizedTaxableGains)}</div>
+            </div>
+            <div class="stat-card animate-in stagger-4">
+              <div class="stat-label">Tax-Free Gains</div>
+              <div class="stat-value change-positive">+$${formatNumber(hiddenTax.taxFreeGains)}</div>
+            </div>
+          </div>
+        </div>
+
+        ${hiddenTax.positions.length > 0 ? `
+          <div class="animate-in stagger-3">
+            ${renderHiddenTaxLiabilityTable(hiddenTax.positions)}
+          </div>
+        ` : `
+          <div class="empty-state animate-in stagger-3">
+            <div class="empty-icon">\u2713</div>
+            <p>No taxable unrealized gains found.</p>
+          </div>
+        `}
+      </div>
+    `;
+    bindInfoTips(container);
+  } catch (e) {
+    container.innerHTML = `<div class="empty-state"><div class="empty-icon">\u26A0</div><p>Failed to load hidden tax liability</p></div>`;
+    console.error(e);
+  }
+}
+
+export async function renderTaxableEvents(container) {
+  container.innerHTML = `<div class="loading-state"><div class="hex-spinner"></div><p>Loading taxable events...</p></div>`;
+
+  try {
+    const tax = await getTaxSummary();
+
+    container.innerHTML = `
+      <div class="view-container">
+        <div class="section-header animate-in stagger-1">
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <span class="section-title">Taxable Events</span>
+            <span class="section-subtitle">Tax Year ${tax.taxYear}</span>
+          </div>
+        </div>
+        ${renderTaxableEventsTable(tax, 'animate-in stagger-2')}
+      </div>
+    `;
+  } catch (e) {
+    container.innerHTML = `<div class="empty-state"><div class="empty-icon">\u26A0</div><p>Failed to load taxable events</p></div>`;
     console.error(e);
   }
 }
@@ -196,9 +234,7 @@ function renderAssetLocationAnalysis(assets) {
   `;
 }
 
-function renderHiddenTaxLiability(assets, profile) {
-  if (!assets.length) return '';
-
+function calculateHiddenTaxLiability(assets, profile) {
   const taxableTypes = ['taxable', 'direct', 'checking', 'savings'];
   const taxFreeTypes = ['roth-ira', 'roth-401k', 'hsa', '529'];
   const now = new Date();
@@ -210,6 +246,7 @@ function renderHiddenTaxLiability(assets, profile) {
 
   let totalEstTax = 0;
   let taxFreeGains = 0;
+  let totalUnrealizedTaxableGains = 0;
   const positions = [];
 
   for (const a of assets) {
@@ -240,6 +277,7 @@ function renderHiddenTaxLiability(assets, profile) {
     const effectiveRate = rate + niit + stateTaxRate;
     const estTax = gain * effectiveRate;
     totalEstTax += estTax;
+    totalUnrealizedTaxableGains += gain;
 
     positions.push({
       name: a.name,
@@ -251,57 +289,76 @@ function renderHiddenTaxLiability(assets, profile) {
     });
   }
 
-  if (positions.length === 0 && taxFreeGains === 0) return '';
-
   positions.sort((a, b) => b.estTax - a.estTax);
 
+  return {
+    totalEstTax,
+    taxFreeGains,
+    totalUnrealizedTaxableGains,
+    positions
+  };
+}
+
+function renderHiddenTaxLiabilityTable(positions) {
   return `
-    <div class="card animate-in stagger-6" style="margin-bottom:28px;border-left:4px solid var(--red)">
-      <div class="card-header">
-        <span class="card-title" style="color:var(--red)">Hidden Liability: Unrealized Capital Gains Tax</span>
-      </div>
-      <div style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:16px">
-        Estimated tax if all taxable-account gains were realized today
-      </div>
+    <table class="tax-events-table">
+      <thead>
+        <tr>
+          <th>Asset</th>
+          <th>Account</th>
+          <th class="align-right">Unrealized Gain</th>
+          <th>Term</th>
+          <th class="align-right">Est. Tax</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${positions.map(p => `
+          <tr>
+            <td><strong>${p.name}</strong> <span style="color:var(--text-tertiary);font-size:0.78rem">${p.ticker}</span></td>
+            <td style="font-size:0.82rem">${p.accountName}</td>
+            <td class="mono align-right change-positive">+$${formatNumber(p.gain)}</td>
+            <td><span class="feed-category-tag">${p.term}</span></td>
+            <td class="mono align-right change-negative">$${formatNumber(p.estTax)}</td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+}
 
-      <div style="display:flex;gap:24px;margin-bottom:20px;flex-wrap:wrap">
-        <div class="stat-card" style="flex:1;min-width:180px">
-          <div class="stat-label">Est. Total Tax</div>
-          <div class="stat-value change-negative">$${formatNumber(totalEstTax)}</div>
-        </div>
-        ${taxFreeGains > 0 ? `
-          <div class="stat-card" style="flex:1;min-width:180px">
-            <div class="stat-label">Tax-Free Gains (Roth/HSA/529)</div>
-            <div class="stat-value change-positive">+$${formatNumber(taxFreeGains)}</div>
-            <div class="stat-change" style="color:var(--text-tertiary)">Sheltered from taxes</div>
-          </div>
-        ` : ''}
-      </div>
-
-      ${positions.length > 0 ? `
-        <table class="tax-events-table">
-          <thead>
-            <tr>
-              <th>Asset</th>
-              <th>Account</th>
-              <th class="align-right">Unrealized Gain</th>
-              <th>Term</th>
-              <th class="align-right">Est. Tax</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${positions.map(p => `
+function renderTaxableEventsTable(tax, animationClass = 'animate-in stagger-7') {
+  return `
+    <div class="${animationClass}">
+      <table class="tax-events-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Asset</th>
+            <th class="align-right">Amount</th>
+            <th class="align-right">Cost Basis</th>
+            <th class="align-right">Gain/Loss</th>
+            <th>Term</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${tax.taxableEvents.map(evt => {
+            const isGain = evt.gain >= 0;
+            const gainClass = isGain ? 'change-positive' : 'change-negative';
+            return `
               <tr>
-                <td><strong>${p.name}</strong> <span style="color:var(--text-tertiary);font-size:0.78rem">${p.ticker}</span></td>
-                <td style="font-size:0.82rem">${p.accountName}</td>
-                <td class="mono align-right change-positive">+$${formatNumber(p.gain)}</td>
-                <td><span class="feed-category-tag">${p.term}</span></td>
-                <td class="mono align-right change-negative">$${formatNumber(p.estTax)}</td>
+                <td class="mono">${formatDate(evt.date)}</td>
+                <td><span class="feed-category-tag ${evt.type === 'loss' ? 'crypto' : 'earnings'}">${evt.type.toUpperCase()}</span></td>
+                <td><strong>${evt.asset}</strong></td>
+                <td class="mono align-right">$${formatNumber(evt.amount)}</td>
+                <td class="mono align-right">$${formatNumber(evt.costBasis)}</td>
+                <td class="mono align-right ${gainClass}">${isGain ? '+' : ''}$${formatNumber(evt.gain)}</td>
+                <td><span class="feed-category-tag">${evt.term}</span></td>
               </tr>
-            `).join('')}
-          </tbody>
-        </table>
-      ` : ''}
+            `;
+          }).join('')}
+        </tbody>
+      </table>
     </div>
   `;
 }
@@ -309,11 +366,56 @@ function renderHiddenTaxLiability(assets, profile) {
 function renderInfoTip(text) {
   const safe = escapeHTML(text);
   return `
-    <span class="info-popover">
+    <span class="info-popover" data-info="${safe}">
       <button type="button" class="inline-info-tip" aria-label="Show info">i</button>
-      <span class="inline-info-panel" role="note">${safe}</span>
     </span>
   `;
+}
+
+function getGlobalInfoPanel() {
+  let panel = document.getElementById('global-info-panel');
+  if (!panel) {
+    panel = document.createElement('div');
+    panel.id = 'global-info-panel';
+    panel.className = 'inline-info-panel';
+    panel.setAttribute('role', 'note');
+    document.body.appendChild(panel);
+  }
+  return panel;
+}
+
+function positionInfoPanel(text, button) {
+  if (!button) return;
+  const panel = getGlobalInfoPanel();
+  panel.textContent = text || '';
+
+  const padding = 12;
+  const maxWidth = 520;
+  const width = Math.min(maxWidth, window.innerWidth - padding * 2);
+
+  panel.style.display = 'block';
+  panel.style.width = `${width}px`;
+
+  const buttonRect = button.getBoundingClientRect();
+  const panelRect = panel.getBoundingClientRect();
+
+  let left = buttonRect.left + (buttonRect.width / 2) - (width / 2);
+  left = Math.max(padding, Math.min(left, window.innerWidth - width - padding));
+
+  let top = buttonRect.bottom + 8;
+  if (top + panelRect.height + padding > window.innerHeight) {
+    top = Math.max(padding, buttonRect.top - panelRect.height - 8);
+  }
+
+  panel.style.left = `${left}px`;
+  panel.style.top = `${top}px`;
+}
+
+function closeInfoPanel() {
+  const panel = document.getElementById('global-info-panel');
+  if (panel) {
+    panel.style.display = 'none';
+  }
 }
 
 function bindInfoTips(container) {
@@ -326,13 +428,21 @@ function bindInfoTips(container) {
 
     if (!popover) {
       container.querySelectorAll('.info-popover.open').forEach(p => p.classList.remove('open'));
+      closeInfoPanel();
       return;
     }
     if (!button) return;
 
     const isOpen = popover.classList.contains('open');
     container.querySelectorAll('.info-popover.open').forEach(p => p.classList.remove('open'));
-    popover.classList.toggle('open', !isOpen);
+    if (isOpen) {
+      closeInfoPanel();
+      return;
+    }
+
+    const text = popover.dataset.info || '';
+    positionInfoPanel(text, button);
+    popover.classList.add('open');
   });
 }
 

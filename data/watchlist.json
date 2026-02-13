@@ -1,40 +1,40 @@
 {
   "items": [
     {
-      "id": "w-goog",
+      "id": "w-googl",
       "name": "Alphabet Inc.",
       "ticker": "GOOGL",
       "category": "stocks",
-      "currentPrice": 182.4,
-      "change24h": 0.6,
-      "note": "Watching for AI search monetization clarity"
+      "currentPrice": 185,
+      "change24h": 1.2,
+      "note": "Potential employer if leaving Anthropic"
     },
     {
-      "id": "w-avax",
-      "name": "Avalanche",
-      "ticker": "AVAX",
-      "category": "crypto",
-      "currentPrice": 42.8,
-      "change24h": -1.2,
-      "note": "Potential L1 diversification play"
+      "id": "w-msft",
+      "name": "Microsoft Corp.",
+      "ticker": "MSFT",
+      "category": "stocks",
+      "currentPrice": 420,
+      "change24h": 0.8,
+      "note": "Azure AI competitor, benchmark for AI market"
     },
     {
       "id": "w-pltr",
-      "name": "Palantir",
+      "name": "Palantir Technologies",
       "ticker": "PLTR",
       "category": "stocks",
       "currentPrice": 78.5,
       "change24h": 4.1,
-      "note": "Government AI contracts expanding. Valuation concern."
+      "note": "Enterprise AI play, government contracts"
     },
     {
-      "id": "w-link",
-      "name": "Chainlink",
-      "ticker": "LINK",
-      "category": "crypto",
-      "currentPrice": 22.3,
-      "change24h": 1.8,
-      "note": "Oracle infrastructure for DeFi. Key enabler."
+      "id": "w-coin",
+      "name": "Coinbase Global",
+      "ticker": "COIN",
+      "category": "stocks",
+      "currentPrice": 245,
+      "change24h": -2.3,
+      "note": "Crypto exchange — monitor for BTC/ETH exposure correlation"
     }
   ]
 }

@@ -20,7 +20,7 @@ Based on $ARGUMENTS:
   - "What would you like to do with your Capis data?"
   - Options:
     1. "Clear all data" — wipe everything and start fresh
-    2. "Import template" — load demo data (Bay Area family)
+    2. "Import template" — load demo data (choose from multiple personas)
     3. "Guided setup" — enter your own data step by step
   - Then route to the appropriate section based on the user's choice.
 
@@ -50,13 +50,20 @@ Based on $ARGUMENTS:
 1. Check if data/ already has user data:
    - Check if `~/Desktop/Capis/data/profile.json` exists and has a `personal.name` value
    - If existing data found, use AskUserQuestion:
-     - "Existing data detected. Importing the template will OVERWRITE all current data with the demo portfolio (Alex Chen family, Cupertino CA). Continue?"
+     - "Existing data detected. Importing a template will OVERWRITE all current data. Continue?"
      - Options: "Cancel" / "Overwrite and import"
 
-2. If confirmed (or no existing data), run:
-   ```
-   node ~/Desktop/Capis/scripts/seed-data.js
-   ```
+2. If confirmed (or no existing data), use AskUserQuestion to choose a persona:
+   - Question: "Which template persona is closest to your situation?"
+   - Options:
+     1. "Alex — Google L7, married, 2 kids, Cupertino, Taiwanese immigrant, NW ~$5.5M" — Bay Area family, dual-income, META stock concentration, homeowner, cross-border tax (Taiwan)
+     2. "Sophia — Anthropic Staff, single, SF renter, British expat, NW ~$4.3M" — Early AI startup, private stock concentration, O-1A visa, UK pension/accounts, AMT complexity
 
-3. Report: "Template imported — Alex Chen family, Senior SWE @ Google, Cupertino CA. Net worth ~$1.86M across 28 positions."
-4. Ask: "Want to open the dashboard? (`/capis`)"
+3. Run the appropriate seed command:
+   - Alex: `node ~/Desktop/Capis/scripts/seed-data.js alex`
+   - Sophia: `node ~/Desktop/Capis/scripts/seed-data.js sophia`
+
+4. Report based on selection:
+   - Alex: "Template imported — Alex, Staff Engineer (L7) @ Google, Taiwanese immigrant, Cupertino CA. Net worth ~$5.5M."
+   - Sophia: "Template imported — Sophia, Staff Research Engineer @ Anthropic, British expat, SF. Net worth ~$4.3M."
+5. Ask: "Want to open the dashboard? (`/capis`)"

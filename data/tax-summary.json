@@ -1,83 +1,73 @@
 {
   "taxYear": 2026,
   "jurisdiction": "US",
-  "realizedGains": 45708,
-  "realizedLosses": -3200,
-  "netRealizedGainLoss": 42508,
-  "unrealizedGains": 603542,
-  "unrealizedLosses": -7800,
-  "estimatedTaxLiability": 8734,
-  "longTermRate": 0.15,
-  "shortTermRate": 0.24,
+  "realizedGains": 35000,
+  "realizedLosses": -2400,
+  "netRealizedGainLoss": 32600,
+  "unrealizedGains": 180000,
+  "unrealizedLosses": -8000,
+  "estimatedTaxLiability": 12000,
+  "longTermRate": 0.2,
+  "shortTermRate": 0.37,
   "taxLossHarvestingOpportunities": [
     {
-      "asset": "TSLA",
-      "currentLoss": 0,
-      "potentialSavings": 0,
-      "note": "Monitor for short-term dips below cost basis"
+      "asset": "BND",
+      "currentLoss": -1000,
+      "potentialSavings": 370,
+      "note": "Bond ETF down from rate hikes. Small loss available."
     }
   ],
   "taxableEvents": [
     {
+      "date": "2026-01-20",
+      "type": "sell",
+      "asset": "VTI",
+      "shares": 50,
+      "amount": 14000,
+      "costBasis": 10750,
+      "gain": 3250,
+      "term": "long"
+    },
+    {
+      "date": "2026-02-03",
+      "type": "sell",
+      "asset": "NVDA",
+      "shares": 10,
+      "amount": 8920,
+      "costBasis": 4900,
+      "gain": 4020,
+      "term": "long"
+    },
+    {
       "date": "2026-01-15",
       "type": "sell",
-      "asset": "TSLA",
-      "shares": 20,
-      "amount": 7800,
-      "costBasis": 3900,
-      "gain": 3900,
-      "term": "long"
-    },
-    {
-      "date": "2026-01-22",
-      "type": "sell",
       "asset": "ETH",
-      "units": 5,
-      "amount": 16200,
-      "costBasis": 11000,
-      "gain": 5200,
+      "units": 2,
+      "amount": 6360,
+      "costBasis": 4400,
+      "gain": 1960,
       "term": "short"
     },
     {
-      "date": "2026-02-01",
+      "date": "2026-02-08",
       "type": "sell",
       "asset": "BTC",
-      "units": 0.5,
-      "amount": 50000,
-      "costBasis": 21000,
-      "gain": 29000,
+      "units": 0.1,
+      "amount": 9750,
+      "costBasis": 4200,
+      "gain": 5550,
       "term": "long"
-    },
-    {
-      "date": "2026-02-05",
-      "type": "sell",
-      "asset": "MSFT",
-      "shares": 10,
-      "amount": 4458,
-      "costBasis": 3100,
-      "gain": 1358,
-      "term": "long"
-    },
-    {
-      "date": "2026-01-10",
-      "type": "sell",
-      "asset": "SOL",
-      "units": 50,
-      "amount": 8500,
-      "costBasis": 2250,
-      "gain": 6250,
-      "term": "short"
     },
     {
       "date": "2026-01-28",
       "type": "loss",
-      "asset": "AVAX",
+      "asset": "BND",
       "units": 100,
-      "amount": 3800,
-      "costBasis": 7000,
-      "gain": -3200,
+      "amount": 7200,
+      "costBasis": 7400,
+      "gain": -200,
       "term": "short"
     }
   ],
-  "notes": "Consider harvesting losses in volatile crypto positions before year-end. Long-term capital gains rate applies to holdings >1 year."
+  "notes": "Single filer, CA resident. Federal 37% bracket. Key tax risk: AMT from ISO exercise. 2024 tender offer sale of 15K Anthropic shares was taxed as ISO disposition — verify AMT credit carryforward. Plan multi-year ISO exercise strategy to minimize AMT impact. UK cross-border obligations: FBAR (FinCEN 114) for 3 UK accounts >$10K aggregate. FATCA Form 8938 (threshold $200K for single filers abroad, $50K domestic). UK pension (Aviva, ~£35K) reportable as foreign trust — Form 3520/3520-A may apply. US-UK tax treaty Article 17 governs pension taxation. UK ISA has no US tax-free status — gains/income fully taxable. On O-1A visa, EB-1A pending — no long-term resident status yet, so no exit tax risk currently."
 }

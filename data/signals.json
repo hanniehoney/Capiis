@@ -2,89 +2,96 @@
   "signals": [
     {
       "id": "sig-001",
-      "timestamp": "2026-02-11T08:30:00Z",
+      "timestamp": "2026-02-12T08:30:00Z",
       "priority": "high",
-      "title": "Bitcoin dropped 3.2% overnight",
-      "body": "BTC is down to $97,500 from $100,720. Your crypto allocation shifted to 28.1% vs target 30%. Consider a small buy to rebalance, or hold if you expect further downside.",
+      "title": "Anthropic concentration: $3.3M = 70%+ of net worth",
+      "body": "Your 83,000 Anthropic shares (75K ISOs + 8K RSUs) are worth ~$3.32M at current 409A FMV ($40/share). This private stock concentration is ~77% of your total net worth ($4.3M). You cannot freely sell — watch for the next tender offer window to reduce concentration.",
       "relatedAssets": [
-        "btc"
-      ],
-      "category": "rebalance",
-      "dismissed": false
-    },
-    {
-      "id": "sig-002",
-      "timestamp": "2026-02-11T07:15:00Z",
-      "priority": "medium",
-      "title": "NVIDIA earnings next week (Feb 18)",
-      "body": "NVDA reports Q4 earnings on Feb 18. Current position is up 84%. Consider trimming 10-20% before earnings to lock in gains, or hold through if you're bullish on guidance.",
-      "relatedAssets": [
-        "nvda"
-      ],
-      "category": "earnings",
-      "dismissed": false
-    },
-    {
-      "id": "sig-003",
-      "timestamp": "2026-02-10T22:00:00Z",
-      "priority": "low",
-      "title": "Tax-loss harvesting: SOL has unrealized loss potential",
-      "body": "While SOL is currently profitable, recent volatility may create short-term loss windows. Monitor for tax-loss harvesting if it dips below your cost basis.",
-      "relatedAssets": [
-        "sol"
-      ],
-      "category": "tax",
-      "dismissed": false
-    },
-    {
-      "id": "sig-004",
-      "timestamp": "2026-02-10T16:00:00Z",
-      "priority": "medium",
-      "title": "NexaFlow milestone: Series A talks initiated",
-      "body": "NexaFlow has begun Series A discussions. If successful at a $30M+ valuation, your seed position would 2.5x. Consider your follow-on investment strategy.",
-      "relatedAssets": [
-        "startup-nexaflow"
-      ],
-      "category": "startup",
-      "dismissed": false
-    },
-    {
-      "id": "sig-005",
-      "timestamp": "2026-02-10T14:30:00Z",
-      "priority": "high",
-      "title": "Portfolio concentration alert: Tech stocks at 68%",
-      "body": "Your combined tech stock exposure (AAPL, NVDA, MSFT, TSLA, AMZN) represents 68% of your portfolio. Consider diversifying into other sectors or asset classes.",
-      "relatedAssets": [
-        "aapl",
-        "nvda",
-        "msft",
-        "tsla",
-        "amzn"
+        "eq-anthropic-iso",
+        "eq-anthropic-refresh"
       ],
       "category": "risk",
       "dismissed": false
     },
     {
+      "id": "sig-002",
+      "timestamp": "2026-02-12T07:15:00Z",
+      "priority": "high",
+      "title": "AMT risk: exercising remaining ISOs could trigger $200K+ in AMT",
+      "body": "You hold 75K vested ISOs with $3 strike and $40 FMV. The AMT spread is $37/share. Exercising all at once would create $2.775M in AMT preference income, triggering massive AMT liability. Consider partial exercise strategy — spread over 3-4 tax years. Note: on O-1A visa — if you leave the US, you typically have 90 days to exercise vested ISOs before they convert to NSOs. Plan exercises while employed. Consult cross-border tax advisor given UK ties.",
+      "relatedAssets": [
+        "eq-anthropic-iso"
+      ],
+      "category": "tax",
+      "dismissed": false
+    },
+    {
+      "id": "sig-003",
+      "timestamp": "2026-02-11T22:00:00Z",
+      "priority": "medium",
+      "title": "Next Anthropic tender offer window — plan your strategy",
+      "body": "Anthropic has historically offered annual secondary sale opportunities. The last tender was Nov 2025 at ~$38/share. With the new $60B valuation round, the next tender could be at $45-50/share. Plan which lots to sell (ISOs vs RSUs) and estimate tax implications. Target selling $500-750K worth to reduce concentration.",
+      "relatedAssets": [
+        "eq-anthropic-iso",
+        "eq-anthropic-refresh"
+      ],
+      "category": "startup",
+      "dismissed": false
+    },
+    {
+      "id": "sig-004",
+      "timestamp": "2026-02-11T16:00:00Z",
+      "priority": "medium",
+      "title": "Emergency fund: $200K adequate? Review single-income risk",
+      "body": "Your $200K Marcus HYSA covers ~4+ years of rent ($3,800/mo) but consider total monthly expenses including food, insurance, estimated taxes, etc. As a single income earner with 77% of net worth in illiquid stock, maintaining a robust cash buffer is critical. Target $250K.",
+      "relatedAssets": [
+        "marcus-hysa"
+      ],
+      "category": "risk",
+      "dismissed": false
+    },
+    {
+      "id": "sig-005",
+      "timestamp": "2026-02-11T14:30:00Z",
+      "priority": "medium",
+      "title": "401(k) max out: $24,500 for 2026 tax deferral",
+      "body": "Anthropic does not offer a 401(k) match, but you should still max out your $24,500 contribution for tax deferral. At your 37% federal bracket, this saves ~$9,065 in current-year federal tax. Verify payroll is on track to hit the max by December.",
+      "relatedAssets": [],
+      "category": "tax",
+      "dismissed": false
+    },
+    {
       "id": "sig-006",
-      "timestamp": "2026-02-10T10:00:00Z",
+      "timestamp": "2026-02-11T10:00:00Z",
+      "priority": "medium",
+      "title": "NVIDIA earnings Feb 18 — combined position ~$58K",
+      "body": "NVDA reports Q4 earnings on Feb 18. Your combined position (50 taxable + 15 Roth = 65 shares, ~$58K) is up 82% from avg cost. Consider trimming 10-20% of the taxable lot before earnings to lock in gains and rebalance.",
+      "relatedAssets": [
+        "nvda",
+        "nvda-roth"
+      ],
+      "category": "earnings",
+      "dismissed": false
+    },
+    {
+      "id": "sig-007",
+      "timestamp": "2026-02-10T20:00:00Z",
       "priority": "low",
       "title": "Macro: Fed rate decision in March",
-      "body": "The Federal Reserve meets March 18-19. Markets are pricing in a 65% chance of a rate hold. This could impact your growth stocks and crypto positions.",
+      "body": "The Federal Reserve meets March 18-19. Markets pricing 65% chance of rate hold. Impacts your growth stocks, crypto, and HYSA yield. Current Marcus APY 4.5% — may decline if cuts resume.",
       "relatedAssets": [],
       "category": "macro",
       "dismissed": true
     },
     {
-      "id": "sig-007",
-      "timestamp": "2026-02-09T20:00:00Z",
+      "id": "sig-008",
+      "timestamp": "2026-02-10T12:00:00Z",
       "priority": "medium",
-      "title": "Solana ecosystem surging",
-      "body": "SOL up 12% this week on strong DeFi volume. Your position is now profitable. Consider setting a trailing stop or taking partial profits.",
-      "relatedAssets": [
-        "sol"
-      ],
-      "category": "momentum",
-      "dismissed": true
+      "title": "FBAR deadline April 15 — UK accounts reportable",
+      "body": "You have 3 UK financial accounts (pension, ISA, savings) with aggregate value ~$107K, well above the $10K FBAR threshold. File FinCEN Form 114 by April 15 (auto-extends to Oct 15). Also file FATCA Form 8938 with your 1040.",
+      "relatedAssets": [],
+      "category": "tax",
+      "dismissed": false
     }
   ]
 }

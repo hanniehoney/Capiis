@@ -92,11 +92,56 @@ export async function renderProfile(container) {
 function renderInfoTip(text) {
   const safe = escapeHTML(text);
   return `
-    <span class="info-popover">
+    <span class="info-popover" data-info="${safe}">
       <button type="button" class="inline-info-tip" aria-label="Show info">i</button>
-      <span class="inline-info-panel" role="note">${safe}</span>
     </span>
   `;
+}
+
+function getGlobalInfoPanel() {
+  let panel = document.getElementById('global-info-panel');
+  if (!panel) {
+    panel = document.createElement('div');
+    panel.id = 'global-info-panel';
+    panel.className = 'inline-info-panel';
+    panel.setAttribute('role', 'note');
+    document.body.appendChild(panel);
+  }
+  return panel;
+}
+
+function positionInfoPanel(text, button) {
+  if (!button) return;
+  const panel = getGlobalInfoPanel();
+  panel.textContent = text || '';
+
+  const padding = 12;
+  const maxWidth = 520;
+  const width = Math.min(maxWidth, window.innerWidth - padding * 2);
+
+  panel.style.display = 'block';
+  panel.style.width = `${width}px`;
+
+  const buttonRect = button.getBoundingClientRect();
+  const panelRect = panel.getBoundingClientRect();
+
+  let left = buttonRect.left + (buttonRect.width / 2) - (width / 2);
+  left = Math.max(padding, Math.min(left, window.innerWidth - width - padding));
+
+  let top = buttonRect.bottom + 8;
+  if (top + panelRect.height + padding > window.innerHeight) {
+    top = Math.max(padding, buttonRect.top - panelRect.height - 8);
+  }
+
+  panel.style.left = `${left}px`;
+  panel.style.top = `${top}px`;
+}
+
+function closeInfoPanel() {
+  const panel = document.getElementById('global-info-panel');
+  if (panel) {
+    panel.style.display = 'none';
+  }
 }
 
 function bindInfoTips(container) {
@@ -112,6 +157,7 @@ function bindInfoTips(container) {
     // Click outside any info popover closes all open panels.
     if (!popover) {
       container.querySelectorAll('.info-popover.open').forEach(p => p.classList.remove('open'));
+      closeInfoPanel();
       return;
     }
 
@@ -121,7 +167,14 @@ function bindInfoTips(container) {
 
     const isOpen = popover.classList.contains('open');
     container.querySelectorAll('.info-popover.open').forEach(p => p.classList.remove('open'));
-    popover.classList.toggle('open', !isOpen);
+    if (isOpen) {
+      closeInfoPanel();
+      return;
+    }
+
+    const text = popover.dataset.info || '';
+    positionInfoPanel(text, button);
+    popover.classList.add('open');
   });
 }
 

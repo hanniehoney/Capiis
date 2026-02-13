@@ -18,9 +18,11 @@ Check what data already exists:
 1. Read `~/Desktop/Capis/data/profile.json`
    - If it has `personal.name` → Phase 1 (Profile) is likely complete
    - If it has a non-empty `accounts` array → Phase 2 (Accounts) is likely complete
-2. List xlsx files in `~/Desktop/Capis/data/` and check which have data rows beyond the header
+2. Read `~/Desktop/Capis/data/profile.md`
+   - If it exists and has content beyond section headers → Phase 1b (Narrative) is likely complete
+3. List xlsx files in `~/Desktop/Capis/data/` and check which have data rows beyond the header
    - Any xlsx with >1 row means that category has been entered
-3. Tell the user what you found:
+4. Tell the user what you found:
    - "I see you already have profile data and N asset categories filled in. Want to continue from where you left off, or redo a specific section?"
    - If everything is empty, just start from Phase 1
 
@@ -45,6 +47,52 @@ After collecting all answers:
 - Look up: federal bracket, state rate, LTCG rate, STCG rate, NIIT threshold, standard deduction, contribution limits
 - Write `~/Desktop/Capis/data/profile.json` with personal, family (if applicable), location, and tax sections
 - Show the user what was saved and confirm it looks right
+
+## Phase 1b: Narrative Profile (Optional)
+
+This phase collects soft context that structured data can't capture -- investment philosophy, life goals, and key decisions. It writes to `~/Desktop/Capis/data/profile.md`.
+
+**Transition from Phase 1**: After saving profile.json, say something like:
+
+> "Great, your profile is saved. Before we move on to accounts and assets, I'd love to understand a bit more about your financial thinking -- your goals, risk tolerance, and what's driving your investment decisions. This helps me give you better advice down the road. We can skip this and come back to it anytime."
+
+If the user wants to skip, say "No problem -- you can fill this in anytime through normal conversation" and move to Phase 2.
+
+If the user is willing, ask these questions **one at a time**:
+
+1. **Investment philosophy**: "How would you describe your investing approach? For example: mostly index funds and chill, active stock picking, crypto-forward, real estate focused... whatever feels right."
+
+2. **Risk tolerance**: "How do you feel about risk? Are you comfortable with big swings for potentially higher returns, or do you prefer steady and predictable?"
+
+3. **Financial goals**: "What are your main financial goals? Think short-term (next 1-2 years), medium-term (3-7 years), and long-term (10+ years). Could be anything -- house, kids' college, early retirement, starting a company, travel."
+
+4. **Key context**: "Is there anything else that shapes your financial decisions? Career plans, family situation, upcoming big expenses, why you hold certain investments..."
+
+After collecting answers (however many the user provides), write `~/Desktop/Capis/data/profile.md` with the standard section structure:
+
+```markdown
+# Financial Profile -- {user's name}
+
+## Career & Identity
+{From Phase 1 structured data + any career context the user shared}
+
+## Family & Life Stage
+{From Phase 1 family data + any life stage context}
+
+## Financial Philosophy & Risk
+{Investment approach + risk tolerance answers}
+
+## Goals & Priorities
+{Financial goals, organized by timeframe if possible}
+
+## Key Decisions & Context
+{Why they hold what they hold, any strategic rationale shared}
+
+## Recent Changes & Events
+{Leave empty or note "Initial profile created on {date}"}
+```
+
+Fill in sections based on what the user actually said. Leave sections sparse if the user didn't provide much -- they'll get filled in organically through future conversations. Don't fabricate or infer beyond what was stated.
 
 ## Phase 2: Account Inventory
 

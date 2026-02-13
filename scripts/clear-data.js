@@ -41,4 +41,37 @@ for (const cat of LIABILITY_FILES) {
   writeEmptyExcel(`${cat}.xlsx`, LIABILITY_HEADERS, 'Liabilities');
 }
 
-console.log('\nDone. Data cleared. 14 empty xlsx shells created. categories.json preserved.\n');
+// Write profile.md template
+const PROFILE_MD_TEMPLATE = `# Profile Memory
+
+> Last updated: (not yet set)
+
+## Career & Identity
+
+(Tell Claude about yourself — job, company, career history)
+
+## Family & Life Stage
+
+(Family situation, kids, life stage)
+
+## Financial Philosophy & Risk
+
+(How do you think about investing? Risk tolerance?)
+
+## Goals & Priorities
+
+(What are you working toward financially?)
+
+## Key Decisions & Context
+
+(Why did you make certain financial decisions?)
+
+## Recent Changes & Events
+
+(Life changes, job switches, major purchases — Claude will update this from conversations)
+`;
+
+fs.writeFileSync(path.join(DATA_DIR, 'profile.md'), PROFILE_MD_TEMPLATE);
+console.log('  reset profile.md to template');
+
+console.log('\nDone. Data cleared. 14 empty xlsx shells created. profile.md reset. categories.json preserved.\n');

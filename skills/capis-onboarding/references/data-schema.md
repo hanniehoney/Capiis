@@ -77,6 +77,45 @@ Each liability `.xlsx` file has a single sheet named "Liabilities" with these co
 | `auto-loan.xlsx` | auto-loan |
 | `student-loan.xlsx` | student-loan |
 
+## profile.md (Narrative Context)
+
+`data/profile.md` stores soft context that structured JSON can't capture -- investment philosophy, life goals, career trajectory, family plans, and key decisions. Every agent and skill reads this file for context and appends to it when the user reveals new information.
+
+### Section Structure
+
+```markdown
+# Financial Profile -- {Name}
+
+## Career & Identity
+Free-form: job, company, career trajectory, industry, professional identity.
+
+## Family & Life Stage
+Free-form: marital status, children, aging parents, life stage context.
+
+## Financial Philosophy & Risk
+Free-form: investing approach (index vs active, crypto-forward, etc.), risk tolerance,
+what they believe in financially.
+
+## Goals & Priorities
+Free-form: short-term (1-2yr), medium-term (3-7yr), long-term (10+yr) goals.
+Could include: house purchase, college funding, early retirement, travel, philanthropy.
+
+## Key Decisions & Context
+Free-form with date stamps: why certain investments were made, strategic rationale,
+past decisions that explain the current portfolio shape.
+
+## Recent Changes & Events
+Append-only with date stamps: job changes, stock sales, new dependents, relocations,
+major financial events. Agents append here when users reveal new info.
+```
+
+### Rules
+
+- **Read before every analysis** -- all agents and skills should read this file at startup for context.
+- **Append, never overwrite** -- especially `## Recent Changes & Events` and `## Key Decisions & Context`. Add new entries with date stamps.
+- **Sections can be sparse** -- not all sections need content. They get filled organically through conversations.
+- **Created during onboarding** (Phase 1b) or through normal conversation when the user shares context.
+
 ## profile.json Schema
 
 ```json

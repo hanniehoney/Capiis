@@ -1,9 +1,18 @@
 import { getSignals, getCategoryConfig } from '../utils/api.js';
 import { getCategoryColor, getCategoryLabel, setCategoryConfig } from './charts.js';
 
-let wealthExpanded = true;
 let assetsExpanded = true;
 let liabilitiesExpanded = true;
+let taxExpanded = true;
+const taxDetailViews = ['tax-hidden-liability', 'tax-taxable-events'];
+
+function isWealthView(hash) {
+  return hash === 'portfolio';
+}
+
+function isTaxView(hash) {
+  return hash === 'legal' || taxDetailViews.includes(hash);
+}
 
 export async function renderSidebar(container) {
   let signalCount = 0;
@@ -22,11 +31,12 @@ export async function renderSidebar(container) {
   }
 
   const currentHash = location.hash.slice(1) || 'portfolio';
-  const isWealthSection = currentHash === 'portfolio' || currentHash.startsWith('category-');
+  const isWealthSection = isWealthView(currentHash);
+  const isTaxSection = isTaxView(currentHash);
   const activeCategory = currentHash.startsWith('category-') ? currentHash.slice('category-'.length) : '';
 
-  if (!isWealthSection) {
-    wealthExpanded = false;
+  if (!isTaxSection) {
+    taxExpanded = false;
   }
 
   // Build category sub-items from config
@@ -42,7 +52,7 @@ export async function renderSidebar(container) {
     const color = getCategoryColor(cat);
     const label = getCategoryLabel(cat);
     const isActive = currentHash === `category-${cat}`;
-    return `<a href="#category-${cat}" class="nav-sub-item ${isActive ? 'active' : ''}" data-view="category-${cat}">
+    return `<a href="#category-${cat}" class="nav-sub-item ${isActive ? 'active' : ''}" data-view="category-${cat}" data-group="assets">
       <span class="nav-dot" style="background:${color}"></span>
       ${label}
     </a>`;
@@ -52,13 +62,25 @@ export async function renderSidebar(container) {
     const color = getCategoryColor(cat);
     const label = getCategoryLabel(cat);
     const isActive = currentHash === `category-${cat}`;
-    return `<a href="#category-${cat}" class="nav-sub-item ${isActive ? 'active' : ''}" data-view="category-${cat}">
+    return `<a href="#category-${cat}" class="nav-sub-item ${isActive ? 'active' : ''}" data-view="category-${cat}" data-group="liabilities">
       <span class="nav-dot" style="background:${color}"></span>
       ${label}
     </a>`;
   }).join('');
 
-  const showWealthDetails = isWealthSection && wealthExpanded;
+  const taxSubItems = [
+    { view: 'tax-hidden-liability', label: 'Hidden Liabilities' },
+    { view: 'tax-taxable-events', label: 'Taxable Events' }
+  ].map(item => `
+    <a href="#${item.view}" class="nav-sub-item ${currentHash === item.view ? 'active' : ''}" data-view="${item.view}">
+      <span class="nav-dot" style="background:var(--gold-primary)"></span>
+      ${item.label}
+    </a>
+  `).join('');
+
+  const showAssetsDetails = assetsExpanded;
+  const showLiabilitiesDetails = liabilitiesExpanded;
+  const showTaxDetails = isTaxSection && taxExpanded;
 
   container.innerHTML = `
     <div class="sidebar-brand">
@@ -79,29 +101,41 @@ export async function renderSidebar(container) {
         Wealth
       </a>
 
-      ${showWealthDetails ? `
+      <button class="nav-item nav-toggle ${isAssetCategoryActive ? 'active' : ''} ${assetsExpanded ? '' : 'is-collapsed'}" data-toggle="assets" data-view="assets" type="button">
+        <span class="nav-icon">\u25C6</span>
+        Assets
+        <span class="section-chevron nav-chevron">\u25BE</span>
+      </button>
+      ${showAssetsDetails ? `
         <div class="nav-sub-section">
-          <button class="sidebar-section-label section-toggle ${assetsExpanded ? '' : 'is-collapsed'}" data-toggle="assets" type="button">
-            <span>Assets</span>
-            <span class="section-chevron">\u25BE</span>
-          </button>
-          ${assetsExpanded ? assetSubItems : ''}
-          <button class="sidebar-section-label section-toggle ${liabilitiesExpanded ? '' : 'is-collapsed'}" data-toggle="liabilities" type="button">
-            <span>Liabilities</span>
-            <span class="section-chevron">\u25BE</span>
-          </button>
-          ${liabilitiesExpanded ? liabilitySubItems : ''}
+          ${assetSubItems}
         </div>
       ` : ''}
 
+      <button class="nav-item nav-toggle ${isLiabilityCategoryActive ? 'active' : ''} ${liabilitiesExpanded ? '' : 'is-collapsed'}" data-toggle="liabilities" data-view="liabilities" type="button">
+        <span class="nav-icon">\u25C7</span>
+        Liabilities
+        <span class="section-chevron nav-chevron">\u25BE</span>
+      </button>
+      ${showLiabilitiesDetails ? `
+        <div class="nav-sub-section">
+          ${liabilitySubItems}
+        </div>
+      ` : ''}
+
+      <a href="#legal" class="nav-item ${isTaxSection ? 'active' : ''}" data-view="legal">
+        <span class="nav-icon">\u25CA</span>
+        Tax
+      </a>
+      ${showTaxDetails ? `
+        <div class="nav-sub-section">
+          ${taxSubItems}
+        </div>
+      ` : ''}
       <a href="#feed" class="nav-item ${currentHash === 'feed' ? 'active' : ''}" data-view="feed">
         <span class="nav-icon">\u25C9</span>
         Feed
         ${signalCount > 0 ? `<span class="nav-badge">${signalCount}</span>` : ''}
-      </a>
-      <a href="#legal" class="nav-item ${currentHash === 'legal' ? 'active' : ''}" data-view="legal">
-        <span class="nav-icon">\u25CA</span>
-        Tax
       </a>
     </nav>
 
@@ -113,18 +147,18 @@ export async function renderSidebar(container) {
     </div>
   `;
 
-  const wealthLink = container.querySelector('a[data-view="portfolio"]');
-  if (wealthLink) {
-    wealthLink.addEventListener('click', (e) => {
+  const taxLink = container.querySelector('a[data-view="legal"]');
+  if (taxLink) {
+    taxLink.addEventListener('click', (e) => {
       const hash = location.hash.slice(1) || 'portfolio';
-      const inWealthSection = hash === 'portfolio' || hash.startsWith('category-');
-      if (inWealthSection) {
+      const inTaxSection = isTaxView(hash);
+      if (inTaxSection) {
         e.preventDefault();
-        wealthExpanded = !wealthExpanded;
+        taxExpanded = !taxExpanded;
         renderSidebar(container);
         return;
       }
-      wealthExpanded = true;
+      taxExpanded = true;
     });
   }
 
@@ -165,12 +199,21 @@ function getLiabilityCategories(config) {
 
 export function updateActiveNav() {
   const hash = location.hash.slice(1) || 'portfolio';
-  const isWealthSection = hash === 'portfolio' || hash.startsWith('category-');
+  const isWealthSection = isWealthView(hash);
+  const isTaxSection = isTaxView(hash);
+  const assetActive = document.querySelector('.nav-sub-item[data-group="assets"].active');
+  const liabilityActive = document.querySelector('.nav-sub-item[data-group="liabilities"].active');
 
   document.querySelectorAll('.nav-item, .nav-sub-item').forEach(item => {
     const view = item.dataset.view;
     if (view === 'portfolio') {
       item.classList.toggle('active', isWealthSection);
+    } else if (view === 'legal' && item.classList.contains('nav-item')) {
+      item.classList.toggle('active', isTaxSection);
+    } else if (view === 'assets') {
+      item.classList.toggle('active', !!assetActive);
+    } else if (view === 'liabilities') {
+      item.classList.toggle('active', !!liabilityActive);
     } else {
       item.classList.toggle('active', view === hash);
     }

@@ -2,7 +2,7 @@ import { renderSidebar, updateActiveNav } from './components/sidebar.js';
 import { renderPortfolio } from './views/portfolio.js';
 import { renderCategoryDetail } from './views/category-detail.js';
 import { renderFeed } from './views/feed.js';
-import { renderLegal } from './views/legal.js';
+import { renderLegal, renderTaxHiddenLiability, renderTaxableEvents } from './views/legal.js';
 import { renderProfile } from './views/profile.js';
 import { subscribe } from './utils/sse.js';
 
@@ -10,14 +10,16 @@ const views = {
   portfolio: renderPortfolio,
   feed: renderFeed,
   legal: renderLegal,
+  'tax-hidden-liability': renderTaxHiddenLiability,
+  'tax-taxable-events': renderTaxableEvents,
   profile: renderProfile
 };
 
 const resourceToViews = {
-  portfolio: ['portfolio'],
+  portfolio: ['portfolio', 'tax-hidden-liability'],
   signals: ['feed'],
-  profile: ['profile', 'legal'],
-  tax: ['legal']
+  profile: ['profile', 'legal', 'tax-hidden-liability'],
+  tax: ['legal', 'tax-taxable-events']
 };
 
 async function init() {

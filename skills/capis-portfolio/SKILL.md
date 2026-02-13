@@ -20,6 +20,7 @@ Portfolio data is stored as Excel files in `data/`, one per asset category. Othe
 - `data/watchlist.json` -- Tracked assets not yet in the portfolio
 - `data/feed.json` -- News and market intelligence feed
 - `data/tax-summary.json` -- Tax planning data and taxable events
+- `data/profile.md` -- Narrative context: investment philosophy, risk tolerance, financial goals, career plans, key decisions
 
 New categories are added by dropping a new `.xlsx` file into `data/`.
 
@@ -31,13 +32,25 @@ Employee equity (`employee-equity.xlsx`) has additional columns: `equityType` (R
 
 See `references/asset-schema.md` for full schema details.
 
+## Narrative Context
+
+Before any analysis or recommendation, read `data/profile.md` for the user's investment philosophy, risk tolerance, financial goals, and key life context. Use this to tailor advice:
+
+- **Financial Philosophy & Risk** section informs how aggressive or conservative recommendations should be
+- **Goals & Priorities** section helps frame which metrics matter most (growth vs income vs preservation)
+- **Career & Identity** and **Family & Life Stage** sections provide context for concentration risk in employee equity, liquidity needs, etc.
+- **Key Decisions & Context** explains why the portfolio looks the way it does — respect existing rationale before suggesting changes
+
+If `data/profile.md` doesn't exist or is empty, proceed without it — but note to the user that narrative context would improve recommendations.
+
 ## Portfolio Analysis
 
 When asked about portfolio status:
-1. Read the Excel files in `data/` (via the server API at `GET /api/portfolio` or directly)
-2. Calculate: total value, allocation percentages by category (stocks/crypto/angel-investment/employee-equity/etc.), unrealized P&L per position and overall
-3. Identify top performers and underperformers by % gain
-4. Present a clear summary with key metrics in a concise format
+1. Read `data/profile.md` for narrative context (philosophy, goals, risk tolerance)
+2. Read the Excel files in `data/` (via the server API at `GET /api/portfolio` or directly)
+3. Calculate: total value, allocation percentages by category (stocks/crypto/angel-investment/employee-equity/etc.), unrealized P&L per position and overall
+4. Identify top performers and underperformers by % gain
+5. Present a clear summary with key metrics in a concise format
 
 ## Signal Generation
 
@@ -88,7 +101,19 @@ When adding or editing holdings, include the `accountType`, `accountName`, `cost
 ## Rebalancing
 
 When asked about rebalancing:
-1. Calculate current vs target allocation
-2. Suggest specific actions (buy/sell amounts) to rebalance
-3. Prioritize tax-efficient rebalancing (sell losers first, avoid short-term gains)
-4. Present trade-offs clearly so the user can decide quickly
+1. Read `data/profile.md` to understand the user's risk tolerance and goals before recommending targets
+2. Calculate current vs target allocation
+3. Suggest specific actions (buy/sell amounts) to rebalance
+4. Prioritize tax-efficient rebalancing (sell losers first, avoid short-term gains)
+5. Present trade-offs clearly so the user can decide quickly
+
+## Profile.md Backfill
+
+When the user reveals new investment-relevant context during conversation, update `data/profile.md`:
+
+- New investment decision or thesis → append to `## Key Decisions & Context`
+- Change in risk tolerance or philosophy → update `## Financial Philosophy & Risk`
+- New financial goal → append to `## Goals & Priorities`
+- Career change, family event, or life milestone → append to `## Recent Changes & Events`
+
+Always read the file first and merge — never overwrite existing content. Add a date stamp to new entries in `## Recent Changes & Events` and `## Key Decisions & Context`.

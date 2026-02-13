@@ -37,8 +37,9 @@ Then calculate:
 Read these files from the project root (`~/Desktop/Capis`):
 
 1. **`data/profile.json`** -- filing status, tax rates, state, accounts
-2. **`data/tax-summary.json`** -- realized gains/losses, taxable events, estimated liability
-3. **`data/categories.json`** -- account type definitions and tax treatment metadata
+2. **`data/profile.md`** -- narrative context: career trajectory, family plans, financial philosophy, life goals, recent changes. Use this to inform tax advice — e.g., if the user is planning to leave their job, factor in RSU acceleration and income cliff; if they mention college funding goals, emphasize 529 strategies; if they describe a conservative philosophy, weight tax-loss harvesting over aggressive rebalancing.
+3. **`data/tax-summary.json`** -- realized gains/losses, taxable events, estimated liability
+4. **`data/categories.json`** -- account type definitions and tax treatment metadata
 
 Then fetch live portfolio data:
 
@@ -119,8 +120,11 @@ Before returning the briefing, write back any corrections or new data discovered
 | Tax rates corrected | `data/profile.json` (update `tax` section) |
 | Estimated liability recalculated | `data/tax-summary.json` (update `estimatedTaxLiability`) |
 | Missing profile fields filled | `data/profile.json` (add missing fields) |
+| New tax-relevant life context | `data/profile.md` (append to `## Recent Changes & Events`) |
 
 Read the file first, merge changes carefully, then write. Do NOT overwrite unrelated fields.
+
+**Profile.md backfill**: If during the conversation the user revealed any tax-relevant life information (job change, stock sale plans, new dependents, relocation, retirement timeline, etc.), append it to the `## Recent Changes & Events` section of `data/profile.md` with a date stamp. Read the file first and append — never overwrite existing entries.
 
 ### Step 5: Return Structured Briefing
 

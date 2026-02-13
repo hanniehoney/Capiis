@@ -7,14 +7,14 @@ A wealth & asset management dashboard built on the Claude Code ecosystem.
 ## Quick Start
 
 - `npm start` -- starts Express server on http://localhost:3333
-- `npm run seed` -- resets all data files to template defaults (generates Excel + JSON)
+- `npm run seed` -- imports default template (Alex). Use `node scripts/seed-data.js --list` to see all personas.
 - `npm run clear` -- wipes all user data, preserves empty xlsx shells + categories.json
 - `/capis` -- slash command to launch (starts server + opens browser)
 - `/capis stop` -- stops the server
 - `/capis reset` -- resets template data
 - `/capis-data` -- data management (clear / template / guided setup)
 - `/capis-data clear` -- wipes all data (confirms first)
-- `/capis-data template` -- imports Bay Area family demo data
+- `/capis-data template` -- imports demo data (choose from multiple personas)
 - `/capis-data setup` -- guided step-by-step data entry (invokes capis-onboarding skill)
 
 ## Project Structure
@@ -29,13 +29,24 @@ A wealth & asset management dashboard built on the Claude Code ecosystem.
 - `skills/capis-portfolio/` -- Portfolio intelligence skill (interactive)
 - `skills/capis-onboarding/` -- Guided data entry skill (5-phase: profile → accounts → assets → liabilities → complete)
 - `skills/tax-professional/` -- General US tax knowledge base (reference skill)
-- `scripts/seed-data.js` -- Template data seeder (Bay Area family: Google SWE, Cupertino, married, 2 kids)
+- `scripts/seed-data.js` -- Multi-persona template seeder. Supports `--list` flag. Personas in `scripts/personas/`.
+- `scripts/personas/` -- Persona data modules (alex.js, sophia.js, etc.)
 - `scripts/clear-data.js` -- Wipes user data, preserves schema (categories.json + header-only xlsx shells)
+
+## Template Personas
+
+| Persona | Key | Description |
+|---------|-----|-------------|
+| Alex | `alex` | 37, Taiwanese. Staff Engineer (L7) @ Google, ex-Meta E6. Married, 2 kids. Cupertino homeowner. NW ~$5.5M. Green card holder, no US-Taiwan treaty. META stock concentration. |
+| Sophia | `sophia` | 32, British. Staff Research Engineer @ Anthropic (ex-DeepMind London). Single, SF renter. NW ~$4.3M. O-1A visa. Private company stock, ISOs, AMT risk. UK pension/accounts. |
+
+Import with: `node scripts/seed-data.js [persona-key]` or use `/capis-data template` for guided selection.
 
 ## Data Architecture (Hybrid)
 
 - **Portfolio data** lives in `data/*.xlsx` -- one Excel file per asset category (stocks.xlsx, crypto.xlsx, angel-investment.xlsx, etc.)
 - **Other data** (signals, feed, watchlist, tax) remains in `data/*.json`
+- **Profile memory** lives in `data/profile.md` -- narrative context (goals, philosophy, career, family) that agents/skills read for personalized advice. Updated automatically from conversations.
 - **Server** reads Excel files (via `lib/excel.js`) and serves as JSON API -- read-only for portfolio
 - **Claude Code** handles all portfolio writes using the xlsx skill (add, edit, delete holdings)
 - **Dashboard** is pure visualization -- no CRUD operations
@@ -78,6 +89,12 @@ A wealth & asset management dashboard built on the Claude Code ecosystem.
 | `data/feed.json` | News and market intelligence feed |
 | `data/watchlist.json` | Watched assets not in portfolio |
 
+**Markdown files**:
+
+| File | Description |
+|------|-------------|
+| `data/profile.md` | Profile memory -- narrative context, life goals, investment philosophy, key decisions. Read by all agents/skills. |
+
 Drop any new `.xlsx` file into `data/` to add a new asset category automatically.
 
 ## Excel Schema
@@ -104,6 +121,7 @@ Employee equity columns (employee-equity.xlsx only): `equityType`, `grantDate`, 
 | GET | `/api/watchlist` | Watched assets |
 | GET | `/api/stats` | Computed portfolio statistics |
 | GET | `/api/profile` | User profile (location, tax, accounts) |
+| GET | `/api/profile/memory` | Profile memory narrative (text/markdown) |
 | GET | `/api/events` | SSE stream for real-time browser sync |
 
 ## Real-Time Sync
@@ -216,6 +234,8 @@ Multiple agents run concurrently when invoked together. Each agent reads its own
 
 Agents can preload skills for domain knowledge via the `skills` frontmatter field. The Tax Agent preloads Tax Professional for deep tax law questions.
 
+**All agents and skills should read `data/profile.md`** at startup for narrative context (goals, philosophy, career, family). This enables personalized advice without requiring the user to repeat background information.
+
 ## Data Backfill Convention (Project-Wide)
 
 **Every agent and skill MUST write back any new or corrected information to the appropriate data files.** This is a core architectural principle -- the system learns and self-corrects through use.
@@ -238,6 +258,7 @@ Agents can preload skills for domain knowledge via the `skills` frontmatter fiel
 | Signals and alerts | `data/signals.json` |
 | Market intelligence | `data/feed.json` |
 | Category config | `data/categories.json` |
+| Life events, goals, philosophy, career changes | `data/profile.md` |
 
 ### Web Verification
 

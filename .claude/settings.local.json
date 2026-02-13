@@ -11,7 +11,12 @@
       "Bash(kill:*)",
       "Bash(curl:*)",
       "Bash(python3:*)",
-      "Bash(test:*)"
+      "Bash(test:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "mcp__perplexity__reason",
+      "mcp__perplexity__search"
     ]
   }
 }

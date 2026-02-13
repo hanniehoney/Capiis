@@ -46,6 +46,9 @@ try {
     } else if (filename === 'profile.json') {
       clearTimeout(watchDebounce);
       watchDebounce = setTimeout(() => broadcast('profile'), 500);
+    } else if (filename === 'profile.md') {
+      clearTimeout(watchDebounce);
+      watchDebounce = setTimeout(() => broadcast('profile'), 500);
     } else if (filename === 'tax-summary.json') {
       clearTimeout(watchDebounce);
       watchDebounce = setTimeout(() => broadcast('tax'), 500);
@@ -159,6 +162,14 @@ app.get('/api/profile', (req, res) => {
   const data = readJSON('profile.json');
   if (!data) return res.status(404).json({ error: 'No profile data' });
   res.json(data);
+});
+
+// Profile memory (narrative markdown)
+app.get('/api/profile/memory', (req, res) => {
+  const filepath = path.join(DATA_DIR, 'profile.md');
+  if (!fs.existsSync(filepath)) return res.status(404).send('No profile memory');
+  const content = fs.readFileSync(filepath, 'utf-8');
+  res.type('text/markdown').send(content);
 });
 
 // Aggregated stats (from Excel)

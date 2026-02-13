@@ -107,6 +107,21 @@
       "label": "Savings",
       "taxTreatment": "taxable",
       "description": "Savings account — interest taxable as ordinary income"
+    },
+    "foreign-pension": {
+      "label": "Foreign Pension",
+      "taxTreatment": "foreign",
+      "description": "Foreign retirement account — US reporting required (FBAR, FATCA, Form 3520)"
+    },
+    "foreign-taxable": {
+      "label": "Foreign Taxable",
+      "taxTreatment": "foreign",
+      "description": "Foreign investment account — no US tax advantages, FBAR/FATCA reportable"
+    },
+    "foreign-savings": {
+      "label": "Foreign Savings",
+      "taxTreatment": "foreign",
+      "description": "Foreign savings account — interest taxable in US, FBAR/FATCA reportable"
     }
   },
   "categoryMeta": {

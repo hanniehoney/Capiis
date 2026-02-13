@@ -3,162 +3,142 @@
     {
       "id": "f-001",
       "source": "Bloomberg",
-      "headline": "Bitcoin Falls Below $98K as Crypto Market Faces Profit-Taking",
-      "summary": "Major cryptocurrencies declined overnight as traders locked in gains from the recent rally. BTC dropped 3.2% while ETH fell 1.8%.",
+      "headline": "Anthropic Raises $5B Series E at $60B Valuation",
+      "summary": "Anthropic has closed a $5 billion Series E round led by Google and Spark Capital, valuing the AI safety company at $60 billion. The round follows rapid enterprise adoption of Claude. For early employees like #47, this marks the third major valuation step-up since joining.",
       "url": "#",
-      "timestamp": "2026-02-11T08:00:00Z",
-      "category": "crypto",
-      "relevanceScore": 9
+      "timestamp": "2026-02-12T08:00:00Z",
+      "category": "startup",
+      "relevanceScore": 10
     },
     {
       "id": "f-002",
       "source": "Reuters",
-      "headline": "NVIDIA Set to Report Q4 Earnings Amid AI Spending Boom",
-      "summary": "Analysts expect NVIDIA to post record revenue of $38.5B, driven by surging demand for AI training chips from hyperscalers.",
+      "headline": "AI Safety Regulation Bill Advances in Senate",
+      "summary": "A bipartisan Senate bill requiring frontier AI labs to conduct independent safety evaluations before deployment advanced out of committee. Could impact Anthropic operations and compliance costs.",
       "url": "#",
-      "timestamp": "2026-02-11T07:30:00Z",
-      "category": "earnings",
-      "relevanceScore": 9
+      "timestamp": "2026-02-12T07:30:00Z",
+      "category": "macro",
+      "relevanceScore": 10
     },
     {
       "id": "f-003",
       "source": "TechCrunch",
-      "headline": "AI Supply Chain Startup NexaFlow Enters Series A Discussions",
-      "summary": "NexaFlow, which uses AI to optimize supply chain logistics, is reportedly in talks with Tier 1 VCs for a $30M Series A round.",
+      "headline": "Anthropic Claude Achieves Record Enterprise Adoption",
+      "summary": "Anthropic reports Claude is now used by 60% of Fortune 500 companies, up from 35% a year ago. Enterprise ARR exceeded $1.5B in Q4 2025.",
       "url": "#",
-      "timestamp": "2026-02-11T06:00:00Z",
-      "category": "angel-investment",
-      "relevanceScore": 10
+      "timestamp": "2026-02-11T20:00:00Z",
+      "category": "startup",
+      "relevanceScore": 9
     },
     {
       "id": "f-004",
-      "source": "CNBC",
-      "headline": "Fed Officials Signal Patience on Rate Cuts Amid Sticky Inflation",
-      "summary": "Federal Reserve governors emphasized data dependency, suggesting rate cuts may be delayed until clear evidence of inflation returning to target.",
+      "source": "WSJ",
+      "headline": "AI Startup Employee Stock Liquidity Improves as Secondary Markets Grow",
+      "summary": "Secondary market platforms report record volume in AI company shares, with Anthropic, OpenAI, and xAI among the most traded. Employees gain more options for pre-IPO liquidity.",
       "url": "#",
-      "timestamp": "2026-02-11T05:45:00Z",
+      "timestamp": "2026-02-11T18:00:00Z",
+      "category": "startup",
+      "relevanceScore": 9
+    },
+    {
+      "id": "f-005",
+      "source": "CNBC",
+      "headline": "SF Rents Stabilize After Two Years of Decline",
+      "summary": "San Francisco rental prices have plateaued, with 1BR median rents at $3,700-$3,900. Hayes Valley and Mission remain the most competitive neighborhoods.",
+      "url": "#",
+      "timestamp": "2026-02-11T16:00:00Z",
       "category": "macro",
       "relevanceScore": 7
     },
     {
-      "id": "f-005",
-      "source": "CoinDesk",
-      "headline": "Solana DeFi TVL Hits All-Time High of $18B",
-      "summary": "Solana ecosystem DeFi protocols reached record total value locked, with Raydium and Marinade leading the charge.",
-      "url": "#",
-      "timestamp": "2026-02-10T22:00:00Z",
-      "category": "crypto",
-      "relevanceScore": 8
-    },
-    {
       "id": "f-006",
-      "source": "WSJ",
-      "headline": "Apple Services Revenue Grows 18% as Hardware Sales Stabilize",
-      "summary": "Apple reported strong services growth driven by App Store, Apple TV+, and Apple Pay. iPhone sales showed modest recovery in Greater China.",
+      "source": "Reuters",
+      "headline": "NVIDIA Set to Report Q4 Earnings Amid AI Spending Boom",
+      "summary": "Analysts expect NVIDIA to post record revenue of $38.5B, driven by surging demand for AI training chips from hyperscalers including Anthropic.",
       "url": "#",
-      "timestamp": "2026-02-10T20:00:00Z",
+      "timestamp": "2026-02-11T14:00:00Z",
       "category": "earnings",
       "relevanceScore": 8
     },
     {
       "id": "f-007",
       "source": "Bloomberg",
-      "headline": "Tesla Robotaxi Approval Expected in Austin by Q2 2026",
-      "summary": "Regulatory sources indicate Tesla may receive its first autonomous ride-hailing permit in Austin, Texas, as early as April.",
+      "headline": "OpenAI and Anthropic Compete for Enterprise AI Market",
+      "summary": "The two leading AI labs are in a fierce competition for enterprise contracts, with Anthropic winning on safety reputation and OpenAI on brand recognition.",
       "url": "#",
-      "timestamp": "2026-02-10T18:30:00Z",
-      "category": "earnings",
+      "timestamp": "2026-02-11T10:00:00Z",
+      "category": "startup",
       "relevanceScore": 8
     },
     {
       "id": "f-008",
-      "source": "Financial Times",
-      "headline": "Global Carbon Credit Market Surges Past $1 Trillion",
-      "summary": "The voluntary carbon market has grown 40% year-over-year, with compliance markets driving institutional adoption and price discovery.",
+      "source": "CNBC",
+      "headline": "Fed Officials Signal Patience on Rate Cuts Amid Sticky Inflation",
+      "summary": "Federal Reserve governors emphasized data dependency, suggesting rate cuts may be delayed until clear evidence of inflation returning to target.",
       "url": "#",
-      "timestamp": "2026-02-10T16:00:00Z",
-      "category": "angel-investment",
-      "relevanceScore": 7
+      "timestamp": "2026-02-10T18:00:00Z",
+      "category": "macro",
+      "relevanceScore": 6
     },
     {
       "id": "f-009",
-      "source": "Reuters",
-      "headline": "Microsoft Azure Revenue Grows 32% on AI Workload Demand",
-      "summary": "Microsoft cloud segment exceeded expectations with AI-related workloads accounting for over 10% of Azure consumption revenue.",
+      "source": "CoinDesk",
+      "headline": "Bitcoin Falls Below $98K as Crypto Market Faces Profit-Taking",
+      "summary": "Major cryptocurrencies declined overnight as traders locked in gains. BTC dropped 3.2% while ETH fell 1.8%.",
       "url": "#",
       "timestamp": "2026-02-10T14:00:00Z",
-      "category": "earnings",
-      "relevanceScore": 8
-    },
-    {
-      "id": "f-010",
-      "source": "CoinDesk",
-      "headline": "Ethereum Layer 2 Networks Process More Transactions Than Mainnet",
-      "summary": "Combined L2 throughput now exceeds Ethereum mainnet by 5x, with Arbitrum and Base leading in daily active addresses.",
-      "url": "#",
-      "timestamp": "2026-02-10T12:00:00Z",
       "category": "crypto",
       "relevanceScore": 6
     },
     {
-      "id": "f-011",
+      "id": "f-010",
       "source": "TechCrunch",
-      "headline": "Decentralized Identity Startup VaultEdge Joins Y Combinator W26",
-      "summary": "VaultEdge, building privacy-preserving identity verification for fintech, was accepted into Y Combinator Winter 2026 batch.",
+      "headline": "SafeGuard AI Accepted to Y Combinator W26 Batch",
+      "summary": "SafeGuard AI, an AI safety startup founded by ex-Google DeepMind researchers, was accepted into Y Combinator Winter 2026. The company is commercializing alignment evaluation tools.",
       "url": "#",
       "timestamp": "2026-02-10T10:00:00Z",
       "category": "angel-investment",
       "relevanceScore": 9
     },
     {
-      "id": "f-012",
-      "source": "Bloomberg",
-      "headline": "Amazon AWS Launches Next-Gen Graviton5 Chips",
-      "summary": "Amazon Web Services unveiled its latest custom silicon, promising 40% better price-performance for cloud workloads.",
-      "url": "#",
-      "timestamp": "2026-02-10T08:00:00Z",
-      "category": "earnings",
-      "relevanceScore": 7
-    },
-    {
-      "id": "f-013",
-      "source": "CNBC",
-      "headline": "US Consumer Confidence Rises for Third Straight Month",
-      "summary": "The Conference Board Consumer Confidence Index rose to 118.2, with consumers expressing optimism about the labor market.",
-      "url": "#",
-      "timestamp": "2026-02-09T20:00:00Z",
-      "category": "macro",
-      "relevanceScore": 5
-    },
-    {
-      "id": "f-014",
-      "source": "Financial Times",
-      "headline": "Japan Central Bank Hints at Further Rate Normalization",
-      "summary": "BOJ Governor signaled readiness for additional rate increases if wage growth continues, potentially strengthening the yen.",
-      "url": "#",
-      "timestamp": "2026-02-09T18:00:00Z",
-      "category": "macro",
-      "relevanceScore": 6
-    },
-    {
-      "id": "f-015",
-      "source": "CoinDesk",
-      "headline": "Bitcoin Mining Difficulty Reaches New All-Time High",
-      "summary": "Network difficulty adjusted upward 4.2% as hash rate continues to climb post-halving, squeezing less efficient miners.",
-      "url": "#",
-      "timestamp": "2026-02-09T14:00:00Z",
-      "category": "crypto",
-      "relevanceScore": 5
-    },
-    {
-      "id": "f-016",
+      "id": "f-011",
       "source": "WSJ",
-      "headline": "Private Markets See Record Dry Powder at $4.2 Trillion",
-      "summary": "PE and VC firms are sitting on unprecedented levels of uninvested capital, with AI and climate tech attracting the most interest.",
+      "headline": "Private Company Employees Face Tax Complexity from Stock Options",
+      "summary": "As AI startups reach massive valuations, early employees confront AMT exposure, ISO exercise timing, and multi-year tax planning challenges. Experts recommend spreading exercises over 3-5 years.",
+      "url": "#",
+      "timestamp": "2026-02-09T16:00:00Z",
+      "category": "macro",
+      "relevanceScore": 9
+    },
+    {
+      "id": "f-012",
+      "source": "Financial Times",
+      "headline": "AI Lab Compensation Arms Race Continues",
+      "summary": "Top AI researchers command $1M+ total compensation packages as Anthropic, OpenAI, Google DeepMind, and Meta AI compete for talent. Staff-level researchers see the largest increases.",
       "url": "#",
       "timestamp": "2026-02-09T10:00:00Z",
       "category": "macro",
-      "relevanceScore": 6
+      "relevanceScore": 8
+    },
+    {
+      "id": "f-013",
+      "source": "Financial Times",
+      "headline": "IRS Increases FBAR Enforcement Against US-Based Foreign Account Holders",
+      "summary": "The IRS announced expanded enforcement of FBAR and FATCA obligations for US taxpayers with foreign financial accounts. Penalties for non-willful violations increased to $16,117 per account per year. British expats in the US with UK pensions, ISAs, and bank accounts are particularly affected.",
+      "url": "#",
+      "timestamp": "2026-02-08T14:00:00Z",
+      "category": "tax",
+      "relevanceScore": 9
+    },
+    {
+      "id": "f-014",
+      "source": "The Guardian",
+      "headline": "UK Workplace Pension Reporting Requirements Tighten for US Expats",
+      "summary": "US tax practitioners warn that HMRC and IRS data sharing under FATCA is catching more British citizens abroad who fail to report UK pensions as foreign trusts. Form 3520 penalties can reach 35% of pension value. Cross-border tax specialists recommend proactive disclosure.",
+      "url": "#",
+      "timestamp": "2026-02-08T10:00:00Z",
+      "category": "tax",
+      "relevanceScore": 9
     }
   ]
 }
