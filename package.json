@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "seed": "node scripts/seed-data.js"
+    "seed": "node scripts/seed-data.js",
+    "clear": "node scripts/clear-data.js"
   },
   "dependencies": {
     "express": "^4.21.0",
