@@ -153,23 +153,24 @@ When user provides a file path during Phase 3 or 4:
 
 | File | Action |
 |------|--------|
-| `.claude/commands/capis-data.md` | **Create** — slash command with full instructions |
+| `.claude/commands/capis-data.md` | **Create** — slash command (routing + clear + template) |
+| `skills/capis-onboarding/SKILL.md` | **Create** — guided setup skill (5-phase data entry) |
+| `skills/capis-onboarding/references/data-schema.md` | **Create** — complete data schema reference |
 | `scripts/seed-data.js` | **Rewrite** — new Bay Area family template persona |
 | `scripts/clear-data.js` | **Create** — generates header-only xlsx shells + keeps categories.json |
+| `package.json` | **Modify** — add `clear` npm script |
 
-### Allowed Tools (for slash command)
+### Architecture
 
-```
-Bash(node:*), Bash(npm:*), Bash(curl:*), Bash(ls:*), Bash(rm:*)
-```
-
-Plus Claude's built-in Read, Write, Edit, Glob, Grep, AskUserQuestion tools (always available).
+- **Slash command** (`capis-data.md`): thin routing layer. Handles `clear` and `template` directly. Delegates `setup` to the `capis-onboarding` skill.
+- **Skill** (`capis-onboarding`): full 5-phase guided data entry with resume detection, dialogue + file import modes, and immediate disk writes.
+- **References** (`data-schema.md`): complete schema doc for all data types, available to the skill for accurate data writing.
 
 ### Dependencies on Built-in Skills
 
-The `setup` subcommand's file import relies on Claude Code's built-in capabilities:
+The `capis-onboarding` skill's file import relies on Claude Code's built-in capabilities:
 - xlsx reading (built-in xlsx skill)
 - PDF reading (Read tool supports PDF)
 - docs/docx reading (built-in docs skill)
 
-These are referenced in the command doc as instructions, not as external dependencies.
+These are referenced in the skill doc as instructions, not as external dependencies.
