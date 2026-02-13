@@ -131,43 +131,53 @@
     },
     "cash": {
       "label": "Cash & Checking",
-      "color": "#8a9178"
+      "color": "#8a9178",
+      "displayProfile": "cash-like"
     },
     "savings": {
       "label": "Savings & CDs",
-      "color": "#7d9470"
+      "color": "#7d9470",
+      "displayProfile": "yield-bearing"
     },
     "stocks": {
       "label": "Stocks",
-      "color": "#5b7e4a"
+      "color": "#5b7e4a",
+      "displayProfile": "market-traded"
     },
     "crypto": {
       "label": "Crypto",
-      "color": "#7d8471"
+      "color": "#7d8471",
+      "displayProfile": "market-traded"
     },
     "angel-investment": {
       "label": "Angel Investment",
-      "color": "#a4ac86"
+      "color": "#a4ac86",
+      "displayProfile": "private-equity"
     },
     "employee-equity": {
       "label": "Employee Equity",
-      "color": "#4a7c59"
+      "color": "#4a7c59",
+      "displayProfile": "employee-equity"
     },
     "real-estate": {
       "label": "Real Estate",
-      "color": "#6b7d5e"
+      "color": "#6b7d5e",
+      "displayProfile": "physical-asset"
     },
     "vehicles": {
       "label": "Vehicles",
-      "color": "#6e8b5e"
+      "color": "#6e8b5e",
+      "displayProfile": "physical-asset"
     },
     "jewelry": {
       "label": "Jewelry",
-      "color": "#9a8c6e"
+      "color": "#9a8c6e",
+      "displayProfile": "physical-asset"
     },
     "art": {
       "label": "Art & Collectibles",
-      "color": "#8b7d6b"
+      "color": "#8b7d6b",
+      "displayProfile": "physical-asset"
     },
     "credit-cards": {
       "label": "Credit Cards",

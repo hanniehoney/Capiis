@@ -337,6 +337,17 @@ h1, h2, h3, h4 {
   font-weight: 600;
 }
 
+.nav-sub-item.is-muted {
+  color: var(--text-tertiary);
+  cursor: default;
+  pointer-events: none;
+}
+
+.nav-sub-item.is-muted:hover {
+  background: transparent;
+  color: var(--text-tertiary);
+}
+
 .nav-dot {
   width: 8px;
   height: 8px;

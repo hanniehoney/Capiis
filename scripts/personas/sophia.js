@@ -258,6 +258,43 @@ const signals = {
       title: 'FBAR deadline April 15 — UK accounts reportable',
       body: 'You have 3 UK financial accounts (pension, ISA, savings) with aggregate value ~$107K, well above the $10K FBAR threshold. File FinCEN Form 114 by April 15 (auto-extends to Oct 15). Also file FATCA Form 8938 with your 1040.',
       relatedAssets: [], category: 'tax', dismissed: false
+    },
+    // --- 2025 resolved/dismissed signals ---
+    {
+      id: 'sig-009', timestamp: '2025-03-20T10:00:00Z', priority: 'high',
+      title: 'ISO Exercise Complete — AMT Impact',
+      body: 'Exercised 15,000 Anthropic ISOs at $3 strike (FMV $40). AMT preference item: $555K. Estimated AMT liability ~$72K. Verify quarterly estimated payments cover exposure.',
+      relatedAssets: ['eq-anthropic-iso'], category: 'tax', dismissed: true
+    },
+    {
+      id: 'sig-010', timestamp: '2025-11-05T14:00:00Z', priority: 'medium',
+      title: 'Anthropic Tender Offer — Participated',
+      body: 'Sold 2,000 RSU shares at $45/share in November tender offer ($90K proceeds). Ordinary income treatment. Reduced Anthropic concentration from 78% to ~70%.',
+      relatedAssets: ['eq-anthropic-iso', 'eq-anthropic-refresh'], category: 'startup', dismissed: true
+    },
+    {
+      id: 'sig-011', timestamp: '2025-12-18T10:00:00Z', priority: 'medium',
+      title: 'Year-End Tax Planning Complete',
+      body: 'Reviewed 2025 tax position. AMT triggered by ISO exercise. No additional tax-loss harvesting opportunities. Estimated payments on track. Filed extension for UK self-assessment.',
+      relatedAssets: [], category: 'tax', dismissed: true
+    },
+    {
+      id: 'sig-012', timestamp: '2025-03-25T09:00:00Z', priority: 'low',
+      title: 'FBAR Filed — 2024 Tax Year',
+      body: 'FinCEN Form 114 filed for UK accounts: Barclays savings (£42K), Hargreaves Lansdown ISA (£28K), Aviva pension (£85K). Total ~$198K equivalent. Filed March 25.',
+      relatedAssets: [], category: 'tax', dismissed: true
+    },
+    {
+      id: 'sig-013', timestamp: '2025-06-15T16:00:00Z', priority: 'medium',
+      title: 'Staff Promotion — Comp Increase',
+      body: 'Promoted to Staff Research Engineer effective June 2025. New comp: $280K base + refresh RSU grant (8,000 shares over 4 years). Total expected TC ~$500K.',
+      relatedAssets: [], category: 'earnings', dismissed: true
+    },
+    {
+      id: 'sig-014', timestamp: '2025-04-10T11:00:00Z', priority: 'medium',
+      title: 'O-1A Visa Renewal Approved',
+      body: 'O-1A visa renewed for 3 years (through March 2028). EB-1A green card petition filed January 2024 — still pending. Premium processing available if needed.',
+      relatedAssets: [], category: 'risk', dismissed: true
     }
   ]
 };
@@ -278,7 +315,16 @@ const feed = {
     { id: 'f-011', source: 'WSJ', headline: 'Private Company Employees Face Tax Complexity from Stock Options', summary: 'As AI startups reach massive valuations, early employees confront AMT exposure, ISO exercise timing, and multi-year tax planning challenges. Experts recommend spreading exercises over 3-5 years.', url: '#', timestamp: '2026-02-09T16:00:00Z', category: 'macro', relevanceScore: 9 },
     { id: 'f-012', source: 'Financial Times', headline: 'AI Lab Compensation Arms Race Continues', summary: 'Top AI researchers command $1M+ total compensation packages as Anthropic, OpenAI, Google DeepMind, and Meta AI compete for talent. Staff-level researchers see the largest increases.', url: '#', timestamp: '2026-02-09T10:00:00Z', category: 'macro', relevanceScore: 8 },
     { id: 'f-013', source: 'Financial Times', headline: 'IRS Increases FBAR Enforcement Against US-Based Foreign Account Holders', summary: 'The IRS announced expanded enforcement of FBAR and FATCA obligations for US taxpayers with foreign financial accounts. Penalties for non-willful violations increased to $16,117 per account per year. British expats in the US with UK pensions, ISAs, and bank accounts are particularly affected.', url: '#', timestamp: '2026-02-08T14:00:00Z', category: 'tax', relevanceScore: 9 },
-    { id: 'f-014', source: 'The Guardian', headline: 'UK Workplace Pension Reporting Requirements Tighten for US Expats', summary: 'US tax practitioners warn that HMRC and IRS data sharing under FATCA is catching more British citizens abroad who fail to report UK pensions as foreign trusts. Form 3520 penalties can reach 35% of pension value. Cross-border tax specialists recommend proactive disclosure.', url: '#', timestamp: '2026-02-08T10:00:00Z', category: 'tax', relevanceScore: 9 }
+    { id: 'f-014', source: 'The Guardian', headline: 'UK Workplace Pension Reporting Requirements Tighten for US Expats', summary: 'US tax practitioners warn that HMRC and IRS data sharing under FATCA is catching more British citizens abroad who fail to report UK pensions as foreign trusts. Form 3520 penalties can reach 35% of pension value. Cross-border tax specialists recommend proactive disclosure.', url: '#', timestamp: '2026-02-08T10:00:00Z', category: 'tax', relevanceScore: 9 },
+    // --- Late 2025 and early January 2026 feed items ---
+    { id: 'f-015', source: 'The Information', headline: 'Anthropic Valued at $60B in New Funding Round', summary: 'Anthropic closed a $3B funding round at a $60B valuation, led by Google and Spark Capital. The round values employee shares significantly higher than prior tenders.', url: '#', timestamp: '2025-10-15T14:00:00Z', category: 'earnings', relevanceScore: 10 },
+    { id: 'f-016', source: 'Bloomberg', headline: 'AI Startups Face Scrutiny on Employee Stock Liquidity', summary: 'With IPO markets still sluggish, AI companies face pressure to offer more frequent tender offers. Anthropic, OpenAI, and Databricks all held secondary sales in 2025.', url: '#', timestamp: '2025-11-08T10:00:00Z', category: 'macro', relevanceScore: 9 },
+    { id: 'f-017', source: 'CNBC', headline: 'Fed Holds Rates at 4.75% — Two Cuts Expected in 2026', summary: 'The Federal Reserve kept rates unchanged at its December meeting, signaling two 25bp cuts in the first half of 2026 as inflation moderates.', url: '#', timestamp: '2025-12-18T19:00:00Z', category: 'macro', relevanceScore: 7 },
+    { id: 'f-018', source: 'Financial Times', headline: 'UK Pension Transfers to US Face New HMRC Scrutiny', summary: 'HMRC announced tighter oversight of QROPS transfers, affecting UK expats considering moving pension assets to US-based retirement accounts.', url: '#', timestamp: '2025-12-05T08:00:00Z', category: 'macro', relevanceScore: 9 },
+    { id: 'f-019', source: 'Reuters', headline: 'NVIDIA Q3 Earnings Crush Estimates — Revenue Hits $35B', summary: 'NVIDIA reported Q3 revenue of $35B, up 94% YoY. Data center segment drove 87% of revenue as AI training demand shows no signs of slowing.', url: '#', timestamp: '2025-11-20T21:00:00Z', category: 'earnings', relevanceScore: 8 },
+    { id: 'f-020', source: 'CoinDesk', headline: 'Bitcoin Breaks $90K as Institutional Adoption Accelerates', summary: 'Bitcoin hit $90K for the first time, driven by $2.1B in spot ETF inflows. Institutional allocations to crypto increased 40% in 2025.', url: '#', timestamp: '2025-11-21T14:00:00Z', category: 'crypto', relevanceScore: 7 },
+    { id: 'f-021', source: 'WSJ', headline: 'IRS Issues Guidance on ISO AMT Credit Carryforward', summary: 'New IRS guidance clarifies AMT credit carryforward rules for incentive stock option exercises, potentially benefiting tech workers who exercised ISOs in 2024-2025.', url: '#', timestamp: '2026-01-10T12:00:00Z', category: 'macro', relevanceScore: 9 },
+    { id: 'f-022', source: 'Bloomberg', headline: 'S&P 500 Finishes 2025 Up 22%, AI Stocks Lead', summary: 'The S&P 500 posted a 22% gain for 2025, marking back-to-back strong years. Magnificent Seven contributed over half of index returns.', url: '#', timestamp: '2025-12-31T21:00:00Z', category: 'macro', relevanceScore: 7 }
   ]
 };
 
@@ -308,12 +354,145 @@ const taxSummary = {
     { asset: 'BND', currentLoss: -1000, potentialSavings: 370, note: 'Bond ETF down from rate hikes. Small loss available.' }
   ],
   taxableEvents: [
+    // --- 2025 events ---
+    { date: '2025-03-15', type: 'exercise', asset: 'Anthropic ISO', units: 15000, amount: 600000, costBasis: 45000, gain: 555000, term: 'iso-exercise', note: 'Batch 1 ISO exercise. 15K shares at $3 strike, FMV $40. AMT preference item of $555K. Paid $45K to exercise.' },
+    { date: '2025-06-10', type: 'sell', asset: 'AAPL', shares: 20, amount: 4600, costBasis: 3200, gain: 1400, term: 'long' },
+    { date: '2025-09-15', type: 'sell', asset: 'QQQ', shares: 10, amount: 5200, costBasis: 4800, gain: 400, term: 'short' },
+    { date: '2025-11-01', type: 'tender', asset: 'Anthropic RSU', units: 2000, amount: 90000, costBasis: 0, gain: 90000, term: 'ordinary', note: 'Anthropic organized secondary tender offer at $45/share. Sold 2,000 vested RSU shares.' },
+    { date: '2025-12-01', type: 'sell', asset: 'ETH', units: 2, amount: 6200, costBasis: 4400, gain: 1800, term: 'long' },
+    // --- 2026 events ---
     { date: '2026-01-20', type: 'sell', asset: 'VTI', shares: 50, amount: 14000, costBasis: 10750, gain: 3250, term: 'long' },
     { date: '2026-02-03', type: 'sell', asset: 'NVDA', shares: 10, amount: 8920, costBasis: 4900, gain: 4020, term: 'long' },
     { date: '2026-01-15', type: 'sell', asset: 'ETH', units: 2, amount: 6360, costBasis: 4400, gain: 1960, term: 'short' },
     { date: '2026-02-08', type: 'sell', asset: 'BTC', units: 0.1, amount: 9750, costBasis: 4200, gain: 5550, term: 'long' },
     { date: '2026-01-28', type: 'loss', asset: 'BND', units: 100, amount: 7200, costBasis: 7400, gain: -200, term: 'short' }
   ],
+  estimatedPayments: [
+    // 2025 quarterly payments (all paid — higher than normal due to ISO exercise AMT)
+    { date: '2025-04-15', quarter: '2025-Q1', amount: 35000, status: 'paid', note: 'Federal estimated payment. Elevated due to ISO exercise AMT preference item ($555K).' },
+    { date: '2025-06-15', quarter: '2025-Q2', amount: 20000, status: 'paid', note: 'Federal estimated payment.' },
+    { date: '2025-09-15', quarter: '2025-Q3', amount: 20000, status: 'paid', note: 'Federal estimated payment.' },
+    { date: '2026-01-15', quarter: '2025-Q4', amount: 20000, status: 'paid', note: 'Federal estimated payment for Q4 2025. Paid Jan 15, 2026.' },
+    // 2025 CA state payments (all paid)
+    { date: '2025-04-15', quarter: '2025-Q1-CA', amount: 12000, status: 'paid', note: 'California estimated payment. Higher due to ISO exercise income.' },
+    { date: '2025-06-15', quarter: '2025-Q2-CA', amount: 6000, status: 'paid', note: 'California estimated payment.' },
+    { date: '2025-09-15', quarter: '2025-Q3-CA', amount: 6000, status: 'paid', note: 'California estimated payment.' },
+    { date: '2026-01-15', quarter: '2025-Q4-CA', amount: 6000, status: 'paid', note: 'California estimated payment for Q4 2025.' },
+    // 2026 quarterly payments
+    { date: '2026-04-15', quarter: '2026-Q1', amount: 12000, status: 'scheduled', note: 'Federal estimated payment. Lower than 2025 — no ISO exercise planned for 2026.' },
+    { date: '2026-04-15', quarter: '2026-Q1-CA', amount: 4000, status: 'scheduled', note: 'California estimated payment for Q1 2026.' },
+    { date: '2026-06-15', quarter: '2026-Q2', amount: 12000, status: 'upcoming', note: 'Federal estimated payment Q2.' },
+    { date: '2026-06-15', quarter: '2026-Q2-CA', amount: 4000, status: 'upcoming', note: 'California estimated payment Q2.' }
+  ],
+  ordinaryIncomeEvents: [
+    // 2025 W-2
+    { date: '2025-12-31', type: 'w2', source: 'Anthropic', grossIncome: 280000, withheld: 98000, note: 'Sophia W-2 base salary. $280K gross (post-promotion to Staff in June). ~$98K total fed+state+FICA withheld.' },
+    // 2025 tender offer (ordinary income)
+    { date: '2025-11-01', type: 'tender-sale', asset: 'Anthropic RSU', shares: 2000, amount: 90000, withheld: 36000, note: 'Tender offer sale of 2,000 RSU shares at $45/share. Ordinary income treatment. $36K withheld at supplemental rate.' },
+    // 2025 ISO exercise (not ordinary income at exercise, but AMT)
+    { date: '2025-03-15', type: 'iso-exercise', asset: 'Anthropic ISO', shares: 15000, strikePrice: 3, fmv: 40, amtPreference: 555000, cashOutlay: 45000, note: 'Exercised 15K ISOs. No regular tax at exercise (ISO), but $555K AMT preference item. AMT liability ~$72K.' },
+    // 2026 W-2 (partial year)
+    { date: '2026-02-28', type: 'w2-ytd', source: 'Anthropic', grossIncome: 46700, withheld: 16300, note: '2026 YTD W-2 through February. On track for $280K annual.' }
+  ],
+  retirementContributions: [
+    // 2025
+    { year: 2025, type: '401k', account: 'Anthropic 401(k)', amount: 23500, employerMatch: 0, note: 'Maxed out 2025 401(k) limit ($23,500). Anthropic does not match.' },
+    { year: 2025, type: 'backdoor-roth', account: 'Fidelity Roth IRA', amount: 7000, note: 'Backdoor Roth IRA. Income too high for direct Roth contribution.' },
+    // 2026 (in progress)
+    { year: 2026, type: '401k', account: 'Anthropic 401(k)', amount: 4100, employerMatch: 0, note: '2026 contributions through Feb. On track to max ($24,500 limit for 2026).' },
+    { year: 2026, type: 'backdoor-roth', account: 'Fidelity Roth IRA', amount: 7500, note: 'Completed 2026 backdoor Roth in January. New limit $7,500.' }
+  ],
+  crossBorderFiling: {
+    nationality: 'British (UK)',
+    residencyStatus: 'US non-immigrant (O-1A visa). EB-1A green card pending since Jan 2024.',
+    taxTreaty: 'US-UK Income Tax Treaty (active). Article 17 governs pension taxation. Article 1 savings clause preserves US taxing rights on US residents.',
+    exitTaxRisk: {
+      status: 'not-applicable',
+      note: 'On O-1A visa, not a long-term resident. No exit tax risk under IRC 877A. However, if EB-1A is approved and green card obtained, the 8-year clock starts. Monitor.'
+    },
+    fbar: {
+      required: true,
+      accounts: [
+        { institution: 'Barclays', country: 'UK', maxBalance2025: 53000, currency: '£42K' },
+        { institution: 'Hargreaves Lansdown ISA', country: 'UK', maxBalance2025: 35000, currency: '£28K' },
+        { institution: 'Aviva Pension', country: 'UK', maxBalance2025: 44000, currency: '£35K' }
+      ],
+      aggregateMax2025: 132000,
+      filed2024: { date: '2025-03-25', status: 'filed', note: 'Filed for 2024 tax year. 3 UK accounts reported.' },
+      due2025: { deadline: '2026-04-15', autoExtension: '2026-10-15', status: 'not-filed', note: 'Must file by April 15, 2026 for 2025 tax year.' }
+    },
+    fatca: {
+      required: true,
+      threshold: 50000,
+      totalForeignAssets2025: 132000,
+      note: 'FATCA Form 8938 required. Single filer threshold $50K at year-end / $75K at any time. UK accounts total ~$132K — well above threshold. File with 1040.'
+    },
+    ukPension: {
+      provider: 'Aviva',
+      type: 'workplace-defined-contribution',
+      value: 44000,
+      treatyArticle: 'Article 17',
+      reporting: 'May require Form 3520/3520-A if treated as foreign trust. Treaty position: not a trust, but IRS view is ambiguous. Conservative approach: file Form 3520.',
+      note: 'UK workplace pension from DeepMind. No contributions since leaving UK (2022). Growing at ~5% from investments. US tax on growth deferred under treaty Article 17 — but CA does not conform to treaty, so CA may tax annual growth.'
+    },
+    ukIsa: {
+      provider: 'Hargreaves Lansdown',
+      value: 35000,
+      note: 'UK ISA has NO US tax-free status. All interest, dividends, and capital gains fully taxable for US purposes. Should consider liquidating and transferring to US accounts to simplify reporting.'
+    },
+    ukSelfAssessment: {
+      required: true,
+      status2025: 'extension-filed',
+      deadline: '2026-01-31',
+      note: 'UK self-assessment required for UK-source income (pension growth, ISA gains, bank interest). Filed extension. No UK tax due on US salary (not UK-source). Foreign tax credit available for any UK tax paid.'
+    },
+    foreignTaxCredit: {
+      paid2025: 850,
+      note: 'UK tax on Barclays savings interest (~£1,200 interest, 20% UK basic rate = ~£240 / ~$300). Plus small UK tax on ISA gains reported on self-assessment (~$550). Total FTC available: ~$850.'
+    }
+  },
+  amtAnalysis: {
+    isoExercised2025: { shares: 15000, strikePrice: 3, fmvAtExercise: 40, amtPreference: 555000 },
+    amtLiability2025: 72000,
+    amtCreditCarryforward: 72000,
+    amtCreditUsed2026: 0,
+    note: 'Exercised 15K ISOs in 2025 creating $555K AMT preference item. Paid ~$72K AMT above regular tax. This generates a minimum tax credit (MTC) carryforward of $72K that can offset regular tax in future years when regular tax exceeds tentative minimum tax. Plan: do NOT exercise more ISOs in 2026 — let AMT credit recover first. Remaining 60K unexercised ISOs can be spread over 2027-2030.',
+    isoExerciseStrategy: {
+      totalGranted: 75000,
+      exercised: 15000,
+      remaining: 60000,
+      strikePrice: 3,
+      currentFmv: 40,
+      unrealizedSpread: 2220000,
+      recommendedPace: '15K shares/year over 4 years to keep AMT manageable',
+      vestingExpiry: '2032-01-15',
+      note: 'At current FMV ($40), each 15K batch creates ~$555K AMT preference. Spreading over 4 years keeps annual AMT ~$70K. If Anthropic IPOs, strategy changes — may want to exercise+sell same day (disqualifying disposition, ordinary income, no AMT).'
+    }
+  },
+  priorYear: {
+    taxYear: 2025,
+    totalGrossIncome: 370000,
+    w2Income: 280000,
+    tenderOfferIncome: 90000,
+    capitalGains: { longTerm: 3200, shortTerm: 400, total: 3600 },
+    realizedGains: 93600,
+    realizedLosses: 0,
+    netRealizedGainLoss: 93600,
+    amtPreferenceItems: 555000,
+    regularTaxableIncome: 340000,
+    regularTax: 85000,
+    tentativeMinimumTax: 157000,
+    amtLiability: 72000,
+    stateTaxOwed: 38000,
+    totalTaxOwed: 195000,
+    totalWithheld: 134000,
+    estimatedPaymentsMade: 95000,
+    totalPaid: 229000,
+    refundOrOwed: -34000,
+    effectiveFederalRate: 0.338,
+    effectiveTotalRate: 0.419,
+    notes: 'Single filer. W-2: $280K base + $90K tender offer = $370K gross ordinary income. Capital gains: small stock/crypto trades ($3.6K). Major tax event: ISO exercise creating $555K AMT preference item. Regular tax $85K vs tentative minimum tax $157K = $72K AMT. CA conformity: CA has its own AMT at 7%. Total fed+state+AMT = ~$195K. Overpaid by ~$34K — applied to 2026 estimated taxes. AMT credit of $72K carries forward.'
+  },
   notes: 'Single filer, CA resident. Federal 37% bracket. Key tax risk: AMT from ISO exercise. 2024 tender offer sale of 15K Anthropic shares was taxed as ISO disposition — verify AMT credit carryforward. Plan multi-year ISO exercise strategy to minimize AMT impact. UK cross-border obligations: FBAR (FinCEN 114) for 3 UK accounts >$10K aggregate. FATCA Form 8938 (threshold $200K for single filers abroad, $50K domestic). UK pension (Aviva, ~£35K) reportable as foreign trust — Form 3520/3520-A may apply. US-UK tax treaty Article 17 governs pension taxation. UK ISA has no US tax-free status — gains/income fully taxable. On O-1A visa, EB-1A pending — no long-term resident status yet, so no exit tax risk currently.'
 };
 
@@ -411,16 +590,16 @@ const categoriesConfig = {
     'foreign-savings': { label: 'Foreign Savings', taxTreatment: 'foreign', description: 'Foreign savings account — interest taxable in US, FBAR/FATCA reportable' }
   },
   categoryMeta: {
-    cash: { label: 'Cash & Checking', color: '#8a9178' },
-    savings: { label: 'Savings & CDs', color: '#7d9470' },
-    stocks: { label: 'Stocks', color: '#5b7e4a' },
-    crypto: { label: 'Crypto', color: '#7d8471' },
-    'angel-investment': { label: 'Angel Investment', color: '#a4ac86' },
-    'employee-equity': { label: 'Employee Equity', color: '#4a7c59' },
-    'real-estate': { label: 'Real Estate', color: '#6b7d5e' },
-    vehicles: { label: 'Vehicles', color: '#6e8b5e' },
-    jewelry: { label: 'Jewelry', color: '#9a8c6e' },
-    art: { label: 'Art & Collectibles', color: '#8b7d6b' },
+    cash: { label: 'Cash & Checking', color: '#8a9178', displayProfile: 'cash-like' },
+    savings: { label: 'Savings & CDs', color: '#7d9470', displayProfile: 'yield-bearing' },
+    stocks: { label: 'Stocks', color: '#5b7e4a', displayProfile: 'market-traded' },
+    crypto: { label: 'Crypto', color: '#7d8471', displayProfile: 'market-traded' },
+    'angel-investment': { label: 'Angel Investment', color: '#a4ac86', displayProfile: 'private-equity' },
+    'employee-equity': { label: 'Employee Equity', color: '#4a7c59', displayProfile: 'employee-equity' },
+    'real-estate': { label: 'Real Estate', color: '#6b7d5e', displayProfile: 'physical-asset' },
+    vehicles: { label: 'Vehicles', color: '#6e8b5e', displayProfile: 'physical-asset' },
+    jewelry: { label: 'Jewelry', color: '#9a8c6e', displayProfile: 'physical-asset' },
+    art: { label: 'Art & Collectibles', color: '#8b7d6b', displayProfile: 'physical-asset' },
     'credit-cards': { label: 'Credit Cards', color: '#b5443b' },
     mortgage: { label: 'Mortgage', color: '#8b5e3c' },
     'auto-loan': { label: 'Auto Loan', color: '#a0734f' },

@@ -109,6 +109,8 @@ Fill in sections based on what the user actually said. Leave sections sparse if 
 
 ## Phase 3: Assets
 
+**Before writing any asset, verify its category using `references/classification-rules.md`.** Classify by how the asset is held/traded, not by its thematic exposure. For example: a REIT ETF (VNQ) goes in `stocks.xlsx`, not `real-estate.xlsx`, because it trades on an exchange. If classification is ambiguous, ask the user one clarifying question.
+
 Walk through each asset category in order. For each:
 
 1. Ask: "Do you have any {category}?" — user can say "no" or "skip"
@@ -150,7 +152,7 @@ Walk through each asset category in order. For each:
 | 1 | stocks | "Do you have any stock investments? (individual stocks, ETFs, index funds)" |
 | 2 | crypto | "Do you hold any cryptocurrency?" |
 | 3 | employee-equity | "Do you have employee stock/equity? (RSUs, ISOs, ESPP)" |
-| 4 | real-estate | "Do you own any real estate? (homes, rental properties, REITs)" |
+| 4 | real-estate | "Do you own any real estate? (homes, rental properties, land — note: REIT ETFs like VNQ go under stocks)" |
 | 5 | angel-investment | "Have you made any angel or startup investments?" |
 | 6 | cash | "What are your cash balances? (checking accounts, brokerage sweep cash)" |
 | 7 | savings | "What about savings? (HYSA, CDs, 529 plans, money market)" |

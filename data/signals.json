@@ -4,11 +4,10 @@
       "id": "sig-001",
       "timestamp": "2026-02-12T08:30:00Z",
       "priority": "high",
-      "title": "Anthropic concentration: $3.3M = 70%+ of net worth",
-      "body": "Your 83,000 Anthropic shares (75K ISOs + 8K RSUs) are worth ~$3.32M at current 409A FMV ($40/share). This private stock concentration is ~77% of your total net worth ($4.3M). You cannot freely sell — watch for the next tender offer window to reduce concentration.",
+      "title": "META concentrated position: $1.49M (20% of portfolio)",
+      "body": "Your 2,500 vested Meta shares are worth $1.49M (cost basis $450K). This single-stock concentration from your previous employer represents ~20% of total assets. Financial planning best practice suggests <10% in any single stock. Consider accelerating annual trim to 15-20% and reallocating to diversified index funds.",
       "relatedAssets": [
-        "eq-anthropic-iso",
-        "eq-anthropic-refresh"
+        "meta"
       ],
       "category": "risk",
       "dismissed": false
@@ -17,10 +16,10 @@
       "id": "sig-002",
       "timestamp": "2026-02-12T07:15:00Z",
       "priority": "high",
-      "title": "AMT risk: exercising remaining ISOs could trigger $200K+ in AMT",
-      "body": "You hold 75K vested ISOs with $3 strike and $40 FMV. The AMT spread is $37/share. Exercising all at once would create $2.775M in AMT preference income, triggering massive AMT liability. Consider partial exercise strategy — spread over 3-4 tax years. Note: on O-1A visa — if you leave the US, you typically have 90 days to exercise vested ISOs before they convert to NSOs. Plan exercises while employed. Consult cross-border tax advisor given UK ties.",
+      "title": "Google RSU vest: ~375 shares ($69K) in April",
+      "body": "Your next quarterly RSU vest is ~375 shares of GOOGL in April 2026. At current price ($185), that is ~$69,375 of ordinary income taxed at your marginal rate (35% federal + 9.3% CA). Google auto-sells ~45% for withholding, but verify this covers your actual liability given NIIT.",
       "relatedAssets": [
-        "eq-anthropic-iso"
+        "eq-googl-rsu"
       ],
       "category": "tax",
       "dismissed": false
@@ -29,34 +28,36 @@
       "id": "sig-003",
       "timestamp": "2026-02-11T22:00:00Z",
       "priority": "medium",
-      "title": "Next Anthropic tender offer window — plan your strategy",
-      "body": "Anthropic has historically offered annual secondary sale opportunities. The last tender was Nov 2025 at ~$38/share. With the new $60B valuation round, the next tender could be at $45-50/share. Plan which lots to sell (ISOs vs RSUs) and estimate tax implications. Target selling $500-750K worth to reduce concentration.",
+      "title": "META unrealized gains: $1.04M — plan multi-year exit",
+      "body": "Your META position has $1.04M in unrealized long-term gains ($595 current vs $180 avg cost). Selling all at once would trigger ~$245K in federal LTCG + NIIT + CA state tax. Consider spreading sales over 3-5 years and pairing with tax-loss harvesting.",
       "relatedAssets": [
-        "eq-anthropic-iso",
-        "eq-anthropic-refresh"
+        "meta"
       ],
-      "category": "startup",
+      "category": "tax",
       "dismissed": false
     },
     {
       "id": "sig-004",
       "timestamp": "2026-02-11T16:00:00Z",
       "priority": "medium",
-      "title": "Emergency fund: $200K adequate? Review single-income risk",
-      "body": "Your $200K Marcus HYSA covers ~4+ years of rent ($3,800/mo) but consider total monthly expenses including food, insurance, estimated taxes, etc. As a single income earner with 77% of net worth in illiquid stock, maintaining a robust cash buffer is critical. Target $250K.",
+      "title": "NexaFlow milestone: Series A talks initiated",
+      "body": "NexaFlow has begun Series A discussions. If successful at a $30M+ valuation, your seed position would 2.5x. Consider your follow-on investment strategy.",
       "relatedAssets": [
-        "marcus-hysa"
+        "startup-nexaflow"
       ],
-      "category": "risk",
+      "category": "startup",
       "dismissed": false
     },
     {
       "id": "sig-005",
       "timestamp": "2026-02-11T14:30:00Z",
       "priority": "medium",
-      "title": "401(k) max out: $24,500 for 2026 tax deferral",
-      "body": "Anthropic does not offer a 401(k) match, but you should still max out your $24,500 contribution for tax deferral. At your 37% federal bracket, this saves ~$9,065 in current-year federal tax. Verify payroll is on track to hit the max by December.",
-      "relatedAssets": [],
+      "title": "529 contributions: maximize before tax deadline",
+      "body": "California allows state tax deduction for 529 contributions up to $10K/yr per beneficiary for MFJ. Consider maximizing contributions for both Ethan and Mia before April 15. Current balances: Ethan $55K, Mia $35K.",
+      "relatedAssets": [
+        "529-kid1",
+        "529-kid2"
+      ],
       "category": "tax",
       "dismissed": false
     },
@@ -64,8 +65,8 @@
       "id": "sig-006",
       "timestamp": "2026-02-11T10:00:00Z",
       "priority": "medium",
-      "title": "NVIDIA earnings Feb 18 — combined position ~$58K",
-      "body": "NVDA reports Q4 earnings on Feb 18. Your combined position (50 taxable + 15 Roth = 65 shares, ~$58K) is up 82% from avg cost. Consider trimming 10-20% of the taxable lot before earnings to lock in gains and rebalance.",
+      "title": "NVIDIA earnings next week (Feb 18)",
+      "body": "NVDA reports Q4 earnings on Feb 18. Your combined position (80 taxable + 25 Roth = 105 shares, ~$93.7K) is up 86%. Consider trimming 10-20% of the taxable lot before earnings to lock in gains.",
       "relatedAssets": [
         "nvda",
         "nvda-roth"
@@ -78,20 +79,90 @@
       "timestamp": "2026-02-10T20:00:00Z",
       "priority": "low",
       "title": "Macro: Fed rate decision in March",
-      "body": "The Federal Reserve meets March 18-19. Markets pricing 65% chance of rate hold. Impacts your growth stocks, crypto, and HYSA yield. Current Marcus APY 4.5% — may decline if cuts resume.",
+      "body": "The Federal Reserve meets March 18-19. Markets pricing 65% chance of rate hold. This could impact your growth stocks, crypto, and mortgage refi opportunities. Current mortgage rate 6.75% — monitor for potential refinancing window.",
       "relatedAssets": [],
       "category": "macro",
       "dismissed": true
     },
     {
       "id": "sig-008",
-      "timestamp": "2026-02-10T12:00:00Z",
-      "priority": "medium",
-      "title": "FBAR deadline April 15 — UK accounts reportable",
-      "body": "You have 3 UK financial accounts (pension, ISA, savings) with aggregate value ~$107K, well above the $10K FBAR threshold. File FinCEN Form 114 by April 15 (auto-extends to Oct 15). Also file FATCA Form 8938 with your 1040.",
+      "timestamp": "2026-02-10T15:00:00Z",
+      "priority": "high",
+      "title": "Long-term resident threshold in 2027 — exit tax planning",
+      "body": "Your green card was issued in 2019. In 2027 you will reach the 8-year \"long-term resident\" threshold under IRC 877A. After that, relinquishing your green card triggers exit tax (mark-to-market on all worldwide assets). With ~$5.5M net worth and $1M+ unrealized META gains, this could be a significant tax event. If there is ANY chance you might return to Taiwan long-term, consult an immigration tax specialist NOW.",
       "relatedAssets": [],
       "category": "tax",
       "dismissed": false
+    },
+    {
+      "id": "sig-009",
+      "timestamp": "2026-02-10T11:00:00Z",
+      "priority": "medium",
+      "title": "FBAR due April 15 — Taiwan bank account reportable",
+      "body": "Your Cathay United Bank account in Taiwan (~NTD 500K / ~$16K) exceeds the $10K FBAR threshold. File FinCEN Form 114 by April 15 (auto-extends to Oct 15). No US-Taiwan tax treaty means no streamlined reporting — ensure compliance.",
+      "relatedAssets": [],
+      "category": "tax",
+      "dismissed": false
+    },
+    {
+      "id": "sig-010",
+      "type": "action",
+      "severity": "info",
+      "title": "Year-End Tax Planning Complete",
+      "message": "Completed 2025 tax-loss harvesting review. No significant losses to harvest — portfolio broadly up. Confirmed estimated tax payments on track.",
+      "timestamp": "2025-12-15T10:00:00Z",
+      "dismissed": true,
+      "source": "tax-agent"
+    },
+    {
+      "id": "sig-011",
+      "type": "milestone",
+      "severity": "info",
+      "title": "Home Purchase Closed",
+      "message": "Cupertino home purchase closed on Sept 1. $3M purchase, $1.2M down from META sales, $1.8M mortgage at 6.75%. Property tax ~$37.5K/year (1.25% Mello-Roos).",
+      "timestamp": "2025-09-01T18:00:00Z",
+      "dismissed": true,
+      "source": "portfolio-agent"
+    },
+    {
+      "id": "sig-012",
+      "type": "action",
+      "severity": "medium",
+      "title": "META Diversification — 2025 Target Met",
+      "message": "Sold 500 META shares in 2025 ($277.5K proceeds). META concentration reduced from ~28% to ~20% of portfolio. Continue trimming in 2026 toward <10% target.",
+      "timestamp": "2025-12-20T14:00:00Z",
+      "dismissed": true,
+      "source": "portfolio-agent"
+    },
+    {
+      "id": "sig-013",
+      "type": "action",
+      "severity": "info",
+      "title": "529 Annual Contributions Complete",
+      "message": "Funded $10K to each 529 plan (Ethan + Mia) for 2025. CA state tax deduction of $20K claimed.",
+      "timestamp": "2025-12-28T09:00:00Z",
+      "dismissed": true,
+      "source": "tax-agent"
+    },
+    {
+      "id": "sig-014",
+      "type": "alert",
+      "severity": "high",
+      "title": "FBAR Filed — 2024 Tax Year",
+      "message": "FinCEN Form 114 filed for Taiwan Cathay United Bank account. Balance ~NTD 500K ($16K). Deadline was April 15, filed March 20.",
+      "timestamp": "2025-03-20T11:00:00Z",
+      "dismissed": true,
+      "source": "tax-agent"
+    },
+    {
+      "id": "sig-015",
+      "type": "action",
+      "severity": "medium",
+      "title": "Google RSU Vest — Q4 2025",
+      "message": "Q4 2025 RSU vest: 375 GOOG shares (~$66K at vest). Federal + CA withholding applied. Verify withholding covers marginal rate.",
+      "timestamp": "2025-10-01T08:00:00Z",
+      "dismissed": true,
+      "source": "portfolio-agent"
     }
   ]
 }

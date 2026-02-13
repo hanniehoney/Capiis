@@ -74,11 +74,12 @@ When analyzing the portfolio or market conditions:
 ## Position Management
 
 When the user wants to add, remove, or update a position:
-1. Read the appropriate Excel file in `data/` (e.g., `stocks.xlsx` for stocks)
-2. Apply the change using Claude Code's xlsx skill (add row, update values, or remove row)
-3. Maintain the schema: id, name, ticker, quantity, avgCost, currentPrice, notes
-4. The server's file watcher will auto-detect changes and broadcast SSE to refresh the dashboard
-5. Generate any relevant signals triggered by the change
+1. **Classify first**: Determine the correct category using the classification rules in `../capis-onboarding/references/classification-rules.md`. Classify by trading mechanism, not thematic exposure (e.g., REIT ETFs → `stocks.xlsx`, not `real-estate.xlsx`). If ambiguous, ask the user.
+2. Read the appropriate Excel file in `data/` (e.g., `stocks.xlsx` for stocks)
+3. Apply the change using Claude Code's xlsx skill (add row, update values, or remove row)
+4. Maintain the schema: id, name, ticker, quantity, avgCost, currentPrice, notes
+5. The server's file watcher will auto-detect changes and broadcast SSE to refresh the dashboard
+6. Generate any relevant signals triggered by the change
 
 ## Profile Management
 

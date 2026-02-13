@@ -84,6 +84,13 @@ const stocks = [
     notes: 'AWS margins expanding. Advertising segment growing.',
     accountType: 'taxable', accountName: 'Schwab Brokerage', purchaseDate: '2023-09-05', lastUpdated: '2026-02-12'
   },
+  // === REIT ETF (exchange-traded, belongs in stocks not real-estate) ===
+  {
+    id: 'vnq', name: 'Vanguard Real Estate ETF', ticker: 'VNQ',
+    quantity: 200, avgCost: 82.50, currentPrice: 91.20,
+    notes: 'Broad REIT exposure. Dividend yield ~3.8%.',
+    accountType: 'taxable', accountName: 'Schwab Brokerage', purchaseDate: '2024-01-15', lastUpdated: '2026-02-12'
+  },
   // === Roth IRA (Fidelity) — Backdoor Roth ===
   {
     id: 'vti-roth', name: 'Vanguard Total Stock Market ETF', ticker: 'VTI',
@@ -169,12 +176,6 @@ const realEstate = [
     quantity: 1, avgCost: 3000000, currentPrice: 3000000,
     notes: 'Primary residence. 4BR in Cupertino. Purchased Sep 2025. $1.2M down payment (funded by META stock sales). School district: CUSD.',
     accountType: 'direct', accountName: 'Direct Ownership', purchaseDate: '2025-09-01', lastUpdated: '2026-02-12'
-  },
-  {
-    id: 're-reit-vnq', name: 'Vanguard Real Estate ETF', ticker: 'VNQ',
-    quantity: 200, avgCost: 82.50, currentPrice: 91.20,
-    notes: 'Broad REIT exposure. Dividend yield ~3.8%.',
-    accountType: 'taxable', accountName: 'Schwab Brokerage', purchaseDate: '2024-01-15', lastUpdated: '2026-02-12'
   }
 ];
 
@@ -361,7 +362,14 @@ const signals = {
       title: 'FBAR due April 15 — Taiwan bank account reportable',
       body: 'Your Cathay United Bank account in Taiwan (~NTD 500K / ~$16K) exceeds the $10K FBAR threshold. File FinCEN Form 114 by April 15 (auto-extends to Oct 15). No US-Taiwan tax treaty means no streamlined reporting — ensure compliance.',
       relatedAssets: [], category: 'tax', dismissed: false
-    }
+    },
+    // --- 2025 resolved/dismissed signals ---
+    { id: 'sig-010', type: 'action', severity: 'info', title: 'Year-End Tax Planning Complete', message: 'Completed 2025 tax-loss harvesting review. No significant losses to harvest — portfolio broadly up. Confirmed estimated tax payments on track.', timestamp: '2025-12-15T10:00:00Z', dismissed: true, source: 'tax-agent' },
+    { id: 'sig-011', type: 'milestone', severity: 'info', title: 'Home Purchase Closed', message: 'Cupertino home purchase closed on Sept 1. $3M purchase, $1.2M down from META sales, $1.8M mortgage at 6.75%. Property tax ~$37.5K/year (1.25% Mello-Roos).', timestamp: '2025-09-01T18:00:00Z', dismissed: true, source: 'portfolio-agent' },
+    { id: 'sig-012', type: 'action', severity: 'medium', title: 'META Diversification — 2025 Target Met', message: 'Sold 500 META shares in 2025 ($277.5K proceeds). META concentration reduced from ~28% to ~20% of portfolio. Continue trimming in 2026 toward <10% target.', timestamp: '2025-12-20T14:00:00Z', dismissed: true, source: 'portfolio-agent' },
+    { id: 'sig-013', type: 'action', severity: 'info', title: '529 Annual Contributions Complete', message: 'Funded $10K to each 529 plan (Ethan + Mia) for 2025. CA state tax deduction of $20K claimed.', timestamp: '2025-12-28T09:00:00Z', dismissed: true, source: 'tax-agent' },
+    { id: 'sig-014', type: 'alert', severity: 'high', title: 'FBAR Filed — 2024 Tax Year', message: 'FinCEN Form 114 filed for Taiwan Cathay United Bank account. Balance ~NTD 500K ($16K). Deadline was April 15, filed March 20.', timestamp: '2025-03-20T11:00:00Z', dismissed: true, source: 'tax-agent' },
+    { id: 'sig-015', type: 'action', severity: 'medium', title: 'Google RSU Vest — Q4 2025', message: 'Q4 2025 RSU vest: 375 GOOG shares (~$66K at vest). Federal + CA withholding applied. Verify withholding covers marginal rate.', timestamp: '2025-10-01T08:00:00Z', dismissed: true, source: 'portfolio-agent' }
   ]
 };
 
@@ -379,7 +387,16 @@ const feed = {
     { id: 'f-009', source: 'Financial Times', headline: 'California Expands 529 Plan Tax Benefits for 2026', summary: 'California now allows state income tax deductions up to $10,000 per beneficiary for 529 plan contributions, effective for tax year 2026.', url: '#', timestamp: '2026-02-10T16:00:00Z', category: 'macro', relevanceScore: 8 },
     { id: 'f-010', source: 'CoinDesk', headline: 'Solana DeFi TVL Hits All-Time High of $18B', summary: 'Solana ecosystem DeFi protocols reached record total value locked, with Raydium and Marinade leading the charge.', url: '#', timestamp: '2026-02-10T22:00:00Z', category: 'crypto', relevanceScore: 7 },
     { id: 'f-011', source: 'TechCrunch', headline: 'Decentralized Identity Startup VaultEdge Joins Y Combinator W26', summary: 'VaultEdge, building privacy-preserving identity verification for fintech, was accepted into Y Combinator Winter 2026 batch.', url: '#', timestamp: '2026-02-10T10:00:00Z', category: 'angel-investment', relevanceScore: 9 },
-    { id: 'f-012', source: 'WSJ', headline: 'Private Markets See Record Dry Powder at $4.2 Trillion', summary: 'PE and VC firms are sitting on unprecedented levels of uninvested capital, with AI and climate tech attracting the most interest.', url: '#', timestamp: '2026-02-09T10:00:00Z', category: 'macro', relevanceScore: 5 }
+    { id: 'f-012', source: 'WSJ', headline: 'Private Markets See Record Dry Powder at $4.2 Trillion', summary: 'PE and VC firms are sitting on unprecedented levels of uninvested capital, with AI and climate tech attracting the most interest.', url: '#', timestamp: '2026-02-09T10:00:00Z', category: 'macro', relevanceScore: 5 },
+    // --- Late 2025 and early January 2026 items ---
+    { id: 'f-013', source: 'Bloomberg', headline: 'Alphabet Q3 2025: Cloud Growth Accelerates to 40%', summary: 'Google Cloud posted $11.2B revenue, beating estimates. AI-driven enterprise adoption cited as primary growth driver.', url: '#', timestamp: '2025-10-29T20:00:00Z', category: 'earnings', relevanceScore: 9 },
+    { id: 'f-014', source: 'WSJ', headline: 'Meta Q3 Earnings Top Estimates, Metaverse Losses Narrow', summary: 'Meta reported revenue of $42B, up 19% YoY. Reality Labs losses narrowed to $3.6B as Quest headset sales improved.', url: '#', timestamp: '2025-10-30T20:00:00Z', category: 'earnings', relevanceScore: 8 },
+    { id: 'f-015', source: 'CNBC', headline: 'Fed Holds Rates Steady at 4.75% — Signals Two Cuts in 2026', summary: 'The Federal Reserve kept rates unchanged at its December meeting but projected two 25bp cuts in the first half of 2026, citing moderating inflation.', url: '#', timestamp: '2025-12-18T19:00:00Z', category: 'macro', relevanceScore: 8 },
+    { id: 'f-016', source: 'CoinDesk', headline: 'Bitcoin Breaks $90K for First Time, Fueled by ETF Inflows', summary: 'Bitcoin surged past $90,000 as spot ETFs recorded $2.1B in net inflows in November. Institutional allocation continues to increase.', url: '#', timestamp: '2025-11-21T14:00:00Z', category: 'crypto', relevanceScore: 8 },
+    { id: 'f-017', source: 'Reuters', headline: 'Bay Area Housing: Cupertino Median Hits $2.8M in 2025', summary: 'Annual housing data shows Cupertino median home price reached $2.8M, driven by Apple and Google employee demand. Inventory remains at historic lows.', url: '#', timestamp: '2025-12-28T10:00:00Z', category: 'macro', relevanceScore: 8 },
+    { id: 'f-018', source: 'TechCrunch', headline: 'NexaFlow Closes $30M Series A Led by Sequoia', summary: 'AI supply chain startup NexaFlow closed its Series A at a $150M valuation. Alex Chen, an early angel investor, holds a $75K seed position now valued at ~$100K.', url: '#', timestamp: '2026-01-08T12:00:00Z', category: 'angel-investment', relevanceScore: 10 },
+    { id: 'f-019', source: 'Financial Times', headline: 'Taiwan Dollar Strengthens as Tech Exports Boom', summary: 'The Taiwan dollar rose to 30.5 per USD, its strongest level since 2022, as semiconductor exports hit record highs. Impact on cross-border transfers noted.', url: '#', timestamp: '2025-11-15T08:00:00Z', category: 'macro', relevanceScore: 7 },
+    { id: 'f-020', source: 'Bloomberg', headline: 'S&P 500 Closes 2025 Up 22%, Led by AI and Mega-Cap Tech', summary: 'The S&P 500 finished 2025 with a 22% annual return. Magnificent Seven stocks contributed over half of the gains.', url: '#', timestamp: '2025-12-31T21:00:00Z', category: 'macro', relevanceScore: 7 }
   ]
 };
 
@@ -411,6 +428,14 @@ const taxSummary = {
     { asset: 'VXUS', currentLoss: 0, potentialSavings: 0, note: 'Near breakeven. Monitor for dips below $52 cost basis for harvesting.' }
   ],
   taxableEvents: [
+    // --- 2025 events (prior year) ---
+    { date: '2025-03-15', type: 'sell', asset: 'META', shares: 150, amount: 82500, costBasis: 27000, gain: 55500, term: 'long' },
+    { date: '2025-04-01', type: 'sell', asset: 'VTI', shares: 50, amount: 14500, costBasis: 12500, gain: 2000, term: 'long' },
+    { date: '2025-06-20', type: 'sell', asset: 'META', shares: 150, amount: 87000, costBasis: 27000, gain: 60000, term: 'long' },
+    { date: '2025-08-15', type: 'sell', asset: 'ETH', units: 3, amount: 8400, costBasis: 6600, gain: 1800, term: 'long' },
+    { date: '2025-09-10', type: 'sell', asset: 'META', shares: 200, amount: 108000, costBasis: 36000, gain: 72000, term: 'long' },
+    { date: '2025-11-20', type: 'sell', asset: 'SOL', units: 100, amount: 16000, costBasis: 4500, gain: 11500, term: 'short' },
+    // --- 2026 events (current year) ---
     { date: '2026-01-15', type: 'sell', asset: 'META', shares: 200, amount: 119000, costBasis: 36000, gain: 83000, term: 'long' },
     { date: '2026-01-22', type: 'sell', asset: 'ETH', units: 5, amount: 16200, costBasis: 11000, gain: 5200, term: 'short' },
     { date: '2026-02-01', type: 'sell', asset: 'BTC', units: 0.3, amount: 29250, costBasis: 12600, gain: 16650, term: 'long' },
@@ -418,6 +443,115 @@ const taxSummary = {
     { date: '2026-01-10', type: 'sell', asset: 'SOL', units: 50, amount: 9250, costBasis: 2250, gain: 7000, term: 'short' },
     { date: '2026-01-28', type: 'loss', asset: 'AVAX', units: 100, amount: 3800, costBasis: 7000, gain: -3200, term: 'short' }
   ],
+  priorYear: {
+    taxYear: 2025,
+    totalGrossIncome: 772000,
+    w2Income: 510000,
+    rsuVestIncome: 262000,
+    capitalGains: { longTerm: 191300, shortTerm: 11500, total: 202800 },
+    realizedGains: 202800,
+    realizedLosses: 0,
+    netRealizedGainLoss: 202800,
+    totalTaxableIncome: 680000,
+    federalTaxOwed: 178000,
+    stateTaxOwed: 63200,
+    totalTaxOwed: 241200,
+    totalWithheld: 186000,
+    estimatedPaymentsMade: 89000,
+    totalPaid: 275000,
+    refundOrOwed: -33800,
+    effectiveFederalRate: 0.262,
+    effectiveTotalRate: 0.355,
+    notes: 'MFJ with 2 dependents. W-2 income: Alex $330K base + $262K RSU vests + Emily $180K = $772K gross. Capital gains from META diversification ($277.5K proceeds, $187.5K LTCG) plus ETH/VTI/SOL sales. Maxed 401(k) ($23.5K), backdoor Roth ($14K both spouses), HSA ($8.3K), 529s ($20K). SALT capped at $10K. Standard deduction $29,200 was less favorable than itemizing (mortgage interest ~$120K + SALT $10K + charitable $15K). Estimated overpayment of ~$33.8K — applied to 2026 estimated taxes.'
+  },
+  estimatedPayments: [
+    // 2025 quarterly payments (all paid)
+    { date: '2025-04-15', quarter: '2025-Q1', amount: 25000, status: 'paid', note: 'Federal estimated payment. Covers Q1 RSU vest + capital gains from META sales.' },
+    { date: '2025-06-15', quarter: '2025-Q2', amount: 22000, status: 'paid', note: 'Federal estimated payment.' },
+    { date: '2025-09-15', quarter: '2025-Q3', amount: 22000, status: 'paid', note: 'Federal estimated payment. Includes gain from Sept META sale.' },
+    { date: '2026-01-15', quarter: '2025-Q4', amount: 20000, status: 'paid', note: 'Federal estimated payment for Q4 2025. Paid Jan 15, 2026.' },
+    // 2025 CA state payments (all paid)
+    { date: '2025-04-15', quarter: '2025-Q1-CA', amount: 8000, status: 'paid', note: 'California estimated payment.' },
+    { date: '2025-06-15', quarter: '2025-Q2-CA', amount: 7500, status: 'paid', note: 'California estimated payment.' },
+    { date: '2025-09-15', quarter: '2025-Q3-CA', amount: 7500, status: 'paid', note: 'California estimated payment.' },
+    { date: '2026-01-15', quarter: '2025-Q4-CA', amount: 7000, status: 'paid', note: 'California estimated payment for Q4 2025.' },
+    // 2026 quarterly payments (upcoming)
+    { date: '2026-04-15', quarter: '2026-Q1', amount: 28000, status: 'scheduled', note: 'Federal estimated payment. Higher due to increased META sales + crypto gains in Q1.' },
+    { date: '2026-04-15', quarter: '2026-Q1-CA', amount: 9000, status: 'scheduled', note: 'California estimated payment for Q1 2026.' },
+    { date: '2026-06-15', quarter: '2026-Q2', amount: 25000, status: 'upcoming', note: 'Federal estimated payment Q2.' },
+    { date: '2026-06-15', quarter: '2026-Q2-CA', amount: 8000, status: 'upcoming', note: 'California estimated payment Q2.' }
+  ],
+  ordinaryIncomeEvents: [
+    // 2025 RSU vests (ordinary income, taxes withheld by employer)
+    { date: '2025-03-01', type: 'rsu-vest', asset: 'GOOG', shares: 375, vestValue: 62500, withheld: 27500, note: 'Q1 2025 Google RSU vest. 375 shares at ~$167/share. Fed+CA+FICA withheld.' },
+    { date: '2025-06-01', type: 'rsu-vest', asset: 'GOOG', shares: 375, vestValue: 65600, withheld: 28900, note: 'Q2 2025 Google RSU vest. 375 shares at ~$175/share.' },
+    { date: '2025-09-01', type: 'rsu-vest', asset: 'GOOG', shares: 375, vestValue: 66400, withheld: 29200, note: 'Q3 2025 Google RSU vest. 375 shares at ~$177/share.' },
+    { date: '2025-12-01', type: 'rsu-vest', asset: 'GOOG', shares: 375, vestValue: 67500, withheld: 29700, note: 'Q4 2025 Google RSU vest. 375 shares at ~$180/share.' },
+    // 2026 RSU vests
+    { date: '2026-03-01', type: 'rsu-vest', asset: 'GOOG', shares: 375, vestValue: 69400, withheld: 30500, note: 'Q1 2026 Google RSU vest. 375 shares at ~$185/share.' },
+    // 2025 ESPP purchase
+    { date: '2025-06-30', type: 'espp-purchase', asset: 'GOOG', shares: 120, purchasePrice: 148.75, fmv: 175, discount: 3150, note: 'ESPP purchase at 15% discount. Ordinary income on discount portion ($3,150).' },
+    // Emily W-2 (spouse)
+    { date: '2025-12-31', type: 'w2', source: 'Emily — Startup', grossIncome: 180000, withheld: 54000, note: 'Emily W-2 income from startup. $180K gross, ~$54K total fed+state+FICA withheld.' },
+    { date: '2025-12-31', type: 'w2', source: 'Alex — Google', grossIncome: 330000, withheld: 132000, note: 'Alex W-2 base salary. $330K gross, ~$132K total fed+state+FICA withheld. RSU income reported separately.' }
+  ],
+  retirementContributions: [
+    // 2025
+    { year: 2025, type: '401k', account: 'Google 401(k)', amount: 23500, employerMatch: 9500, note: 'Maxed out 2025 401(k) limit ($23,500). Google matches 50% up to $9,500.' },
+    { year: 2025, type: 'backdoor-roth', account: 'Fidelity Roth IRA', amount: 7000, note: 'Backdoor Roth IRA for Alex. Contributed to traditional IRA then converted (income too high for direct Roth).' },
+    { year: 2025, type: 'backdoor-roth', account: 'Emily Roth IRA', amount: 7000, note: 'Backdoor Roth IRA for Emily.' },
+    { year: 2025, type: 'hsa', account: 'Fidelity HSA', amount: 8300, note: 'Maxed family HSA ($8,300 for 2025). Invested in VTI inside HSA.' },
+    { year: 2025, type: '529', account: '529 — Ethan', amount: 10000, note: 'CA state deduction up to $10K per beneficiary.' },
+    { year: 2025, type: '529', account: '529 — Mia', amount: 10000, note: 'CA state deduction up to $10K per beneficiary.' },
+    // 2026 (in progress)
+    { year: 2026, type: '401k', account: 'Google 401(k)', amount: 4100, employerMatch: 1580, note: '2026 contributions through Feb. On track to max ($24,500 limit for 2026). Google match ongoing.' },
+    { year: 2026, type: 'backdoor-roth', account: 'Fidelity Roth IRA', amount: 7500, note: 'Completed backdoor Roth for 2026 in January. New limit $7,500.' },
+    { year: 2026, type: 'hsa', account: 'Fidelity HSA', amount: 1460, note: '2026 HSA contributions through Feb. Family limit $8,750 for 2026.' },
+    { year: 2026, type: '529', account: '529 — Ethan', amount: 0, note: 'Not yet contributed for 2026. Plan to fund $10K by Dec.' },
+    { year: 2026, type: '529', account: '529 — Mia', amount: 0, note: 'Not yet contributed for 2026. Plan to fund $10K by Dec.' }
+  ],
+  crossBorderFiling: {
+    nationality: 'Taiwan (ROC)',
+    residencyStatus: 'US permanent resident (green card since 2019)',
+    taxTreaty: 'NONE — no US-Taiwan income tax treaty',
+    exitTaxRisk: {
+      thresholdDate: '2027-06-01',
+      status: 'approaching',
+      netWorth: 5500000,
+      unrealizedGains: 1200000,
+      note: 'IRC 877A: 8-year long-term resident threshold hits ~2027. Relinquishing green card after this date triggers mark-to-market exit tax on worldwide assets. With $5.5M NW and $1.2M unrealized gains, estimated exit tax could be $200K-$300K. Must decide before 2027.'
+    },
+    fbar: {
+      required: true,
+      accounts: [{ institution: 'Cathay United Bank', country: 'Taiwan', maxBalance2025: 16000, currency: 'NTD ~500K' }],
+      filed2024: { date: '2025-03-20', status: 'filed', note: 'Filed for 2024 tax year.' },
+      due2025: { deadline: '2026-04-15', autoExtension: '2026-10-15', status: 'not-filed', note: 'Must file by April 15, 2026 for 2025 tax year. Auto-extension to Oct 15 available.' }
+    },
+    fatca: {
+      required: false,
+      note: 'FATCA Form 8938 threshold is $100K for MFJ at year-end. Taiwan account ~$16K — below threshold. Not required.'
+    },
+    foreignTaxCredit: {
+      paid2025: 0,
+      note: 'No Taiwan-source income in 2025. No foreign tax credit claimed. If Taiwan inheritance materializes, Form 3520 reporting required.'
+    },
+    giftToParents: {
+      amount2025: 10000,
+      amount2026: 0,
+      note: 'Sends ~$10K/year to parents in Taipei. Under $19K gift tax exclusion per recipient — no Form 709 required.'
+    }
+  },
+  propertyTax: {
+    property: '10500 Vista Dr, Cupertino, CA 95014',
+    assessedValue: 3000000,
+    taxRate: 0.0125,
+    annualAmount: 37500,
+    payments: [
+      { date: '2025-11-01', amount: 18750, status: 'paid', note: 'First installment 2025-26 property tax. Due Nov 1, delinquent Dec 10.' },
+      { date: '2026-02-01', amount: 18750, status: 'paid', note: 'Second installment 2025-26 property tax. Due Feb 1, delinquent Apr 10.' }
+    ],
+    saltDeduction: { cap: 10000, claimed2025: 10000, note: 'SALT deduction capped at $10K (MFJ). Property tax $37.5K + state income tax far exceeds cap.' }
+  },
   notes: 'California state income tax applies on all gains. Federal LTCG rate 20% (income >$583K MFJ). NIIT 3.8% applies. RSU vesting creates ordinary income — verify withholding covers marginal rate (35% fed + 9.3% CA). Plan multi-year META diversification to spread tax impact. No US-Taiwan tax treaty — rely on foreign tax credit only. FBAR required for Taiwan account. Green card 8-year long-term resident threshold approaching (2027).'
 };
 
@@ -520,16 +654,16 @@ const categoriesConfig = {
     'foreign-savings': { label: 'Foreign Savings', taxTreatment: 'foreign', description: 'Foreign savings account — interest taxable in US, FBAR/FATCA reportable' }
   },
   categoryMeta: {
-    cash: { label: 'Cash & Checking', color: '#8a9178' },
-    savings: { label: 'Savings & CDs', color: '#7d9470' },
-    stocks: { label: 'Stocks', color: '#5b7e4a' },
-    crypto: { label: 'Crypto', color: '#7d8471' },
-    'angel-investment': { label: 'Angel Investment', color: '#a4ac86' },
-    'employee-equity': { label: 'Employee Equity', color: '#4a7c59' },
-    'real-estate': { label: 'Real Estate', color: '#6b7d5e' },
-    vehicles: { label: 'Vehicles', color: '#6e8b5e' },
-    jewelry: { label: 'Jewelry', color: '#9a8c6e' },
-    art: { label: 'Art & Collectibles', color: '#8b7d6b' },
+    cash: { label: 'Cash & Checking', color: '#8a9178', displayProfile: 'cash-like' },
+    savings: { label: 'Savings & CDs', color: '#7d9470', displayProfile: 'yield-bearing' },
+    stocks: { label: 'Stocks', color: '#5b7e4a', displayProfile: 'market-traded' },
+    crypto: { label: 'Crypto', color: '#7d8471', displayProfile: 'market-traded' },
+    'angel-investment': { label: 'Angel Investment', color: '#a4ac86', displayProfile: 'private-equity' },
+    'employee-equity': { label: 'Employee Equity', color: '#4a7c59', displayProfile: 'employee-equity' },
+    'real-estate': { label: 'Real Estate', color: '#6b7d5e', displayProfile: 'physical-asset' },
+    vehicles: { label: 'Vehicles', color: '#6e8b5e', displayProfile: 'physical-asset' },
+    jewelry: { label: 'Jewelry', color: '#9a8c6e', displayProfile: 'physical-asset' },
+    art: { label: 'Art & Collectibles', color: '#8b7d6b', displayProfile: 'physical-asset' },
     'credit-cards': { label: 'Credit Cards', color: '#b5443b' },
     mortgage: { label: 'Mortgage', color: '#8b5e3c' },
     'auto-loan': { label: 'Auto Loan', color: '#a0734f' },

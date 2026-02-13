@@ -1,4 +1,4 @@
-import { getSignals, getCategoryConfig } from '../utils/api.js';
+import { getSignals, getCategoryConfig, getPortfolio } from '../utils/api.js';
 import { getCategoryColor, getCategoryLabel, setCategoryConfig } from './charts.js';
 
 let assetsExpanded = true;
@@ -17,14 +17,17 @@ function isTaxView(hash) {
 export async function renderSidebar(container) {
   let signalCount = 0;
   let config = null;
+  let portfolio = null;
 
   try {
-    const [signalsData, configData] = await Promise.all([
+    const [signalsData, configData, portfolioData] = await Promise.all([
       getSignals().catch(() => ({ signals: [] })),
-      getCategoryConfig().catch(() => null)
+      getCategoryConfig().catch(() => null),
+      getPortfolio().catch(() => null)
     ]);
     signalCount = signalsData.signals.filter(s => !s.dismissed).length;
     config = configData;
+    portfolio = portfolioData;
     if (config) setCategoryConfig(config);
   } catch (e) {
     console.warn('Failed to load sidebar data:', e);
@@ -48,7 +51,18 @@ export async function renderSidebar(container) {
   if (isAssetCategoryActive) assetsExpanded = true;
   if (isLiabilityCategoryActive) liabilitiesExpanded = true;
 
-  const assetSubItems = assetCategories.map(cat => {
+  const visibleAssetCategories = getVisibleAssetCategories(
+    assetCategories,
+    portfolio ? portfolio.assets : null,
+    isAssetCategoryActive ? activeCategory : ''
+  );
+  const visibleLiabilityCategories = getVisibleLiabilityCategories(
+    liabilityCategories,
+    portfolio ? portfolio.liabilities : null,
+    isLiabilityCategoryActive ? activeCategory : ''
+  );
+
+  const assetSubItems = visibleAssetCategories.map(cat => {
     const color = getCategoryColor(cat);
     const label = getCategoryLabel(cat);
     const isActive = currentHash === `category-${cat}`;
@@ -58,7 +72,7 @@ export async function renderSidebar(container) {
     </a>`;
   }).join('');
 
-  const liabilitySubItems = liabilityCategories.map(cat => {
+  const liabilitySubItems = visibleLiabilityCategories.map(cat => {
     const color = getCategoryColor(cat);
     const label = getCategoryLabel(cat);
     const isActive = currentHash === `category-${cat}`;
@@ -108,7 +122,7 @@ export async function renderSidebar(container) {
       </button>
       ${showAssetsDetails ? `
         <div class="nav-sub-section">
-          ${assetSubItems}
+          ${assetSubItems || `<div class="nav-sub-item is-muted"><span class="nav-dot" style="opacity:0.4"></span>No active categories</div>`}
         </div>
       ` : ''}
 
@@ -119,7 +133,7 @@ export async function renderSidebar(container) {
       </button>
       ${showLiabilitiesDetails ? `
         <div class="nav-sub-section">
-          ${liabilitySubItems}
+          ${liabilitySubItems || `<div class="nav-sub-item is-muted"><span class="nav-dot" style="opacity:0.4"></span>No active categories</div>`}
         </div>
       ` : ''}
 
@@ -195,6 +209,47 @@ function getLiabilityCategories(config) {
     return cats;
   }
   return ['credit-cards', 'mortgage', 'auto-loan', 'student-loan'];
+}
+
+function getVisibleAssetCategories(allCategories, assets, activeCategory) {
+  if (!Array.isArray(assets)) return allCategories;
+
+  const active = new Set();
+  for (const asset of assets) {
+    if (!asset || !allCategories.includes(asset.category)) continue;
+    if (getAssetEffectiveValue(asset) > 0) active.add(asset.category);
+  }
+  if (activeCategory) active.add(activeCategory);
+
+  return allCategories.filter(cat => active.has(cat));
+}
+
+function getVisibleLiabilityCategories(allCategories, liabilities, activeCategory) {
+  if (!Array.isArray(liabilities)) return allCategories;
+
+  const active = new Set();
+  for (const liability of liabilities) {
+    if (!liability || !allCategories.includes(liability.category)) continue;
+    if (getLiabilityEffectiveValue(liability) > 0) active.add(liability.category);
+  }
+  if (activeCategory) active.add(activeCategory);
+
+  return allCategories.filter(cat => active.has(cat));
+}
+
+function getAssetEffectiveValue(asset) {
+  const quantity = Number(asset.quantity) || 0;
+  const currentPrice = Number(asset.currentPrice) || 0;
+  const avgCost = Number(asset.avgCost) || 0;
+  const costBasis = Number(asset.costBasis) || 0;
+
+  const marketValue = quantity * currentPrice;
+  const costValue = costBasis || (quantity * avgCost);
+  return Math.max(Math.abs(marketValue), Math.abs(costValue));
+}
+
+function getLiabilityEffectiveValue(liability) {
+  return Math.abs(Number(liability.currentBalance) || 0);
 }
 
 export function updateActiveNav() {
