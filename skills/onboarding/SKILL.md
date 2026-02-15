@@ -9,18 +9,18 @@ Walk the user through entering all their financial data into Capiis, one step at
 
 ## Data Location
 
-All data files live in `~/Desktop/Capiis/data/`. See `references/data-schema.md` for complete schemas.
+All data files live in `data/` (relative to the project root). See `references/data-schema.md` for complete schemas.
 
 ## Before Starting: Resume Detection
 
 Check what data already exists:
 
-1. Read `~/Desktop/Capiis/data/profile.json`
+1. Read `data/profile.json`
    - If it has `personal.name` → Phase 1 (Profile) is likely complete
    - If it has a non-empty `accounts` array → Phase 2 (Accounts) is likely complete
-2. Read `~/Desktop/Capiis/data/profile.md`
+2. Read `data/profile.md`
    - If it exists and has content beyond section headers → Phase 1b (Narrative) is likely complete
-3. List xlsx files in `~/Desktop/Capiis/data/` and check which have data rows beyond the header
+3. List xlsx files in `data/` and check which have data rows beyond the header
    - Any xlsx with >1 row means that category has been entered
 4. Tell the user what you found:
    - "I see you already have profile data and N asset categories filled in. Want to continue from where you left off, or redo a specific section?"
@@ -45,12 +45,12 @@ Ask ONE question at a time. Never batch multiple questions in one message.
 After collecting all answers:
 - Calculate tax rates based on location and filing status (verify with web search for current year rates)
 - Look up: federal bracket, state rate, LTCG rate, STCG rate, NIIT threshold, standard deduction, contribution limits
-- Write `~/Desktop/Capiis/data/profile.json` with personal, family (if applicable), location, and tax sections
+- Write `data/profile.json` with personal, family (if applicable), location, and tax sections
 - Show the user what was saved and confirm it looks right
 
 ## Phase 1b: Narrative Profile (Optional)
 
-This phase collects soft context that structured data can't capture -- investment philosophy, life goals, and key decisions. It writes to `~/Desktop/Capiis/data/profile.md`.
+This phase collects soft context that structured data can't capture -- investment philosophy, life goals, and key decisions. It writes to `data/profile.md`.
 
 **Transition from Phase 1**: After saving profile.json, say something like:
 
@@ -68,7 +68,7 @@ If the user is willing, ask these questions **one at a time**:
 
 4. **Key context**: "Is there anything else that shapes your financial decisions? Career plans, family situation, upcoming big expenses, why you hold certain investments..."
 
-After collecting answers (however many the user provides), write `~/Desktop/Capiis/data/profile.md` with the standard section structure:
+After collecting answers (however many the user provides), write `data/profile.md` with the standard section structure:
 
 ```markdown
 # Financial Profile -- {user's name}
@@ -142,7 +142,7 @@ Walk through each asset category in order. For each:
    - Ask user to confirm before writing
    - User can say "fix row 3" or "remove that one" before confirming
 
-5. Write confirmed data to `~/Desktop/Capiis/data/{category}.xlsx` using the xlsx skill
+5. Write confirmed data to `data/{category}.xlsx` using the xlsx skill
 6. Move to the next category
 
 **Category order:**
@@ -169,7 +169,7 @@ Same pattern as Phase 3. For each liability, collect:
 - Monthly payment, due date/maturity date
 - Notes
 
-Write to `~/Desktop/Capiis/data/{liability}.xlsx`.
+Write to `data/{liability}.xlsx`.
 
 **Liability order:**
 
@@ -183,7 +183,7 @@ Write to `~/Desktop/Capiis/data/{liability}.xlsx`.
 ## Phase 5: Complete
 
 1. Check if Capiis server is running: `lsof -ti:3333`
-   - If not running, start it: `node ~/Desktop/Capiis/server.js &` and wait 2 seconds
+   - If not running, start it: `node server.js &` and wait 2 seconds
 
 2. Fetch portfolio summary: `curl -s http://localhost:3333/api/stats`
    - Display: total assets, total liabilities, net worth, positions count, allocation breakdown

@@ -19,10 +19,10 @@ You are an independent price-tracking and data quality agent for the Capiis weal
 
 ```bash
 # Prices only (fast)
-node ~/Desktop/Capiis/scripts/fetch-prices.js AAPL GOOGL META BTC-USD ETH-USD
+node scripts/fetch-prices.js AAPL GOOGL META BTC-USD ETH-USD
 
 # Prices + 2-year split history (use when anomalies detected)
-node ~/Desktop/Capiis/scripts/fetch-prices.js --splits AAPL NVDA SCHD
+node scripts/fetch-prices.js --splits AAPL NVDA SCHD
 ```
 
 **Crypto tickers use `-USD` suffix**: BTC → `BTC-USD`, ETH → `ETH-USD`, SOL → `SOL-USD`.
@@ -64,7 +64,7 @@ Also read `data/profile.md` for context.
 Call the fetch-prices script with all tickers:
 
 ```bash
-node ~/Desktop/Capiis/scripts/fetch-prices.js META GOOGL AAPL NVDA ... BTC-USD ETH-USD SOL-USD
+node scripts/fetch-prices.js META GOOGL AAPL NVDA ... BTC-USD ETH-USD SOL-USD
 ```
 
 Parse JSON output. Check `_errors` for failures. Proceed with whatever succeeds.
@@ -130,7 +130,7 @@ Calculate: `changePercent = (newPrice - oldPrice) / oldPrice * 100`
 When a >40% change is detected, re-fetch that ticker with split data:
 
 ```bash
-node ~/Desktop/Capiis/scripts/fetch-prices.js --splits NVDA
+node scripts/fetch-prices.js --splits NVDA
 ```
 
 If the response includes a `splits` array:
@@ -181,8 +181,8 @@ For each ticker (after any split adjustments), update the xlsx files using Node.
 
 ```bash
 node -e "
-const XLSX = require('/Users/BlancheLiu/Desktop/Capiis/node_modules/xlsx');
-const path = '/Users/BlancheLiu/Desktop/Capiis/data/{CATEGORY}.xlsx';
+const XLSX = require('xlsx');
+const path = process.cwd() + '/data/{CATEGORY}.xlsx';
 const wb = XLSX.readFile(path);
 const ws = wb.Sheets[wb.SheetNames[0]];
 const data = XLSX.utils.sheet_to_json(ws);

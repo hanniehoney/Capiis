@@ -7,7 +7,7 @@ allowed-tools: Bash(node:*), Bash(npm:*), Bash(curl:*), Bash(ls:*), Bash(rm:*), 
 
 Manage data for the Capiis wealth & asset management dashboard.
 
-The Capiis project lives at `~/Desktop/Capiis`. Data files are in `~/Desktop/Capiis/data/`.
+Data files are in `data/` (relative to the project root).
 
 ## Routing
 
@@ -36,7 +36,7 @@ Based on $ARGUMENTS:
 
 3. If confirmed, run:
    ```
-   node ~/Desktop/Capiis/scripts/clear-data.js
+   node scripts/clear-data.js
    ```
 
 4. Report:
@@ -48,7 +48,7 @@ Based on $ARGUMENTS:
 ## Import Template
 
 1. Check if data/ already has user data:
-   - Check if `~/Desktop/Capiis/data/profile.json` exists and has a `personal.name` value
+   - Check if `data/profile.json` exists and has a `personal.name` value
    - If existing data found, use AskUserQuestion:
      - "Existing data detected. Importing a template will OVERWRITE all current data. Continue?"
      - Options: "Cancel" / "Overwrite and import"
@@ -60,8 +60,8 @@ Based on $ARGUMENTS:
      2. "Sophia — Anthropic Staff, single, SF renter, British expat, NW ~$4.3M" — Early AI startup, private stock concentration, O-1A visa, UK pension/accounts, AMT complexity
 
 3. Run the appropriate seed command:
-   - Alex: `node ~/Desktop/Capiis/scripts/seed-data.js alex`
-   - Sophia: `node ~/Desktop/Capiis/scripts/seed-data.js sophia`
+   - Alex: `node scripts/seed-data.js alex`
+   - Sophia: `node scripts/seed-data.js sophia`
 
 4. Report based on selection:
    - Alex: "Template imported — Alex, Staff Engineer (L7) @ Google, Taiwanese immigrant, Cupertino CA. Net worth ~$5.5M."

@@ -34,7 +34,7 @@ Then calculate:
 
 ### Step 2: Read All Data Sources
 
-Read these files from the project root (`~/Desktop/Capiis`):
+Read these files from the project root:
 
 1. **`data/profile.json`** -- filing status, tax rates, state, accounts
 2. **`data/profile.md`** -- narrative context: career trajectory, family plans, financial philosophy, life goals, recent changes. Use this to inform tax advice — e.g., if the user is planning to leave their job, factor in RSU acceleration and income cliff; if they mention college funding goals, emphasize 529 strategies; if they describe a conservative philosophy, weight tax-loss harvesting over aggressive rebalancing.

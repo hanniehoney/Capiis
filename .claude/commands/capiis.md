@@ -7,7 +7,7 @@ allowed-tools: Bash(node:*), Bash(npm:*), Bash(open:*), Bash(lsof:*), Bash(kill:
 
 Launch the Capiis wealth & asset management dashboard.
 
-The Capiis project lives at `~/Desktop/Capiis`. All commands below use this absolute path.
+All commands use relative paths from the project root (where this repo is cloned).
 
 ## Instructions
 
@@ -15,7 +15,7 @@ The Capiis project lives at `~/Desktop/Capiis`. All commands below use this abso
 
 1. Run a single Bash command to check port AND start if needed:
    ```
-   lsof -ti:3333 > /dev/null 2>&1 && echo "ALREADY_RUNNING" || (test -d ~/Desktop/Capiis/node_modules || npm install --prefix ~/Desktop/Capiis; node ~/Desktop/Capiis/server.js & sleep 2 && echo "STARTED")
+   lsof -ti:3333 > /dev/null 2>&1 && echo "ALREADY_RUNNING" || (test -d node_modules || npm install; node server.js & sleep 2 && echo "STARTED")
    ```
    - If output is `ALREADY_RUNNING`, skip to step 2
    - If output is `STARTED`, continue to step 2
@@ -26,7 +26,7 @@ The Capiis project lives at `~/Desktop/Capiis`. All commands below use this abso
 
 3. Check if data is populated by running:
    ```
-   node -e "try{const d=require('/Users/BlancheLiu/Desktop/Capiis/data/profile.json');console.log(d.personal?.name||'EMPTY')}catch(e){console.log('EMPTY')}"
+   node -e "try{const d=require('./data/profile.json');console.log(d.personal?.name||'EMPTY')}catch(e){console.log('EMPTY')}"
    ```
    - This command ALWAYS succeeds (exit code 0) — it prints the user's name or `EMPTY`
 
@@ -60,5 +60,5 @@ If the user provides arguments ($ARGUMENTS), handle them:
 
 - **stop**: Kill the running Capiis server by running `kill $(lsof -ti:3333)` and confirm it's stopped
 - **status**: Check if the server is running on port 3333 and report back
-- **reset**: Run `node ~/Desktop/Capiis/scripts/seed-data.js` to reset all data to mock defaults, then confirm
+- **reset**: Run `node scripts/seed-data.js` to reset all data to mock defaults, then confirm
 - **No arguments**: Default behavior -- launch the dashboard (steps 1-5 above)
