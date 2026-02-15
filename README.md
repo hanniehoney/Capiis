@@ -287,6 +287,5 @@ Without Perplexity, agents fall back to `WebSearch`/`WebFetch` (slower, less acc
   - [ ] Tax agent suite (split current tax agent into clearer sub-agents by stage/use case)
   - [ ] Real-time portfolio query agent
   - [ ] Wealth planning agent
-  - [ ] Feed intelligence agent
 
 - [ ] Commercial model for advanced tax outcomes (explore value-based pricing, for example savings-share style pricing instead of pure tier pricing)

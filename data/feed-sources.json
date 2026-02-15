@@ -1,0 +1,25 @@
+{
+  "sources": [
+    {
+      "id": "fs-001",
+      "url": "https://rss.beehiiv.com/feeds/4aF2pGVAEN.xml",
+      "name": "How They Make Money",
+      "addedAt": "2026-02-12T00:00:00Z",
+      "note": "Business model breakdowns"
+    },
+    {
+      "id": "fs-002",
+      "url": "https://www.appeconomyinsights.com/feed",
+      "name": "App Economy Insights",
+      "addedAt": "2026-02-15T00:00:00Z",
+      "note": "App/tech earnings analysis"
+    },
+    {
+      "id": "fs-003",
+      "url": "https://www.bloomberg.com/opinion/authors/ARbTQlRLRjE/matthew-s-levine.rss",
+      "name": "Matt Levine — Money Stuff",
+      "addedAt": "2026-02-15T00:00:00Z",
+      "note": "Finance, markets, corporate law commentary"
+    }
+  ]
+}

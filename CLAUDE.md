@@ -86,7 +86,9 @@ Import with: `node scripts/seed-data.js [persona-key]` or use `/capis-data templ
 | `data/categories.json` | Schema: asset classes, liability classes, account types, category metadata |
 | `data/tax-summary.json` | Tax planning data and taxable events |
 | `data/signals.json` | AI-generated signals and alerts |
-| `data/feed.json` | News and market intelligence feed |
+| `data/feed.json` | News and market intelligence feed (fallback when RSS unavailable) |
+| `data/feed-sources.json` | RSS/feed source URLs -- the user's trusted intel sources |
+| `data/intel-digest.json` | Feed analyst output: full analysis with relevance reasons and portfolio impact |
 | `data/watchlist.json` | Watched assets not in portfolio |
 
 **Markdown files**:
@@ -117,6 +119,7 @@ Employee equity columns (employee-equity.xlsx only): `equityType`, `grantDate`, 
 | POST | `/api/signals` | Add a new signal |
 | PATCH | `/api/signals/:id` | Update signal (e.g., dismiss) |
 | GET | `/api/feed` | News feed items |
+| GET | `/api/intel-digest` | Feed analyst output (intel analysis digest) |
 | GET | `/api/tax-summary` | Tax planning data |
 | GET | `/api/watchlist` | Watched assets |
 | GET | `/api/stats` | Computed portfolio statistics |
@@ -189,6 +192,7 @@ Capis uses independent subagents defined in `.claude/agents/`. Each agent has it
 |-------|------|---------|
 | **Tax Analyst** | `.claude/agents/tax-analyst.md` | Reads tax + portfolio data, calculates time-sensitive deadlines, returns tax briefing |
 | **Price Tracker** | `.claude/agents/price-tracker.md` | Fetches live market prices for stocks/ETFs/crypto, updates portfolio xlsx files |
+| **Feed Analyst** | `.claude/agents/feed-analyst.md` | Scans RSS feeds, cross-references against portfolio/profile, generates intel signals |
 
 ### How Agents Work
 
@@ -228,8 +232,9 @@ A `SessionStart` hook (`.claude/hooks/session-check.sh`) runs on every new/resum
 | Trigger | Action |
 |---------|--------|
 | `STALE_PRICES` | Run the price-tracker agent (`.claude/agents/price-tracker.md`) |
-| `TAX_SEASON` | Run the tax-analyst agent (`.claude/agents/capis-tax.md`) |
-| Both triggers | Run both agents **in parallel**, then merge results into a unified briefing |
+| `TAX_SEASON` | Run the tax-analyst agent (`.claude/agents/tax-analyst.md`) |
+| `STALE_INTEL` | Run the feed-analyst agent (`.claude/agents/feed-analyst.md`) — intel >12h stale |
+| Multiple triggers | Run applicable agents **in parallel**, then merge results into a unified briefing |
 
 **Unified briefing format** (when both agents return):
 1. Most impactful change first (e.g., valuation event, large price move)
@@ -255,6 +260,61 @@ Do NOT present two separate reports. Merge agent results into one coherent, prio
 Agents can preload skills for domain knowledge via the `skills` frontmatter field. The Tax Agent preloads Tax Professional for deep tax law questions.
 
 **All agents and skills should read `data/profile.md`** at startup for narrative context (goals, philosophy, career, family). This enables personalized advice without requiring the user to repeat background information.
+
+## Intel Feed
+
+The Feed page is not a content reader — it's an **intelligence capture layer**. It aggregates the user's trusted information sources (RSS, blogs, newsletters) so that future agents/skills can cross-reference incoming intel against the user's actual portfolio.
+
+### Design Principles
+
+- **情報捕捉層，不是內容閱讀器。** The feed surfaces headlines and action signals. Deep reading happens at the source (external links).
+- **Sources are curated in CLI, not in UI.** The user adds trusted RSS/blog URLs via Claude Code conversation. The frontend only filters and displays.
+- **Signals drive action.** AI-generated signals have priority levels, affected assets, and dismiss capability. Feed items are passive context.
+
+### Feed UI Structure
+
+Two tabs:
+
+- **All** — Chronological RSS articles. Each card: source, date (time if today, date otherwise), headline (clickable → original article ↗), 1-2 line summary. No tags, scores, or relation blocks.
+- **Signals** — Undismissed AI signals. Each card: priority dot (colored by level) + label, title, "Affects: TICKER, TICKER" line (from `relatedAssets[]`), preview body with expand/collapse, × dismiss button.
+
+Dismiss animation: opacity fade → max-height collapse → DOM remove. Does NOT trigger full re-render or tab switch.
+
+Module-level `currentTab` variable preserves tab state across SSE-triggered re-renders.
+
+### Signal Schema Compatibility
+
+Signals have two formats. The renderer handles both via fallback:
+- **New format**: `priority` (high/medium/low) + `body`
+- **Legacy format**: `severity` (high/medium/info) + `message`
+
+### How Sources Work
+
+- **Sources** are stored in `data/feed-sources.json`. The server reads this file on each request (hot-reload, no restart needed after cache TTL expires).
+- **Adding a source**: When the user shares an RSS/feed/blog URL in conversation, ask if they want to add it to their Intel Feed. If yes, append to `data/feed-sources.json`.
+- **Server** fetches all sources in parallel, deduplicates, and sorts by timestamp. Individual feed failures don't break others. Results are cached for 5 minutes.
+- **Fallback**: If all RSS feeds fail, the server falls back to `data/feed.json` (static seed data).
+
+### Intel Relevance: Feed Analyst Agent
+
+The **feed-analyst** agent (`.claude/agents/feed-analyst.md`) scans RSS feeds, cross-references items against the user's portfolio and profile, and generates intel signals.
+
+**How it works:**
+1. Fetches RSS feed items via `/api/feed` and reads portfolio + profile data
+2. Builds a relevance keyword set from tickers, company names, employer, goals
+3. Single-pass analysis: classifies each feed item as high/medium/low/skip
+4. Deduplicates against existing signals (title similarity + sourceUrl)
+5. Writes high/medium signals to `data/signals.json` (source: `feed-analyst`)
+6. Writes full analysis to `data/intel-digest.json` (including low-priority items)
+
+**Auto-trigger:** Session hook detects `STALE_INTEL` when `intel-digest.json` is >12h stale or has never been analyzed. The feed-analyst agent can run in parallel with other agents.
+
+**Outputs:**
+- `data/signals.json` — new signals with `"source": "feed-analyst"`, high/medium priority only
+- `data/intel-digest.json` — complete analysis log with relevance reasons, portfolio impact, and source URLs
+- `/api/intel-digest` — API endpoint serves the digest for downstream consumers
+
+**Future:** Asset allocation observations (e.g., "BTC volatility elevated — current exposure is X%") with proper compliance disclaimers. No trade recommendations.
 
 ## Data Backfill Convention (Project-Wide)
 
@@ -288,6 +348,8 @@ Agent runs (expensive) → writes to JSON → Dashboard reads JSON (free)
 | Portfolio positions | `data/*.xlsx` (via xlsx skill) |
 | Signals and alerts | `data/signals.json` |
 | Market intelligence | `data/feed.json` |
+| Intel analysis & digest | `data/intel-digest.json` |
+| Feed sources (RSS/blog URLs) | `data/feed-sources.json` |
 | Category config | `data/categories.json` |
 | Life events, goals, philosophy, career changes | `data/profile.md` |
 

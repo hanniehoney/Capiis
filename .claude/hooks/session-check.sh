@@ -39,6 +39,21 @@ if [ "$APR15_EPOCH" -gt 0 ]; then
   DAYS_TO_APR15=$(( (APR15_EPOCH - NOW_EPOCH) / 86400 ))
 fi
 
+# --- Intel Feed Staleness ---
+INTEL_STALE_HOURS=999
+if [ -f "$DATA_DIR/intel-digest.json" ]; then
+  LAST_ANALYZED=$(node -e "
+    const d = require('$DATA_DIR/intel-digest.json');
+    console.log(d.lastAnalyzed || '');
+  " 2>/dev/null)
+  if [ -n "$LAST_ANALYZED" ]; then
+    LAST_INTEL_EPOCH=$(date -j -f "%Y-%m-%dT%H:%M:%S" "${LAST_ANALYZED%%Z}" "+%s" 2>/dev/null || echo 0)
+    if [ "$LAST_INTEL_EPOCH" -gt 0 ]; then
+      INTEL_STALE_HOURS=$(( (NOW_EPOCH - LAST_INTEL_EPOCH) / 3600 ))
+    fi
+  fi
+fi
+
 # --- Active Signals ---
 ACTIVE_SIGNALS=0
 HIGH_SIGNALS=0
@@ -74,8 +89,12 @@ if [ "$DAYS_TO_APR15" -gt 0 ] && [ "$DAYS_TO_APR15" -le 90 ]; then
   TRIGGERS="${TRIGGERS}TAX_SEASON "
 fi
 
+if [ "$INTEL_STALE_HOURS" -gt 12 ]; then
+  TRIGGERS="${TRIGGERS}STALE_INTEL "
+fi
+
 # Always output status
-echo "[capis-check] Profile: ${PROFILE_NAME:-Unknown} | Prices: ${STALE_HOURS}h old | Apr 15: ${DAYS_TO_APR15} days | Signals: ${ACTIVE_SIGNALS} active (${HIGH_SIGNALS} high)"
+echo "[capis-check] Profile: ${PROFILE_NAME:-Unknown} | Prices: ${STALE_HOURS}h old | Intel: ${INTEL_STALE_HOURS}h old | Apr 15: ${DAYS_TO_APR15} days | Signals: ${ACTIVE_SIGNALS} active (${HIGH_SIGNALS} high)"
 
 if [ -n "$TRIGGERS" ]; then
   echo "[capis-auto] Triggers detected: ${TRIGGERS}"
@@ -86,6 +105,10 @@ if [ -n "$TRIGGERS" ]; then
 
   if echo "$TRIGGERS" | grep -q "TAX_SEASON"; then
     echo "[capis-auto] Tax filing deadline in ${DAYS_TO_APR15} days. Run tax-analyst agent for time-sensitive briefing."
+  fi
+
+  if echo "$TRIGGERS" | grep -q "STALE_INTEL"; then
+    echo "[capis-auto] Intel feed is ${INTEL_STALE_HOURS}h stale (>12h threshold). Run feed-analyst agent to scan."
   fi
 
   if echo "$TRIGGERS" | grep -q "STALE_PRICES" && echo "$TRIGGERS" | grep -q "TAX_SEASON"; then

@@ -5,7 +5,11 @@ const { readAllPortfolioData, readCategoriesConfig, discoverExcelFiles, DATA_DIR
 
 const app = express();
 const PORT = 3333;
-const RSS_URL = process.env.CAPIS_RSS_URL || 'https://rss.beehiiv.com/feeds/4aF2pGVAEN.xml';
+function loadFeedSources() {
+  const src = readJSON('feed-sources.json');
+  if (src && Array.isArray(src.sources)) return src.sources.map(s => s.url).filter(Boolean);
+  return [];
+}
 const RSS_CACHE_TTL_MS = Number(process.env.CAPIS_RSS_TTL_MS) || 5 * 60 * 1000;
 let rssCache = { fetchedAt: 0, data: null };
 
@@ -33,20 +37,36 @@ function writeJSON(filename, data) {
 
 // --- RSS Helpers ---
 async function getRssFeed() {
-  if (!RSS_URL) return null;
+  const RSS_FEEDS = loadFeedSources();
+  if (!RSS_FEEDS.length) return null;
   const now = Date.now();
   if (rssCache.data && (now - rssCache.fetchedAt) < RSS_CACHE_TTL_MS) {
     return rssCache.data;
   }
 
-  const res = await fetch(RSS_URL, {
-    headers: { 'User-Agent': 'Mozilla/5.0 (Capis Wealth Dashboard)' }
-  });
-  if (!res.ok) {
-    throw new Error(`RSS HTTP ${res.status}`);
+  const results = await Promise.allSettled(
+    RSS_FEEDS.map(async (feedUrl) => {
+      const res = await fetch(feedUrl, {
+        headers: { 'User-Agent': 'Mozilla/5.0 (Capis Wealth Dashboard)' }
+      });
+      if (!res.ok) throw new Error(`RSS HTTP ${res.status} from ${feedUrl}`);
+      const xml = await res.text();
+      return parseRss(xml, feedUrl);
+    })
+  );
+
+  const allItems = [];
+  for (const r of results) {
+    if (r.status === 'fulfilled') allItems.push(...r.value);
+    else console.warn('RSS feed failed:', r.reason.message);
   }
-  const xml = await res.text();
-  const items = parseRss(xml, RSS_URL);
+
+  // Deduplicate by id, sort by timestamp descending
+  const seen = new Set();
+  const items = allItems
+    .filter(item => { if (seen.has(item.id)) return false; seen.add(item.id); return true; })
+    .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
   const data = { items };
   rssCache = { fetchedAt: now, data };
   return data;
@@ -219,6 +239,9 @@ try {
     } else if (filename === 'tax-summary.json') {
       clearTimeout(watchDebounce);
       watchDebounce = setTimeout(() => broadcast('tax'), 500);
+    } else if (filename === 'intel-digest.json' || filename === 'signals.json') {
+      clearTimeout(watchDebounce);
+      watchDebounce = setTimeout(() => broadcast('signals'), 500);
     }
   });
 } catch (e) {
@@ -316,6 +339,13 @@ app.get('/api/feed', async (req, res) => {
 
   const data = readJSON('feed.json');
   if (!data) return res.status(404).json({ error: 'No feed data' });
+  res.json(data);
+});
+
+// Intel digest
+app.get('/api/intel-digest', (req, res) => {
+  const data = readJSON('intel-digest.json');
+  if (!data) return res.status(404).json({ error: 'No intel digest data' });
   res.json(data);
 });
 
