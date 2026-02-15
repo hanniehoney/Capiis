@@ -2,247 +2,114 @@
 
 **Capitalis Apis - Where Wealth Swarms.**
 
-Capiis is a local-first wealth and asset management dashboard built for the Claude Code ecosystem.  
-It focuses on portfolio visibility, tax-aware analysis, and decision support (not execution/trading).
+A local-first wealth and asset management dashboard built for the [Claude Code](https://docs.anthropic.com/en/docs/claude-code) ecosystem. Portfolio visibility, tax-aware analysis, and decision support — not execution or trading.
+
+All portfolio data stays on your machine (Excel + JSON). Claude Code handles the intelligence layer: tax analysis, price tracking, portfolio insights, and guided data entry through slash commands, skills, and agents.
 
 ## Quick Start
 
 ```bash
-# 1. Install dependencies
+git clone https://github.com/hanniehoney/Capiis.git
+cd Capiis
 npm install
-
-# 2. Seed local demo data (Excel + JSON)
-npm run seed
-
-# 3. Launch
-npm start
-# -> http://localhost:3333
+npm run seed       # Import demo portfolio (Bay Area tech worker)
+npm start          # http://localhost:3333
 ```
 
-Or from Claude Code:
+Or launch from Claude Code:
 
-```text
-/capiis                  # Launch dashboard
-/capiis stop             # Stop server
-/capiis reset            # Re-seed template data
-/capiis status           # Check server status
-
+```
+/capiis                  # Start server + open dashboard
 /capiis-data             # Data management menu
-/capiis-data clear       # Wipe all data (keeps schema + empty xlsx shells)
-/capiis-data template    # Import demo data (Bay Area tech family)
+/capiis-data template    # Import demo persona
 /capiis-data setup       # Guided step-by-step data entry
 ```
 
-## Runtime Architecture Snapshot
+## Architecture
 
-```text
-Claude Code
-  ├─ /capiis command (.claude/commands/capiis.md)        # launch / stop / status
-  ├─ /capiis-data command (.claude/commands/capiis-data.md)  # clear / template / setup
-  ├─ portfolio-intel skill (skills/portfolio-intel/)      # portfolio analysis & management
-  ├─ onboarding skill (skills/onboarding/)               # guided data entry (5-phase)
-  ├─ tax-analyst agent (.claude/agents/tax-analyst.md)    # tax analysis
-  └─ price-tracker agent (.claude/agents/price-tracker.md) # live price updates
-          │
-          ▼
-Express server (server.js, :3333)
-  ├─ serves SPA (public/)
+```
+Claude Code (AI layer)
+  ├─ /capiis              slash command — launch / stop / status
+  ├─ /capiis-data         slash command — clear / template / setup
+  ├─ portfolio-intel      skill — portfolio analysis & management
+  ├─ onboarding           skill — guided 5-phase data entry
+  ├─ tax-analyst          agent — tax briefing with live rate verification
+  ├─ price-tracker        agent — Yahoo Finance price updates
+  └─ feed-analyst         agent — RSS intel cross-referenced with portfolio
+        │
+        ▼
+Express Server (server.js, :3333)
+  ├─ SPA frontend (public/)
   ├─ REST API (/api/*)
   ├─ SSE stream (/api/events)
-  └─ fs.watch(data/) -> broadcasts: portfolio, profile, tax, signals
-          │
-          ▼
-Data layer (local files)
-  ├─ Excel: 10 asset categories + 4 liability categories (data/*.xlsx)
-  ├─ categories config: data/categories.json (schema)
-  └─ JSON: profile, tax-summary, signals, feed, watchlist
+  └─ fs.watch(data/) → live browser refresh
+        │
+        ▼
+Local Data Layer
+  ├─ data/*.xlsx          10 asset + 4 liability categories
+  ├─ data/*.json          profile, tax, signals, feed, watchlist
+  └─ data/categories.json schema (tracked in git)
 ```
 
-## Project Structure Snapshot
+## Project Structure
 
-```text
+```
 Capiis/
-├── .claude/
-│   ├── agents/
-│   │   └── tax-analyst.md             # Tax analysis agent
-│   └── commands/
-│       ├── capiis.md                   # /capiis — launch dashboard
-│       └── capiis-data.md             # /capiis-data — data management
-├── data/                              # All user data (Excel + JSON)
-│   ├── stocks.xlsx                    # Asset: stocks, ETFs
-│   ├── crypto.xlsx                    # Asset: cryptocurrency
-│   ├── angel-investment.xlsx          # Asset: startup investments
-│   ├── employee-equity.xlsx           # Asset: RSUs, ISOs, ESPP
-│   ├── real-estate.xlsx               # Asset: real estate (physical property)
-│   ├── cash.xlsx                      # Asset: cash & checking
-│   ├── savings.xlsx                   # Asset: savings, CDs, 529
-│   ├── vehicles.xlsx                  # Asset: vehicles
-│   ├── jewelry.xlsx                   # Asset: jewelry & watches
-│   ├── art.xlsx                       # Asset: art & collectibles
-│   ├── credit-cards.xlsx              # Liability: credit cards
-│   ├── mortgage.xlsx                  # Liability: mortgage
-│   ├── auto-loan.xlsx                 # Liability: auto loans
-│   ├── student-loan.xlsx              # Liability: student loans
-│   ├── categories.json                # Schema: asset/liability classes, account types
-│   ├── profile.json                   # User profile (personal, family, tax, accounts)
-│   ├── tax-summary.json               # Tax data & taxable events
-│   ├── signals.json                   # AI-generated alerts
-│   ├── feed.json                      # News & market intelligence
-│   └── watchlist.json                 # Watched assets
-├── lib/
-│   └── excel.js                       # Excel reader (xlsx → JSON for API)
-├── public/                            # Frontend (vanilla HTML/CSS/JS, no build step)
-│   ├── index.html
+├── server.js                         Express server (port 3333)
+├── lib/excel.js                      Excel → JSON reader
+├── public/                           Frontend (vanilla HTML/CSS/JS, no build step)
 │   ├── css/styles.css
 │   └── js/
 │       ├── app.js
-│       ├── views/
-│       │   ├── portfolio.js
-│       │   ├── feed.js
-│       │   ├── legal.js
-│       │   └── profile.js
-│       ├── components/
-│       │   ├── sidebar.js
-│       │   ├── header.js
-│       │   └── charts.js
-│       └── utils/
-│           ├── api.js
-│           └── sse.js
+│       ├── views/                    portfolio, feed, legal, profile
+│       ├── components/               sidebar, header, charts
+│       └── utils/                    api, sse
+├── data/                             All user data (git-ignored except schema)
+│   └── categories.json              Category/account type definitions
 ├── scripts/
-│   ├── seed-data.js                   # Template data seeder (Bay Area family)
-│   └── clear-data.js                  # Wipe data, keep schema + empty xlsx shells
+│   ├── seed-data.js                  Template seeder (--list for options)
+│   ├── clear-data.js                 Wipe data, keep schema + empty xlsx
+│   └── personas/                     Persona data modules (alex.js, sophia.js)
 ├── skills/
-│   ├── portfolio-intel/               # Portfolio analysis & management skill
-│   │   ├── SKILL.md
-│   │   └── references/asset-schema.md
-│   ├── onboarding/                    # Guided data entry skill (5-phase)
-│   │   ├── SKILL.md
-│   │   └── references/data-schema.md
-│   └── tax-professional/              # US tax knowledge base skill
-│       ├── SKILL.md
-│       └── references/common-writeoffs.md
-├── server.js                          # Express server (port 3333)
-├── README.md
-└── DEVLOG.md
+│   ├── portfolio-intel/              Portfolio analysis & management
+│   ├── onboarding/                   Guided data entry (5-phase)
+│   └── tax-professional/             US tax knowledge base
+├── .claude/
+│   ├── commands/                     Slash commands (capiis, capiis-data)
+│   ├── agents/                       Subagents (tax, price, feed)
+│   └── hooks/                        Session auto-orchestration
+├── CLAUDE.md                         AI development guide
+└── DEVLOG.md                         Hackathon build log
 ```
 
-## Data Architecture
+## Template Personas
 
-Capiis uses a hybrid local data model:
-
-- Portfolio holdings and liabilities are stored in `data/*.xlsx`.
-- Category/class definitions are stored in `data/categories.json`.
-- Other app data is stored in JSON (`signals`, `feed`, `watchlist`, `tax-summary`, `profile`).
-
-### Portfolio Files (Excel)
-
-Asset categories (10):
-- `stocks.xlsx`
-- `crypto.xlsx`
-- `angel-investment.xlsx`
-- `employee-equity.xlsx`
-- `real-estate.xlsx`
-- `cash.xlsx`
-- `savings.xlsx`
-- `vehicles.xlsx`
-- `jewelry.xlsx`
-- `art.xlsx`
-
-Liability categories (4):
-- `credit-cards.xlsx`
-- `mortgage.xlsx`
-- `auto-loan.xlsx`
-- `student-loan.xlsx`
-
-Drop any new `.xlsx` file into `data/` to add a new category automatically.
-
-### Non-Portfolio Files (JSON)
-
-- `categories.json`
-- `signals.json`
-- `feed.json`
-- `watchlist.json`
-- `tax-summary.json`
-- `profile.json`
+| Persona | Command | Description |
+|---------|---------|-------------|
+| **Alex** | `npm run seed` | 37, Taiwanese. Staff Engineer (L7) @ Google. Married, 2 kids. Cupertino homeowner. NW ~$5.5M. META stock concentration, cross-border tax. |
+| **Sophia** | `node scripts/seed-data.js sophia` | 32, British. Staff Research @ Anthropic. Single, SF renter. NW ~$4.3M. O-1A visa, ISOs, AMT risk, UK accounts. |
 
 ## Tech Stack
 
 | Layer | Choice |
-|------|--------|
+|-------|--------|
 | Server | Express (Node.js) |
 | Frontend | Vanilla HTML/CSS/JS (ES modules, no build step) |
 | Charts | SVG-based components |
 | Storage | Excel + JSON (local files) |
 | Excel I/O | `xlsx` (SheetJS) |
-| Realtime | SSE (`/api/events`) + `fs.watch` |
-| AI Integration | Claude Code slash commands + skills + agents |
-| Fact-Checking | Perplexity MCP (Sonar Pro) for real-time tax/rate verification |
-
-## Claude Code Integration
-
-### Slash Commands
-
-| Command | File | Purpose |
-|---------|------|---------|
-| `/capiis` | `.claude/commands/capiis.md` | Launch / stop / status / reset |
-| `/capiis-data` | `.claude/commands/capiis-data.md` | Data management: clear, template, guided setup |
-
-### Skills
-
-| Skill | Path | Purpose |
-|-------|------|---------|
-| **Portfolio Intelligence** | `skills/portfolio-intel/` | Portfolio analysis, position management, signal generation |
-| **Onboarding** | `skills/onboarding/` | 5-phase guided data entry (profile → accounts → assets → liabilities → complete). Supports file import (xlsx/pdf/docs/csv/txt) |
-| **Tax Professional** | `skills/tax-professional/` | US tax knowledge base (deductions, strategies, audit risk) |
-
-### Agents
-
-| Agent | File | Purpose |
-|-------|------|---------|
-| **Tax Analyst** | `.claude/agents/tax-analyst.md` | Reads tax + portfolio data, returns tax briefing |
-| **Price Tracker** | `.claude/agents/price-tracker.md` | Fetches live market prices, updates portfolio xlsx |
-
-## API Reference
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `GET` | `/api/portfolio` | Full portfolio payload (assets + liabilities, read from Excel) |
-| `GET` | `/api/portfolio/categories` | Detected Excel categories |
-| `GET` | `/api/categories` | Category/class metadata config |
-| `GET` | `/api/stats` | Aggregated stats (net worth, allocations, tax-bucket aggregates) |
-| `GET` | `/api/signals` | Signals list |
-| `POST` | `/api/signals` | Create signal |
-| `PATCH` | `/api/signals/:id` | Update signal (for example dismiss) |
-| `GET` | `/api/feed` | Intelligence feed |
-| `GET` | `/api/watchlist` | Watchlist data |
-| `GET` | `/api/tax-summary` | Tax summary and events |
-| `GET` | `/api/profile` | User profile (location/tax/accounts) |
-| `GET` | `/api/events` | SSE event stream |
-
-## Real-Time Sync (SSE)
-
-Server-side watchers and events:
-
-- `*.xlsx` and `categories.json` changes -> broadcast `portfolio`
-- `profile.json` changes -> broadcast `profile`
-- `tax-summary.json` changes -> broadcast `tax`
-- signal mutations (`POST/PATCH /api/signals`) -> broadcast `signals`
-
-Frontend view refresh map:
-
-- `portfolio` -> `#portfolio`, `#legal`
-- `profile` -> `#profile`, `#legal`
-- `tax` -> `#legal`
-- `signals` -> `#feed`
+| Realtime | SSE + `fs.watch` |
+| AI | Claude Code commands + skills + agents |
+| Fact-Checking | Perplexity MCP (Sonar Pro) |
 
 ## Prerequisites
 
+- **Node.js** (18+)
+- **Claude Code** ([install guide](https://docs.anthropic.com/en/docs/claude-code))
+
 ### Perplexity API Key (Recommended)
 
-Capiis agents fact-check tax rates, contribution limits, and deadlines against live data before presenting numbers. This requires a Perplexity API key.
-
-1. Get an API key at https://www.perplexity.ai/settings/api
-2. Add to your Claude Code MCP config (`~/.claude/mcp.json` or project-level `.claude/mcp.json`):
+Tax and price agents fact-check figures against live data. Add to your Claude Code MCP config:
 
 ```json
 {
@@ -258,34 +125,28 @@ Capiis agents fact-check tax rates, contribution limits, and deadlines against l
 }
 ```
 
-Without Perplexity, agents fall back to `WebSearch`/`WebFetch` (slower, less accurate) or cached data in the tax-professional skill (may be outdated due to new legislation).
+Get a key at https://www.perplexity.ai/settings/api. Without it, agents fall back to web search (slower, less accurate).
+
+## API
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/portfolio` | All holdings (from Excel) |
+| GET | `/api/stats` | Net worth, allocations, tax buckets |
+| GET | `/api/signals` | AI-generated alerts |
+| GET | `/api/feed` | RSS intelligence feed |
+| GET | `/api/tax-summary` | Tax data & events |
+| GET | `/api/profile` | User profile |
+| GET | `/api/events` | SSE stream |
 
 ## Roadmap
 
-- [ ] Identity and Profile Architecture
-  - [ ] `Profile` mode selection: `Individual` / `Family` / `Institution`
-  - [ ] Detailed tax identity modeling across personal, pre-company, and company-owner states
-  - [ ] Advanced profile settings for entity-aware tax planning
+- [ ] Identity architecture: Individual / Family / Institution profiles
+- [ ] Tax lifecycle: pre-acquisition planning, holding-period checks, year-end workflows
+- [ ] Asset expansion: bonds, treasuries, commodities, multi-portfolio
+- [ ] Agent suite: split tax agent, add wealth planning agent, real-time query agent
+- [ ] Commercial model for advanced tax outcomes
 
-- [ ] Tax Intelligence and Planning Lifecycle
-  - [ ] Pre-acquisition tax planning (before entering positions)
-  - [ ] Holding-period tax opportunity/risk checks
-  - [ ] Post-transaction and year-end/finalization tax workflows
-  - [ ] Advanced tax optimization recommendations for high-complexity cases
+## License
 
-- [ ] Asset Management Expansion
-  - [ ] Introduce higher-level asset classification (for example: equities, fixed income, commodities, cash/cash equivalents)
-  - [ ] Extend commodity coverage (for example gold, silver, copper) and map to clear portfolio buckets
-  - [ ] Expand fixed-income coverage (for example bonds and treasuries) as first-class portfolio categories
-  - [ ] Broader asset universe coverage (equities, bonds/treasuries, commodities/precious metals, cash equivalents)
-  - [ ] Scalable navigation IA as asset surfaces grow
-  - [ ] Multi-portfolio support
-
-- [ ] Agent System Expansion
-  - [ ] Onboarding investigation agent (for empty profile state; asks guided questions and backfills missing data)
-  - [ ] Profile/composition agent (responsible for identity/profile configuration workflow)
-  - [ ] Tax agent suite (split current tax agent into clearer sub-agents by stage/use case)
-  - [ ] Real-time portfolio query agent
-  - [ ] Wealth planning agent
-
-- [ ] Commercial model for advanced tax outcomes (explore value-based pricing, for example savings-share style pricing instead of pure tier pricing)
+MIT
