@@ -176,6 +176,7 @@ Drop any new `.xlsx` file into `data/` to add a new category automatically.
 | Excel I/O | `xlsx` (SheetJS) |
 | Realtime | SSE (`/api/events`) + `fs.watch` |
 | AI Integration | Claude Code slash commands + skills + agents |
+| Fact-Checking | Perplexity MCP (Sonar Pro) for real-time tax/rate verification |
 
 ## Claude Code Integration
 
@@ -233,6 +234,31 @@ Frontend view refresh map:
 - `profile` -> `#profile`, `#legal`
 - `tax` -> `#legal`
 - `signals` -> `#feed`
+
+## Prerequisites
+
+### Perplexity API Key (Recommended)
+
+Capis agents fact-check tax rates, contribution limits, and deadlines against live data before presenting numbers. This requires a Perplexity API key.
+
+1. Get an API key at https://www.perplexity.ai/settings/api
+2. Add to your Claude Code MCP config (`~/.claude/mcp.json` or project-level `.claude/mcp.json`):
+
+```json
+{
+  "mcpServers": {
+    "perplexity": {
+      "command": "npx",
+      "args": ["-y", "@anthropic/perplexity-mcp"],
+      "env": {
+        "PERPLEXITY_API_KEY": "pplx-..."
+      }
+    }
+  }
+}
+```
+
+Without Perplexity, agents fall back to `WebSearch`/`WebFetch` (slower, less accurate) or cached data in the tax-professional skill (may be outdated due to new legislation).
 
 ## Roadmap
 

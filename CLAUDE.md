@@ -316,6 +316,64 @@ Never present AI-generated interpretations as facts.
 - No product recommendations: never suggest specific financial products, brokers, or services
 - If future features add advisory capabilities, they MUST include proper disclaimers and avoid triggering fiduciary duty under the Investment Advisers Act of 1940
 
+## MCP: Perplexity for Fact-Checking
+
+Capis agents that output financial figures (tax liability, deduction amounts, contribution limits) **must fact-check against current data before presenting numbers to the user.** Users may act on these numbers — incorrect figures cause real financial harm.
+
+### Why Perplexity over WebFetch/WebSearch
+
+| | Perplexity MCP (`mcp__perplexity__search`) | WebFetch / WebSearch |
+|---|---|---|
+| **Speed** | Direct answer in seconds | Crawls full page, then summarizes — slow |
+| **Accuracy** | Returns cited, structured answers | May pull irrelevant content from page |
+| **Multi-topic** | Reliable when queries are single-topic | Same limitation |
+| **Best for** | Verifying specific tax rates, limits, deadlines | General browsing, reading full articles |
+
+### Usage Pattern
+
+**Always use single-topic parallel queries** (not one mega-query):
+
+```
+# BAD — multi-topic query returns incomplete answers
+"2025 standard deduction AND SALT cap AND HSA limit AND NIIT threshold"
+
+# GOOD — 3-4 focused queries, run in parallel
+Search 1: "2025 standard deduction MFJ, SALT cap MFJ MAGI phase-out"
+Search 2: "2025 401k HSA IRA contribution limits"
+Search 3: "2025 California state tax $800K MFJ bracket by bracket"
+Search 4: "2025 FBAR deadline, Form 8938 threshold MFJ"
+```
+
+### Setup
+
+Requires Perplexity API key. Add to Claude Code MCP config:
+
+```json
+{
+  "mcpServers": {
+    "perplexity": {
+      "command": "npx",
+      "args": ["-y", "@anthropic/perplexity-mcp"],
+      "env": {
+        "PERPLEXITY_API_KEY": "pplx-..."
+      }
+    }
+  }
+}
+```
+
+Get an API key at https://www.perplexity.ai/settings/api
+
+### Available Tools
+
+| Tool | Model | Use When | Cost |
+|------|-------|----------|------|
+| `mcp__perplexity__search` | Sonar Pro | Fact-checking rates, limits, deadlines | Low |
+| `mcp__perplexity__reason` | Sonar Reasoning Pro | Complex tax scenarios, multi-step calculations | Medium |
+| `mcp__perplexity__deep_research` | Sonar Deep Research | Comprehensive research reports | High — avoid unless needed |
+
+Agents should default to `search`. Use `reason` only for complex scenarios that require multi-step reasoning.
+
 ## Key Conventions
 
 - No external APIs or databases -- portfolio in Excel, other data in JSON

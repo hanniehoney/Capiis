@@ -1,6 +1,6 @@
 ---
 description: Launch the Capis wealth management dashboard
-allowed-tools: Bash(node:*), Bash(npm:*), Bash(open:*), Bash(lsof:*), Bash(kill:*)
+allowed-tools: Bash(node:*), Bash(npm:*), Bash(open:*), Bash(lsof:*), Bash(kill:*), Bash(curl:*)
 ---
 
 # Capis -- Capitalis Apis: Where Wealth Swarms
@@ -11,24 +11,48 @@ The Capis project lives at `~/Desktop/Capis`. All commands below use this absolu
 
 ## Instructions
 
-1. Check if the Capis server is already running:
-   - Run `lsof -ti:3333` to check if port 3333 is in use
-   - If already running, skip to step 4
+**Important: Keep output clean.** Do NOT run commands in parallel during startup — run them sequentially in a single chain to avoid "sibling error" noise. Minimize visible tool calls.
 
-2. Ensure dependencies are installed:
-   - Check if `~/Desktop/Capis/node_modules` exists
-   - If not, run `npm install --prefix ~/Desktop/Capis`
+1. Run a single Bash command to check port AND start if needed:
+   ```
+   lsof -ti:3333 > /dev/null 2>&1 && echo "ALREADY_RUNNING" || (test -d ~/Desktop/Capis/node_modules || npm install --prefix ~/Desktop/Capis; node ~/Desktop/Capis/server.js & sleep 2 && echo "STARTED")
+   ```
+   - If output is `ALREADY_RUNNING`, skip to step 2
+   - If output is `STARTED`, continue to step 2
+   - Do NOT show intermediate "checking port" or "checking dependencies" messages to the user
 
-3. Start the Express server in the background:
-   - Run `node ~/Desktop/Capis/server.js &`
-   - Wait 2 seconds for the server to initialize
-
-4. Open the dashboard:
+2. Open the dashboard:
    - Run `open http://localhost:3333`
 
-5. Confirm to the user:
-   - Report that Capis dashboard is running at http://localhost:3333
-   - Fetch `http://localhost:3333/api/stats` and show a brief portfolio summary (total value, number of positions, allocation)
+3. Check if data is populated by running:
+   ```
+   node -e "try{const d=require('/Users/BlancheLiu/Desktop/Capis/data/profile.json');console.log(d.personal?.name||'EMPTY')}catch(e){console.log('EMPTY')}"
+   ```
+   - This command ALWAYS succeeds (exit code 0) — it prints the user's name or `EMPTY`
+
+4. **If output is `EMPTY`** (new user / cleared data):
+   - Show a welcome message and use AskUserQuestion:
+     - Question: "Welcome to Capis! Looks like you haven't set up your data yet. How would you like to get started?"
+     - Header: "Setup"
+     - Options:
+       1. Label: "Import a demo template (Recommended)", Description: "Load a pre-built persona (Alex or Sophia) to explore the dashboard with realistic data"
+       2. Label: "Enter my own data", Description: "Guided step-by-step setup — profile, accounts, assets, liabilities"
+       3. Label: "Just browse the empty dashboard", Description: "Skip setup for now, you can always run /capis-data later"
+   - Route based on answer:
+     - "Import a demo template" → invoke `/capis-data template` (use the Skill tool)
+     - "Enter my own data" → invoke `/capis-data setup` (use the Skill tool)
+     - "Just browse" → do nothing, show "You can run `/capis-data` anytime to set up your data."
+
+5. **If output is a name** (returning user):
+   - Fetch `http://localhost:3333/api/stats` (via curl -s) and show a brief portfolio summary:
+     - Net worth, total assets, number of positions, top 2-3 allocation categories
+     - Keep it to 3-4 lines, no full table unless the user asks
+   - After the summary, show this guide (copy exactly as-is):
+     ```
+     **What can I help with?**
+     "How much tax do I owe?"   · "Update my stock prices"   · "Analyze my portfolio"
+     `/capis-data` to manage data · `/capis stop` to shut down
+     ```
 
 ## Subcommands
 

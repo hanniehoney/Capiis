@@ -622,7 +622,7 @@ When the mechanic skill (`skills/mechanic/SKILL.md`) logs a vehicle service:
 - Retirement contribution limits (401k, IRA, HSA)
 - Section 179 expense limit
 - Bonus depreciation percentage (phasing down: 60%→40%→20%→0%)
-- SALT deduction cap (currently $10,000 — may change)
+- SALT deduction cap (changed to $40K MFJ under OBBBA for 2025-2029 with MAGI phase-out — verify current status)
 - Child Tax Credit amount and phase-out thresholds
 - QBI deduction income thresholds
 - Estate tax exemption amount
@@ -692,3 +692,55 @@ Key rules:
 - [ ] Pay any remaining tax due (extension doesn't extend payment deadline!)
 - [ ] Make Q1 estimated tax payment for current year
 - [ ] Review prior year return for carryforward items (capital losses, NOLs, charitable contributions)
+
+---
+
+## Fact-Check Reference: Known Pitfalls
+
+**WARNING:** The rates, limits, and thresholds in this skill are reference data that may be outdated. Tax law changes frequently — new legislation (TCJA amendments, OBBBA, annual inflation adjustments) can invalidate cached numbers at any time.
+
+**Any agent or skill using this data MUST web-verify before outputting numbers to users.** Users may act on these numbers (prepare payments, plan with their CPA). Incorrect numbers cause real financial harm.
+
+### High-Risk Items (verified Feb 2026)
+
+These items have produced incorrect outputs in testing. Always verify via web search before using.
+
+| Item | Common Error | Correct Approach |
+|------|-------------|-----------------|
+| **SALT cap** | Assuming $10K cap still applies | OBBBA (2025) raised to $40K MFJ / $20K single for 2025-2029. BUT: phases out for MAGI >$500K MFJ — cap reduces by 30% of excess until $10K floor. For high-income Bay Area filers, the effective cap may still be near $10K after phase-out. Always calculate the phase-out. |
+| **Mortgage interest** | Deducting interest on full loan balance | Post-Dec 2017 mortgages: only interest on first $750K of debt is deductible. For a $1.8M mortgage at 6.75%, deductible interest ≈ ($750K/$1.8M) × $121,500 = ~$50,625, NOT ~$121,500. This is a ~$71K difference in itemized deductions. |
+| **CA state tax** | Using simplified flat-rate estimate | California has 10 progressive brackets (1%–12.3%) + 1% mental health surcharge >$1M. Must calculate bracket-by-bracket. Example: $800K MFJ taxable ≈ $80K state tax, not $65K. A $15K+ error. |
+| **Standard deduction** | Using prior-year amount | Changes annually with inflation + legislation. 2025 MFJ = $31,500 (not $29,200). Always verify. |
+| **HSA family limit** | Confusing year-over-year changes | 2025 family = $8,550. Changes annually. |
+| **529 state deduction** | Assuming all states offer one | California has NO state tax deduction for 529 contributions. Don't list 529 as a state tax benefit for CA filers. |
+| **NIIT calculation** | Applying 3.8% to all investment income | NIIT applies to the LESSER of (a) net investment income or (b) MAGI minus $250K threshold (MFJ). Must calculate both and use the smaller amount. |
+| **FBAR vs FATCA** | Confusing thresholds and forms | FBAR (FinCEN 114): $10K aggregate foreign accounts, due Apr 15 (auto-ext Oct 15). Form 8938 (FATCA): $100K end-of-year / $150K at-any-time for MFJ in US. Different forms, different thresholds, different filing systems. |
+
+### State-Specific Gotchas
+
+| State | Gotcha |
+|-------|--------|
+| **California** | No 529 deduction. 10 brackets + mental health surcharge. No US-Taiwan tax treaty (affects Taiwanese immigrants). SALT workaround via PTE election available for pass-through entities. |
+| **No-income-tax states** | TX, FL, NV, WA, WY, SD, AK — but some have franchise tax, gross receipts tax, or property tax that partially offsets. |
+
+### Cross-Border Gotchas
+
+| Situation | Gotcha |
+|-----------|--------|
+| **Taiwan / Green card** | No US-Taiwan tax treaty. FBAR required for Taiwan bank accounts >$10K. 8-year long-term resident threshold (IRC 877A) — relinquishing green card after 8 years triggers mark-to-market exit tax on worldwide assets. |
+| **UK / O-1A visa** | US-UK tax treaty exists. UK pension (SIPP) has complex US reporting. ISA gains are NOT tax-free in the US. |
+
+### Verification Queries
+
+When fact-checking, use these search patterns (replace {year} and {status}):
+
+```
+"{year} SALT deduction cap {status}"
+"{year} standard deduction {status}"
+"{year} {state} state income tax brackets {status}"
+"{year} mortgage interest deduction loan limit"
+"{year} 401k IRA HSA contribution limits"
+"{year} NIIT threshold rate"
+"{year} long-term capital gains tax brackets"
+"{year} {state} 529 plan state tax deduction"
+```
