@@ -2,8 +2,25 @@ const API_BASE = '/api';
 
 async function fetchJSON(endpoint) {
   const res = await fetch(`${API_BASE}${endpoint}`);
-  if (!res.ok) throw new Error(`API error: ${res.status}`);
-  return res.json();
+  let payload = null;
+  const contentType = res.headers.get('content-type') || '';
+
+  if (contentType.includes('application/json')) {
+    payload = await res.json().catch(() => null);
+  } else {
+    const text = await res.text().catch(() => '');
+    payload = text ? { error: text } : null;
+  }
+
+  if (!res.ok) {
+    const error = new Error(payload?.error || `API error: ${res.status}`);
+    error.status = res.status;
+    error.payload = payload;
+    error.endpoint = endpoint;
+    throw error;
+  }
+
+  return payload;
 }
 
 async function postJSON(endpoint, data) {

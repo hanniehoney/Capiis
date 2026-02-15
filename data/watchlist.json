@@ -1,40 +1,40 @@
 {
   "items": [
     {
-      "id": "w-googl",
+      "id": "w-goog",
       "name": "Alphabet Inc.",
       "ticker": "GOOGL",
       "category": "stocks",
       "currentPrice": 185,
       "change24h": 1.2,
-      "note": "Potential employer if leaving Anthropic"
+      "note": "Employer stock — monitor for ESPP timing and RSU vest windows"
     },
     {
-      "id": "w-msft",
-      "name": "Microsoft Corp.",
-      "ticker": "MSFT",
-      "category": "stocks",
-      "currentPrice": 420,
-      "change24h": 0.8,
-      "note": "Azure AI competitor, benchmark for AI market"
+      "id": "w-avax",
+      "name": "Avalanche",
+      "ticker": "AVAX",
+      "category": "crypto",
+      "currentPrice": 42.8,
+      "change24h": -1.2,
+      "note": "Potential L1 diversification play"
     },
     {
       "id": "w-pltr",
-      "name": "Palantir Technologies",
+      "name": "Palantir",
       "ticker": "PLTR",
       "category": "stocks",
       "currentPrice": 78.5,
       "change24h": 4.1,
-      "note": "Enterprise AI play, government contracts"
+      "note": "Government AI contracts expanding. Valuation concern."
     },
     {
-      "id": "w-coin",
-      "name": "Coinbase Global",
-      "ticker": "COIN",
+      "id": "w-schd",
+      "name": "Schwab US Dividend Equity",
+      "ticker": "SCHD",
       "category": "stocks",
-      "currentPrice": 245,
-      "change24h": -2.3,
-      "note": "Crypto exchange — monitor for BTC/ETH exposure correlation"
+      "currentPrice": 31.3,
+      "change24h": 0.3,
+      "note": "Dividend ETF for passive income. Post 3:1 split (Oct 2024)."
     }
   ]
 }

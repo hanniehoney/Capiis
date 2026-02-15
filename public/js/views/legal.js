@@ -35,7 +35,7 @@ export async function renderLegal(container) {
             <div class="stat-label">Est. Tax Liability</div>
             <div class="stat-value" style="color:var(--gold-primary)">$${formatNumber(tax.estimatedTaxLiability)}</div>
             <div class="stat-change" style="color:var(--text-tertiary)">
-              Amount likely owed for tax year ${tax.taxYear} (${tax.jurisdiction})
+              Amount likely owed for tax year ${tax.taxYear} (${tax.jurisdiction})${tax.lastComputed ? ` · as of ${new Date(tax.lastComputed).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}` : ''}
             </div>
           </div>
 
@@ -105,7 +105,7 @@ export async function renderTaxHiddenLiability(container) {
         <div class="section-header animate-in stagger-1">
           <span class="section-title card-title-row">
             Hidden Liabilities
-            ${renderInfoTip('Estimated tax if all taxable-account gains were realized today. Applies profile tax rates to taxable unrealized gains.')}
+            ${renderInfoTip('Estimated tax if all taxable-account gains were realized today. Collectibles (jewelry, art) use the 28% LTCG rate. Primary residence gains exclude the first $500K (MFJ Section 121).')}
           </span>
         </div>
 
@@ -156,7 +156,7 @@ export async function renderTaxableEvents(container) {
         <div class="section-header animate-in stagger-1">
           <div style="display:flex;flex-direction:column;gap:4px">
             <span class="section-title">Taxable Events</span>
-            <span class="section-subtitle">Tax Year ${tax.taxYear}</span>
+            <span class="section-subtitle">All Recorded Events</span>
           </div>
         </div>
         ${renderTaxableEventsTable(tax, 'animate-in stagger-2')}
@@ -237,6 +237,9 @@ function renderAssetLocationAnalysis(assets) {
 function calculateHiddenTaxLiability(assets, profile) {
   const taxableTypes = ['taxable', 'direct', 'checking', 'savings'];
   const taxFreeTypes = ['roth-ira', 'roth-401k', 'hsa', '529'];
+  const collectibleCategories = ['jewelry', 'art'];
+  const collectibleLtcgRate = 0.28;
+  const primaryResidenceExclusion = 500000; // MFJ Section 121 exclusion
   const now = new Date();
 
   const ltcgRate = profile ? profile.tax.longTermCapitalGainsRate : 0.15;
@@ -252,8 +255,9 @@ function calculateHiddenTaxLiability(assets, profile) {
   for (const a of assets) {
     const value = a.quantity * a.currentPrice;
     const cost = a.costBasis || (a.quantity * a.avgCost);
-    const gain = value - cost;
+    let gain = value - cost;
     const acctType = a.accountType || 'taxable';
+    const category = (a.category || '').toLowerCase();
 
     if (taxFreeTypes.includes(acctType) && gain > 0) {
       taxFreeGains += gain;
@@ -262,6 +266,16 @@ function calculateHiddenTaxLiability(assets, profile) {
 
     if (!taxableTypes.includes(acctType)) continue;
     if (gain <= 0) continue;
+
+    // Primary residence: apply Section 121 exclusion ($500K MFJ, $250K single)
+    const isPrimaryResidence = category === 'real-estate' &&
+      ((a.tags && a.tags.includes('primary-residence')) ||
+       (a.name && /primary/i.test(a.name)) ||
+       (a.notes && /primary\s*resid/i.test(a.notes)));
+    if (isPrimaryResidence) {
+      gain = Math.max(0, gain - primaryResidenceExclusion);
+      if (gain <= 0) continue;
+    }
 
     let term = 'Long';
     let rate = ltcgRate;
@@ -272,6 +286,12 @@ function calculateHiddenTaxLiability(assets, profile) {
         term = 'Short';
         rate = stcgRate;
       }
+    }
+
+    // Collectibles (jewelry, art) use 28% LTCG rate instead of standard 20%
+    const isCollectible = collectibleCategories.includes(category);
+    if (isCollectible && term === 'Long') {
+      rate = collectibleLtcgRate;
     }
 
     const effectiveRate = rate + niit + stateTaxRate;
@@ -285,6 +305,8 @@ function calculateHiddenTaxLiability(assets, profile) {
       accountName: a.accountName || acctType,
       gain,
       term,
+      effectiveRate,
+      isCollectible,
       estTax
     });
   }
@@ -308,16 +330,18 @@ function renderHiddenTaxLiabilityTable(positions) {
           <th>Account</th>
           <th class="align-right">Unrealized Gain</th>
           <th>Term</th>
+          <th class="align-right">Rate</th>
           <th class="align-right">Est. Tax</th>
         </tr>
       </thead>
       <tbody>
         ${positions.map(p => `
           <tr>
-            <td><strong>${p.name}</strong> <span style="color:var(--text-tertiary);font-size:0.78rem">${p.ticker}</span></td>
+            <td><strong>${p.name}</strong> <span style="color:var(--text-tertiary);font-size:0.78rem">${p.ticker}</span>${p.isCollectible ? ' <span style="font-size:0.7rem;color:var(--teal);font-style:italic">collectible</span>' : ''}</td>
             <td style="font-size:0.82rem">${p.accountName}</td>
             <td class="mono align-right change-positive">+$${formatNumber(p.gain)}</td>
             <td><span class="feed-category-tag">${p.term}</span></td>
+            <td class="mono align-right" style="font-size:0.82rem;color:var(--text-tertiary)">${(p.effectiveRate * 100).toFixed(1)}%</td>
             <td class="mono align-right change-negative">$${formatNumber(p.estTax)}</td>
           </tr>
         `).join('')}
@@ -327,6 +351,29 @@ function renderHiddenTaxLiabilityTable(positions) {
 }
 
 function renderTaxableEventsTable(tax, animationClass = 'animate-in stagger-7') {
+  const sorted = [...tax.taxableEvents].sort((a, b) => new Date(b.date) - new Date(a.date));
+  let lastYear = null;
+  const rows = sorted.map(evt => {
+    const evtYear = new Date(evt.date).getFullYear();
+    const isGain = evt.gain >= 0;
+    const gainClass = isGain ? 'change-positive' : 'change-negative';
+    let yearRow = '';
+    if (evtYear !== lastYear) {
+      lastYear = evtYear;
+      yearRow = `<tr class="year-separator"><td colspan="7" style="padding:16px 0 8px;font-weight:600;color:var(--gold-primary);font-size:0.85rem;border-bottom:1px solid var(--border-color)">${evtYear}</td></tr>`;
+    }
+    return `${yearRow}
+      <tr>
+        <td class="mono">${formatDate(evt.date)}</td>
+        <td><span class="feed-category-tag ${evt.type === 'loss' ? 'crypto' : 'earnings'}">${evt.type.toUpperCase()}</span></td>
+        <td><strong>${evt.asset}</strong></td>
+        <td class="mono align-right">$${formatNumber(evt.amount)}</td>
+        <td class="mono align-right">$${formatNumber(evt.costBasis)}</td>
+        <td class="mono align-right ${gainClass}">${isGain ? '+' : ''}$${formatNumber(evt.gain)}</td>
+        <td><span class="feed-category-tag">${evt.term}</span></td>
+      </tr>`;
+  }).join('');
+
   return `
     <div class="${animationClass}">
       <table class="tax-events-table">
@@ -341,23 +388,7 @@ function renderTaxableEventsTable(tax, animationClass = 'animate-in stagger-7') 
             <th>Term</th>
           </tr>
         </thead>
-        <tbody>
-          ${tax.taxableEvents.map(evt => {
-            const isGain = evt.gain >= 0;
-            const gainClass = isGain ? 'change-positive' : 'change-negative';
-            return `
-              <tr>
-                <td class="mono">${formatDate(evt.date)}</td>
-                <td><span class="feed-category-tag ${evt.type === 'loss' ? 'crypto' : 'earnings'}">${evt.type.toUpperCase()}</span></td>
-                <td><strong>${evt.asset}</strong></td>
-                <td class="mono align-right">$${formatNumber(evt.amount)}</td>
-                <td class="mono align-right">$${formatNumber(evt.costBasis)}</td>
-                <td class="mono align-right ${gainClass}">${isGain ? '+' : ''}$${formatNumber(evt.gain)}</td>
-                <td><span class="feed-category-tag">${evt.term}</span></td>
-              </tr>
-            `;
-          }).join('')}
-        </tbody>
+        <tbody>${rows}</tbody>
       </table>
     </div>
   `;
@@ -460,5 +491,5 @@ function formatNumber(n) {
 
 function formatDate(dateStr) {
   const d = new Date(dateStr);
-  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
 }

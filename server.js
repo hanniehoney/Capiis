@@ -5,6 +5,9 @@ const { readAllPortfolioData, readCategoriesConfig, discoverExcelFiles, DATA_DIR
 
 const app = express();
 const PORT = 3333;
+const RSS_URL = process.env.CAPIS_RSS_URL || 'https://rss.beehiiv.com/feeds/4aF2pGVAEN.xml';
+const RSS_CACHE_TTL_MS = Number(process.env.CAPIS_RSS_TTL_MS) || 5 * 60 * 1000;
+let rssCache = { fetchedAt: 0, data: null };
 
 // --- SSE ---
 const sseClients = [];
@@ -26,6 +29,170 @@ function readJSON(filename) {
 
 function writeJSON(filename, data) {
   fs.writeFileSync(path.join(DATA_DIR, filename), JSON.stringify(data, null, 2));
+}
+
+// --- RSS Helpers ---
+async function getRssFeed() {
+  if (!RSS_URL) return null;
+  const now = Date.now();
+  if (rssCache.data && (now - rssCache.fetchedAt) < RSS_CACHE_TTL_MS) {
+    return rssCache.data;
+  }
+
+  const res = await fetch(RSS_URL, {
+    headers: { 'User-Agent': 'Mozilla/5.0 (Capis Wealth Dashboard)' }
+  });
+  if (!res.ok) {
+    throw new Error(`RSS HTTP ${res.status}`);
+  }
+  const xml = await res.text();
+  const items = parseRss(xml, RSS_URL);
+  const data = { items };
+  rssCache = { fetchedAt: now, data };
+  return data;
+}
+
+function parseRss(xml, feedUrl) {
+  if (!xml) return [];
+  const channelBlock = (xml.match(/<channel[\s\S]*?<\/channel>/i) || [])[0] || '';
+  const channelClean = channelBlock.replace(/<item[\s\S]*?<\/item>/gi, '');
+  const channelTitle = cleanText(getTagContent(channelClean, 'title'));
+  const source = channelTitle || getHostname(feedUrl) || 'RSS';
+
+  const itemBlocks = xml.match(/<item[\s\S]*?<\/item>/gi) || [];
+  return itemBlocks.map((block, index) => {
+    const headline = cleanText(getTagContent(block, 'title')) || `RSS Item ${index + 1}`;
+    const link = cleanText(getTagContent(block, 'link')) || '';
+    const guid = cleanText(getTagContent(block, 'guid')) || link || `rss-${index + 1}`;
+    const pubDateRaw = cleanText(getTagContent(block, 'pubDate')) || cleanText(getTagContent(block, 'dc:date'));
+    const timestamp = toIsoTimestamp(pubDateRaw);
+
+    const content = getTagContent(block, 'content:encoded') || getTagContent(block, 'description');
+    const summary = truncateText(cleanText(content), 220);
+
+    const categories = getAllTagContents(block, 'category').map(cleanText).filter(Boolean);
+    const category = normalizeCategory(categories[0]) || inferCategory(`${headline} ${summary}`);
+
+    return {
+      id: guid,
+      source,
+      headline,
+      summary,
+      url: link,
+      timestamp,
+      category,
+      relevanceScore: computeRecencyScore(timestamp)
+    };
+  });
+}
+
+function getTagContent(block, tag) {
+  if (!block) return '';
+  const safeTag = escapeRegExp(tag);
+  const regex = new RegExp(`<${safeTag}[^>]*>([\\s\\S]*?)<\\/${safeTag}>`, 'i');
+  const match = block.match(regex);
+  return match ? match[1].trim() : '';
+}
+
+function getAllTagContents(block, tag) {
+  if (!block) return [];
+  const safeTag = escapeRegExp(tag);
+  const regex = new RegExp(`<${safeTag}[^>]*>([\\s\\S]*?)<\\/${safeTag}>`, 'ig');
+  const results = [];
+  let match = null;
+  while ((match = regex.exec(block))) {
+    results.push(match[1].trim());
+  }
+  return results;
+}
+
+function cleanText(value) {
+  if (!value) return '';
+  let text = stripCdata(value);
+  text = stripHtml(text);
+  text = decodeEntities(text);
+  return text.replace(/\s+/g, ' ').trim();
+}
+
+function stripCdata(value) {
+  const match = value.match(/^<!\[CDATA\[([\s\S]*?)\]\]>$/i);
+  return match ? match[1] : value;
+}
+
+function stripHtml(value) {
+  return String(value || '').replace(/<[^>]*>/g, ' ');
+}
+
+function decodeEntities(value) {
+  return String(value || '')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&#(\d+);/g, (_, num) => String.fromCharCode(Number(num)))
+    .replace(/&#x([0-9a-f]+);/gi, (_, hex) => String.fromCharCode(parseInt(hex, 16)));
+}
+
+function truncateText(value, maxLen) {
+  if (!value) return '';
+  if (value.length <= maxLen) return value;
+  return value.slice(0, maxLen).trim() + '...';
+}
+
+function getHostname(url) {
+  try {
+    return new URL(url).hostname.replace('www.', '');
+  } catch (e) {
+    return '';
+  }
+}
+
+function toIsoTimestamp(rawDate) {
+  const time = Date.parse(rawDate || '');
+  if (Number.isFinite(time)) return new Date(time).toISOString();
+  return new Date().toISOString();
+}
+
+function normalizeCategory(raw) {
+  if (!raw) return '';
+  const slug = String(raw)
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+
+  if (slug.includes('crypto') || slug.includes('bitcoin') || slug.includes('defi')) return 'crypto';
+  if (slug.includes('earn') || slug.includes('results') || slug.includes('revenue')) return 'earnings';
+  if (slug.includes('startup') || slug.includes('venture') || slug.includes('series') || slug.includes('funding')) return 'angel-investment';
+  if (slug.includes('macro') || slug.includes('rates') || slug.includes('inflation') || slug.includes('fed')) return 'macro';
+  return slug;
+}
+
+function inferCategory(text) {
+  const upper = String(text || '').toUpperCase();
+  if (upper.includes('CRYPTO') || upper.includes('BITCOIN') || upper.includes('ETH')) return 'crypto';
+  if (upper.includes('EARNINGS') || upper.includes('REVENUE') || upper.includes('GUIDANCE')) return 'earnings';
+  if (upper.includes('SERIES') || upper.includes('SEED') || upper.includes('FUNDING') || upper.includes('VC')) return 'angel-investment';
+  if (upper.includes('FED') || upper.includes('RATE') || upper.includes('INFLATION')) return 'macro';
+  return 'macro';
+}
+
+function computeRecencyScore(timestamp) {
+  const now = Date.now();
+  const then = Date.parse(timestamp || '');
+  if (!Number.isFinite(then)) return 6;
+  const ageHours = (now - then) / (1000 * 60 * 60);
+  if (ageHours <= 6) return 10;
+  if (ageHours <= 24) return 9;
+  if (ageHours <= 72) return 8;
+  if (ageHours <= 168) return 7;
+  if (ageHours <= 336) return 6;
+  return 5;
+}
+
+function escapeRegExp(value) {
+  return String(value || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
 // --- Watch data/ for changes → broadcast SSE ---
@@ -137,7 +304,16 @@ app.patch('/api/signals/:id', (req, res) => {
 });
 
 // Feed
-app.get('/api/feed', (req, res) => {
+app.get('/api/feed', async (req, res) => {
+  try {
+    const rss = await getRssFeed();
+    if (rss && Array.isArray(rss.items) && rss.items.length > 0) {
+      return res.json(rss);
+    }
+  } catch (e) {
+    console.warn('RSS fetch failed, falling back to local feed:', e.message);
+  }
+
   const data = readJSON('feed.json');
   if (!data) return res.status(404).json({ error: 'No feed data' });
   res.json(data);

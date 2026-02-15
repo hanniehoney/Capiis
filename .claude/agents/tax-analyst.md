@@ -142,16 +142,22 @@ Using the collected data and verified rates, compute:
 - If Q4 (Oct-Dec): flag year-end planning window (tax-loss harvesting, 401k max-out, charitable giving)
 - If Jan 1 - Apr 15: flag filing deadline and prior-year IRA/HSA contribution window
 
-### Step 4: Write Back Data
+### Step 4: Write Back Data (Dashboard Cache Update)
 
-Before returning the briefing, write back any corrections or new data discovered:
+**Architecture: Write-Through Cache.** The dashboard reads `tax-summary.json` as a static cache — it never triggers agents. Every agent run MUST update the cache so the dashboard always shows the latest computed numbers. This saves tokens (no re-computation on page load).
+
+Before returning the briefing, write back ALL corrections and recalculated values:
 
 | What changed | Write to |
 |-------------|----------|
 | Tax rates corrected | `data/profile.json` (update `tax` section) |
-| Estimated liability recalculated | `data/tax-summary.json` (update `estimatedTaxLiability`) |
+| **Current-year estimated liability** | `data/tax-summary.json` → `estimatedTaxLiability` (recalculate from current-year realized gains × verified rates) |
+| **Timestamp** | `data/tax-summary.json` → `lastComputed` (set to current ISO datetime — dashboard shows "as of {date}") |
+| **Prior-year liability** | `data/tax-summary.json` → `priorYear` fields (if Filing Briefing was computed) |
 | Missing profile fields filled | `data/profile.json` (add missing fields) |
 | New tax-relevant life context | `data/profile.md` (append to `## Recent Changes & Events`) |
+
+**Always update `estimatedTaxLiability` and `lastComputed`** — even if the number didn't change. This confirms to the user that the data was recently verified.
 
 Read the file first, merge changes carefully, then write. Do NOT overwrite unrelated fields.
 

@@ -1,75 +1,77 @@
-# Sophia — Profile Memory
+# Alex — Profile Memory
 
 > Last updated: 2026-02-12
 
 ## Career & Identity
-- 32 years old, British citizen (British-Chinese, parents from Hong Kong, raised in London)
-- Staff Research Engineer at Anthropic, San Francisco
-- PhD in ML from University of Cambridge (2016-2020). BA CS from Imperial College London (2012-2016).
-- Published 12 papers on alignment and interpretability during PhD and at DeepMind.
-- Joined DeepMind London in 2020 as Research Scientist. Worked on safety evaluations and mechanistic interpretability.
-- Moved to Anthropic Jan 2022 on O-1A visa. Employee #47. Promoted to Staff (IC5) in 2024.
-- EB-1A green card application filed 2024, pending approval. Currently on O-1A.
-- No prior US ties before Anthropic — moved directly from London.
-- Loves SF but sometimes misses London. Occasionally considers returning to UK long-term.
+
+- 37 years old, Taiwanese citizen, born and raised in Taipei. Came to the US for college at UC Berkeley (BS Computer Science, 2010–2014).
+- Immigration path: F-1 student visa (2010) → OPT (2014) → H-1B sponsored by first employer (2015) → Green card EB-2 sponsored by Meta (2019). Has held green card for ~7 years.
+- Still holds Taiwan (ROC) citizenship alongside US green card — Taiwan allows dual nationality for non-government roles.
+- Staff Engineer (L7) at Google, Mountain View.
+- Previously Senior Engineer (E6) at Meta for 6 years (2018–2024). Built infra for Ads ranking team.
+- Joined Google in Mar 2024 for a senior IC role on Cloud AI platform. L7 promo within first year.
+- Total YOE: 12 years. Started career at a YC startup (2014–2018) after Berkeley, before Meta.
+- Dual-income household. Emily (spouse) is a product designer at a mid-stage startup, ~$180K TC.
+- No immediate plans to leave Google. Exploring staff+ IC track vs. eng management.
 
 ## Family & Life Stage
-- Single, no partner, no kids.
-- Parents in London — dad is a retired NHS doctor (originally from Hong Kong), mum is a secondary school maths teacher (originally from Hong Kong).
-- One younger sister in London, works in finance (Goldman Sachs, associate level).
-- Close friends split between London and SF Bay Area.
-- Rents a 1BR in Hayes Valley ($3,800/mo). Walkable lifestyle, no car.
-- No plans to buy property in SF — not sure she'll stay long-term. Might return to UK eventually.
+
+- Married to Emily Chen. Together since 2017, married 2019.
+- Two kids: Ethan (5, 大班) and Mia (3, 小班, starting fall 2026).
+- School district (CUSD) was the primary reason for buying in Cupertino.
+- No plans for a third child. Family feels complete.
+- Parents in Taipei, Taiwan. Dad is a retired EE professor at NTHU (清華大學), mom is a retired high school teacher. Both healthy, mid-60s. No near-term elder care burden but long-term consideration.
+- Maintains a Taiwan bank account at Cathay United Bank (~NTD 500K / ~$16K) for family transfers. Sends ~$10K/year to parents (under $19K gift exclusion).
+- May inherit parents' apartment in Taipei someday (worth ~NTD 30M / ~$950K). Not factored into current net worth.
+- Still holds Taiwan citizenship (dual nationality) — no conflict with green card status.
+- Emily's parents may relocate to Bay Area in 2–3 years.
 
 ## Financial Philosophy & Risk
-- Highly analytical but emotionally cautious with money.
-- Core belief: diversify away from employer stock ASAP. Knows Anthropic concentration is dangerous but limited by private stock liquidity.
-- Sells 15-25% of vested shares whenever tender offer opens, deploys into index funds.
-- Keeps large cash reserve ($200K+) — single, no safety net in the US, biggest asset is illiquid.
-- Still has UK bank accounts and a DeepMind pension — creates annual FBAR/FATCA headache.
-- UK ISA no longer tax-advantaged in the US — should probably liquidate but hasn't gotten around to it.
-- Crypto: small speculative position, BTC and ETH only, under 3% of portfolio.
-- Risk tolerance: moderate overall. Conservative with emergency fund. Accepts Anthropic concentration as "already happened."
-- Rent over own: views rent as "buying optionality" given uncertainty about staying in the US.
+
+- Self-identifies as "pragmatic indexer with a gambling pocket."
+- Core: 80%+ in diversified index funds (VTI, VOO, VXUS). Believes in long-term passive compounding.
+- Satellite: allows 10–15% in individual stocks (NVDA, AAPL) and crypto (BTC, ETH) for upside.
+- Angel investing: considers it "tuition" — max $50–75K/check, only in domains he understands (AI infra, developer tools).
+- Risk tolerance: moderate-high for long-term holdings, conservative for anything touching the kids' education or emergency fund.
+- Strong aversion to leverage and margin trading. Will not use portfolio margin.
+- Acutely aware of cross-border tax complexity as a Taiwanese green card holder. No US-Taiwan tax treaty is a major concern — relies on foreign tax credit only. Knows he needs specialized cross-border tax advice but hasn't found the right advisor yet.
+- Believes real estate is a hedge, not a growth asset. Not interested in rental properties — too much hassle.
 
 ## Goals & Priorities
 
 ### Short-term (2026)
-- Max out 401(k) ($24,500) and backdoor Roth ($7,500).
-- Sell Anthropic shares in next tender offer ($500-750K target).
-- File FBAR and FATCA for UK accounts (April 15 deadline).
-- Engage cross-border tax specialist for UK pension reporting (Form 3520, Form 8833).
-- Get EB-1A green card approved — simplifies future planning.
+- Max out 401(k) and backdoor Roth for both Alex and Emily.
+- Continue META diversification: sell ~$200–300K/year, redirect to VTI/VXUS.
+- Build emergency fund to $200K (currently $150K, target is 3 months all-in expenses).
+- Fully fund 529 plans for both kids ($10K each, CA deduction).
+- File FBAR (FinCEN Form 114) for Taiwan bank account by April 15.
 
-### Medium-term (2027-2030)
-- If Anthropic IPOs: structured selling plan to diversify over 18-24 months.
-- Target: employer stock below 40% of net worth.
-- NW target $8M by 2030.
-- Decide: stay in US long-term or return to UK? This affects green card strategy and exit tax planning.
-- Consider liquidating UK ISA and consolidating into US accounts.
+### Medium-term (2027–2030)
+- Reduce META concentration to <10% of portfolio (currently ~20%).
+- Target net worth $8M by 2030 (currently ~$5.5M).
+- Evaluate whether to refinance mortgage if rates drop below 5.5%.
+- Start thinking about Ethan's middle school options (private vs. public).
+- **Exit tax planning before 2027**: Green card 8-year long-term resident threshold hits in 2027 (IRC 877A). Must decide well before then whether there is any chance of relinquishing green card. With ~$5.5M net worth and $1M+ unrealized META gains, exit tax would be severe. Consult immigration tax specialist in 2026.
 
 ### Long-term (2030+)
-- Financial independence: $6M in diversified assets.
-- If staying in US: naturalize? Or keep green card? (Green card = easier exit if she changes her mind.)
-- If returning to UK: plan exit BEFORE 8-year long-term resident threshold to avoid US exit tax on Anthropic equity.
-- Sabbatical year for independent research or writing.
-- Increase charitable giving (EA-aligned, $50K+/year).
+- Coast FIRE target: $10M invested by age 45, then optionality to downshift.
+- Would like to eventually angel invest more seriously ($200K+/year) once core portfolio is de-risked.
+- Possible sabbatical or startup attempt in early 40s, but only if financially secure.
+- College funding: target $250K per child in 529 by age 18.
 
 ## Key Decisions & Context
-- **Why Anthropic over staying at DeepMind?** Mission-aligned. Believed Anthropic's approach to safety research was more impactful. Also wanted the US experience. The equity was a bonus, not the primary motivation.
-- **Why hold so much Anthropic stock?** Not by choice — private and illiquid. Sells at every tender offer. Would diversify much faster if she could.
-- **O-1A vs H-1B?** O-1A was the only realistic option — Anthropic couldn't do L-1 transfer (not same company as DeepMind). Strong publication record made O-1A straightforward.
-- **Why no property?** SF too expensive for a single buyer. Doesn't want to anchor herself if she might return to the UK.
-- **UK pension:** Small amount (~£35K) from DeepMind. Not worth transferring to the US — would lose tax advantages. But creates annual reporting burden. Considering just leaving it until retirement.
-- **ISO exercise strategy:** Exercised 15K ISOs in Mar 2025 (batch 1). 105K unexercised remain (all vested). Planning 15K/year batches over 7 years. The AMT trap is her #1 tax anxiety.
-- **Exit tax awareness:** Knows about the 8-year long-term resident rule. Her green card (once approved) starts the clock. If she decides to return to UK, she has an 8-year window before exit tax applies to Anthropic equity.
+
+- **Why so much META stock?** Accumulated 6 years of RSU vesting at Meta. Sold ~40% over the years but still concentrated. Emotionally attached ("it funded our house"). Intellectually knows he should sell faster.
+- **Why the $3M Cupertino house?** School district + proximity to both Google (Mountain View) and Emily's startup (Palo Alto). Put $1.2M down from META sales to keep mortgage manageable.
+- **Why Google over other offers?** Had competing offers from Stripe (L5 equivalent) and a Series B startup. Chose Google for stability (two young kids), L7 scope, and RSU liquidity.
+- **Crypto stance:** Entered BTC/ETH in 2022 bear market. Treats it as a 5% asymmetric bet. Will not go above 5% of portfolio. SOL is more speculative — would sell on a 3x.
+- **Angel investments:** NexaFlow was through a Stanford GSB friend. VaultEdge was a YC referral. Both in domains Alex knows (infra, identity). Will do 1–2 deals/year max.
+- **Why Alex stays in the US:** Career opportunities at Google, kids' education (Cupertino schools), established financial and social life. But there is a quiet tension — aging parents in Taipei with no siblings nearby. Long-term, Alex would like to spend more time in Taiwan, maybe eventually split time. This creates a real planning dilemma around the 8-year green card threshold: if there is even a small chance of returning to Taiwan, the exit tax clock matters enormously.
 
 ## Recent Changes & Events
-- **2026-02-03**: Sold 100 NVDA shares ($13.1K) to rebalance.
-- **2026-01-20**: Sold 50 VTI shares ($14K) to fund Q1 estimated tax payment.
-- **2025-11**: Anthropic tender offer — sold 2,000 RSU shares at $45/share ($90K gross). Ordinary income.
-- **2025-06**: Promoted to Staff Research Engineer (IC5). New comp: $280K base. 10K RSU refresh grant.
-- **2025-03**: Exercised 15K ISOs (batch 1). $3 strike, FMV $40. AMT preference $555K. AMT liability ~$72K.
-- **2024-01**: Filed EB-1A green card petition. Pending.
-- **2022-01**: Joined Anthropic on O-1A visa. Grant: 120K ISOs, strike $3, 4yr vest.
-- **2020-09**: Joined DeepMind London. Started DeepMind workplace pension.
+
+- **2026-01-15**: Sold 200 META shares ($119K) as part of annual diversification plan. Reallocated to VTI.
+- **2026-02-05**: Sold 100 more META shares ($59.5K). Accelerating trim due to high valuation.
+- **2026-02-01**: Sold 0.3 BTC ($29.25K) to take partial profits after rally above $95K.
+- **2025-09**: Purchased Cupertino home. $3M purchase, $1.2M down, $1.8M mortgage at 6.75%.
+- **2024-03**: Joined Google as L7. Initial RSU grant: 6,000 shares over 4 years.

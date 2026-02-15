@@ -260,6 +260,16 @@ Agents can preload skills for domain knowledge via the `skills` frontmatter fiel
 
 **Every agent and skill MUST write back any new or corrected information to the appropriate data files.** This is a core architectural principle -- the system learns and self-corrects through use.
 
+### Write-Through Cache Pattern
+
+The dashboard reads JSON files as a **static cache** -- it never triggers agents or spends tokens. Agents are the compute engine. Every agent run MUST update the relevant JSON cache so the dashboard always shows the latest numbers without re-computation.
+
+```
+Agent runs (expensive) → writes to JSON → Dashboard reads JSON (free)
+```
+
+**Key rule:** Any file that feeds the dashboard (`tax-summary.json`, `signals.json`, `profile.json`) must include a `lastComputed` or `lastUpdated` timestamp. The dashboard displays this as "as of {date}" so the user knows data freshness. Agents MUST update this timestamp on every run.
+
 ### Rules
 
 1. **If an agent discovers missing data** (e.g., profile has no tax rates), it should flag it, ask the user if needed, and backfill the data file once confirmed.
@@ -267,6 +277,7 @@ Agents can preload skills for domain knowledge via the `skills` frontmatter fiel
 3. **If the user provides new information during conversation** (e.g., "I just sold 10 shares of AAPL"), the relevant data file should be updated (e.g., add a taxable event to `tax-summary.json`, update portfolio Excel).
 4. **Always read before writing** -- merge changes carefully, never overwrite unrelated fields.
 5. **Always log what was changed** in the response so the user knows what was updated.
+6. **Always update `lastComputed` / `lastUpdated` timestamps** so the dashboard can show data freshness.
 
 ### Backfill Targets
 

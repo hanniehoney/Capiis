@@ -633,6 +633,93 @@ h1, h2, h3, h4 {
 .feed-category-tag.macro { background: var(--bg-hover); color: var(--text-secondary); }
 .feed-category-tag.angel-investment { background: rgba(45, 74, 43, 0.1); color: var(--gold-primary); }
 
+/* --- Feed Header --- */
+.feed-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.feed-title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.feed-subtitle {
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+  margin-top: 2px;
+}
+
+.feed-note {
+  font-size: 0.72rem;
+  color: var(--text-tertiary);
+  margin-top: 6px;
+}
+
+.feed-context {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.context-chip {
+  font-size: 0.7rem;
+  font-family: var(--font-mono);
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-light);
+}
+
+/* --- Feed Relation --- */
+.feed-relation {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--border-light);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.feed-relation-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  color: var(--text-tertiary);
+  font-weight: 600;
+}
+
+.feed-relation-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.relation-chip {
+  font-size: 0.68rem;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  background: var(--bg-hover);
+  color: var(--text-secondary);
+}
+
+.relation-chip.asset {
+  background: var(--gold-muted);
+  color: var(--gold-primary);
+}
+
+.relation-chip.tag {
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+}
+
 /* --- Filter Tabs --- */
 .filter-tabs {
   display: flex;

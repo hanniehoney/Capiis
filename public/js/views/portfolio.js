@@ -58,9 +58,29 @@ export async function renderPortfolio(container) {
     `;
 
   } catch (e) {
+    if (isNoPortfolioDataError(e)) {
+      container.innerHTML = `
+        <div class="view-container">
+          <div class="empty-state">
+            <div class="empty-icon">\u25C8</div>
+            <p>No portfolio data yet</p>
+            <p style="font-size:0.88rem;color:var(--text-tertiary);margin-top:8px">
+              In Claude Code CLI, run <code style="font-family:var(--font-mono);color:var(--gold-primary)">/capis-data</code><br>
+              to start guided onboarding.
+            </p>
+          </div>
+        </div>
+      `;
+      return;
+    }
+
     container.innerHTML = `<div class="empty-state"><div class="empty-icon">\u26A0</div><p>Failed to load portfolio data</p></div>`;
     console.error(e);
   }
+}
+
+function isNoPortfolioDataError(error) {
+  return error?.status === 404 && error?.payload?.error === 'No portfolio data';
 }
 
 function renderNetWorthCard(stats) {

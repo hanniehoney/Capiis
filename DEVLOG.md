@@ -22,7 +22,6 @@ Hit a snag right away: API credits weren't showing up for everyone. Some partici
 - [ ] Different chart types per asset category (stocks vs crypto vs startups shouldn't look the same)
 - [ ] Rethink how assets are categorized, added, and removed
 - [ ] Automate the intelligence feed with real sources (kill the mock data)
-- [ ] Allocation advisor agent — suggest rebalancing actions
 - [ ] Tax planning agent
 
 ### Blockers
@@ -61,7 +60,6 @@ Focused on restructuring the project's core architecture around real-world portf
 - [ ] ~~Different chart types per asset category (stocks vs crypto vs startups shouldn't look the same)~~
 - [ ] ~~Rethink how assets are categorized, added, and removed~~
 - [ ] Automate the intelligence feed with real sources (kill the mock data)
-- [ ] Allocation advisor agent — suggest rebalancing actions
 - [ ] ~~Tax planning agent~~
 - [ ] Evaluate moving `Hidden Liability: Unrealized Capital Gains Tax` and `Taxable Events` into the Wealth sidebar (or sidebar-linked navigation) to reduce Tax page length; decision now, code change tomorrow.
 
@@ -82,7 +80,14 @@ Focused on restructuring the project's core architecture around real-world portf
 
 ## 2026-02-12 (Day 3)
 
-Focused on product roadmap framing: segmentation, tax intelligence scope expansion, and agent architecture split.
+Focused on onboarding realism and portfolio data usability: profile templates (two distinct personas), better asset classification, and real-time price tracking for public markets.
+
+### What I did
+- Adjusted UI and core structure across portfolio flows, especially around profile, clear-data, and template-driven onboarding.
+- Added two Profile templates based on two very different real-world personas (inspired by friends in Silicon Valley) to make onboarding feel more relatable and to reduce friction around sensitive/complex wealth data entry.
+- Refined asset classification and surfaced gaps that became obvious once template-driven portfolios started generating more diverse asset mixes.
+- Implemented a Price Tracking agent and integrated Yahoo Finance APIs for near-real-time pricing (stocks + crypto), since web-search-only sources were not reliable enough for this use case.
+- Fixed tax inconsistencies (logic/UI reconciliation) and added interaction hooks to make CLI flows smoother and improve user follow-up prompts.
 
 ### What's next
 - [ ] ~~Evaluate moving `Hidden Liability: Unrealized Capital Gains Tax` and `Taxable Events` into the Wealth sidebar (or sidebar-linked navigation) to reduce Tax page length; decision now, code change tomorrow.~~
@@ -90,7 +95,40 @@ Focused on product roadmap framing: segmentation, tax intelligence scope expansi
 - [ ] ~~Upgrade profile depth for advanced tax/entity identity and optimization planning~~
 - [ ] ~~Revisit information architecture as assets grow (whether Asset Management should remain under Wealth or be fully separated)~~
 - [ ] Automate the intelligence feed with real sources (kill the mock data)
-- [ ] Allocation advisor agent — suggest rebalancing actions
+
+### Blockers
+- Private equity / startup / angel investments often lack reliable public price feeds; valuation needs event-based updates (funding/secondary) or manual user input.
+- Even when company-level valuation exists, user-specific details (grant dates, vesting status, cost basis, tax events) still require explicit user confirmation during assistant interactions.
+
+### Time spent
+| Task | Duration |
+|------|----------|
+| UI adjust + profile/clear data/template + structure adjustments | 1.5 hr |
+| Add profile templates (Persona 1 + Persona 2) | 1.5 hr |
+| Asset classification + pricing tracker agent (Yahoo Finance) | 1.5 hr |
+| Fix tax inconsistency + interaction hooks | 1.0 hr |
+| Total | **5.5 hr** |
+
+---
+
+## 2026-02-13 (Day 4)
+
+(TBD)
+
+### What I did
+-
+
+### What's next
+- [ ] Automate the intelligence feed with real sources (kill the mock data)
+
+### Blockers
+-
+
+### Time spent
+| Task | Duration |
+|------|----------|
+| | |
+| Total | **TBD** |
 
 ---
 
