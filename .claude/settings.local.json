@@ -19,6 +19,7 @@
       "mcp__perplexity__search",
       "WebFetch(domain:localhost)",
       "mcp__filesystem__read_multiple_files",
+      "Skill(capiis)",
       "Skill(capis)"
     ]
   }

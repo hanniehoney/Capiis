@@ -1,10 +1,10 @@
-# /capis-data Implementation Plan
+# /capiis-data Implementation Plan
 
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
-**Goal:** Create a `/capis-data` slash command with three subcommands: `clear`, `template`, and `setup` for managing all Capis data.
+**Goal:** Create a `/capiis-data` slash command with three subcommands: `clear`, `template`, and `setup` for managing all Capiis data.
 
-**Architecture:** Single `.claude/commands/capis-data.md` slash command routes to subcommands. `clear` runs `scripts/clear-data.js` (new). `template` runs `scripts/seed-data.js` (rewritten with Bay Area family). `setup` invokes the `capis-onboarding` skill (`skills/capis-onboarding/SKILL.md`) for multi-phase guided data entry.
+**Architecture:** Single `.claude/commands/capiis-data.md` slash command routes to subcommands. `clear` runs `scripts/clear-data.js` (new). `template` runs `scripts/seed-data.js` (rewritten with Bay Area family). `setup` invokes the `capiis-onboarding` skill (`skills/capiis-onboarding/SKILL.md`) for multi-phase guided data entry.
 
 **Tech Stack:** Node.js scripts (xlsx library), Claude Code slash command (markdown), Claude Code skill (markdown)
 
@@ -41,7 +41,7 @@ function writeEmptyExcel(filename, headers, sheetName) {
   console.log(`  created empty ${filename}`);
 }
 
-console.log('\nClearing Capis data...\n');
+console.log('\nClearing Capiis data...\n');
 
 // Delete JSON user data files (keep categories.json)
 for (const f of JSON_FILES) {
@@ -68,11 +68,11 @@ console.log('\nDone. Data cleared. 14 empty xlsx shells created. categories.json
 
 **Step 2: Run and verify**
 
-Run: `node ~/Desktop/Capis/scripts/clear-data.js`
+Run: `node ~/Desktop/Capiis/scripts/clear-data.js`
 
 Expected output:
 ```
-Clearing Capis data...
+Clearing Capiis data...
 
   deleted profile.json
   deleted tax-summary.json
@@ -86,11 +86,11 @@ Clearing Capis data...
 Done. Data cleared. 14 empty xlsx shells created. categories.json preserved.
 ```
 
-Verify: `ls ~/Desktop/Capis/data/` should show 14 xlsx + categories.json only.
+Verify: `ls ~/Desktop/Capiis/data/` should show 14 xlsx + categories.json only.
 
 **Step 3: Re-seed to restore data**
 
-Run: `node ~/Desktop/Capis/scripts/seed-data.js`
+Run: `node ~/Desktop/Capiis/scripts/seed-data.js`
 
 Verify data is restored.
 
@@ -122,7 +122,7 @@ Change the scripts section to:
 
 **Step 2: Verify**
 
-Run: `npm run clear --prefix ~/Desktop/Capis`
+Run: `npm run clear --prefix ~/Desktop/Capiis`
 
 Expected: same output as Task 1 Step 2.
 
@@ -689,7 +689,7 @@ const categoriesConfig = {
 };
 
 // --- Write all ---
-console.log('\nSeeding Capis data (Bay Area family template)...\n');
+console.log('\nSeeding Capiis data (Bay Area family template)...\n');
 
 writeJSON('categories.json', categoriesConfig);
 
@@ -723,7 +723,7 @@ console.log('\nDone. Alex Chen family (Cupertino, CA) template seeded.\n');
 
 **Step 2: Run and verify**
 
-Run: `node ~/Desktop/Capis/scripts/seed-data.js`
+Run: `node ~/Desktop/Capiis/scripts/seed-data.js`
 
 Expected: 20 files written, "Alex Chen family (Cupertino, CA) template seeded."
 
@@ -740,26 +740,26 @@ git commit -m "feat: rewrite seed data with Bay Area Chinese tech family templat
 
 ---
 
-### Task 4: Create `.claude/commands/capis-data.md` (routing only)
+### Task 4: Create `.claude/commands/capiis-data.md` (routing only)
 
 **Files:**
-- Create: `.claude/commands/capis-data.md`
+- Create: `.claude/commands/capiis-data.md`
 
-The slash command handles routing and the `clear`/`template` subcommands directly. The `setup` subcommand delegates to the `capis-onboarding` skill (Task 5).
+The slash command handles routing and the `clear`/`template` subcommands directly. The `setup` subcommand delegates to the `capiis-onboarding` skill (Task 5).
 
 **Step 1: Write the slash command**
 
 ```markdown
 ---
-description: Manage Capis data — clear, import template, or guided setup
+description: Manage Capiis data — clear, import template, or guided setup
 allowed-tools: Bash(node:*), Bash(npm:*), Bash(curl:*), Bash(ls:*), Bash(rm:*), Bash(lsof:*)
 ---
 
-# /capis-data — Data Management
+# /capiis-data — Data Management
 
-Manage data for the Capis wealth & asset management dashboard.
+Manage data for the Capiis wealth & asset management dashboard.
 
-The Capis project lives at `~/Desktop/Capis`. Data files are in `~/Desktop/Capis/data/`.
+The Capiis project lives at `~/Desktop/Capiis`. Data files are in `~/Desktop/Capiis/data/`.
 
 ## Routing
 
@@ -767,9 +767,9 @@ Based on $ARGUMENTS:
 
 - **clear**: Go to [Clear Data](#clear-data)
 - **template**: Go to [Import Template](#import-template)
-- **setup**: Invoke the `capis-onboarding` skill, then follow its instructions
+- **setup**: Invoke the `capiis-onboarding` skill, then follow its instructions
 - **No arguments**: Use AskUserQuestion to show a menu:
-  - "What would you like to do with your Capis data?"
+  - "What would you like to do with your Capiis data?"
   - Options:
     1. "Clear all data" — wipe everything and start fresh
     2. "Import template" — load demo data (Bay Area family)
@@ -788,65 +788,65 @@ Based on $ARGUMENTS:
 
 3. If confirmed, run:
    ```
-   node ~/Desktop/Capis/scripts/clear-data.js
+   node ~/Desktop/Capiis/scripts/clear-data.js
    ```
 
 4. Report:
    - "Data cleared. Empty xlsx templates preserved in data/ with column headers."
-   - Suggest: "Use `/capis-data template` to load demo data, or `/capis-data setup` to enter your own."
+   - Suggest: "Use `/capiis-data template` to load demo data, or `/capiis-data setup` to enter your own."
 
 ---
 
 ## Import Template
 
 1. Check if data/ already has user data:
-   - Check if `~/Desktop/Capis/data/profile.json` exists and has a `personal.name` value
+   - Check if `~/Desktop/Capiis/data/profile.json` exists and has a `personal.name` value
    - If existing data found, use AskUserQuestion:
      - "Existing data detected. Importing the template will OVERWRITE all current data with the demo portfolio (Alex Chen family, Cupertino CA). Continue?"
      - Options: "Cancel" / "Overwrite and import"
 
 2. If confirmed (or no existing data), run:
    ```
-   node ~/Desktop/Capis/scripts/seed-data.js
+   node ~/Desktop/Capiis/scripts/seed-data.js
    ```
 
 3. Report: "Template imported — Alex Chen family, Senior SWE @ Google, Cupertino CA. Net worth ~$1.86M across 28 positions."
-4. Ask: "Want to open the dashboard? (`/capis`)"
+4. Ask: "Want to open the dashboard? (`/capiis`)"
 ```
 
 **Step 2: Verify**
 
-Run: `ls -la ~/Desktop/Capis/.claude/commands/capis-data.md`
+Run: `ls -la ~/Desktop/Capiis/.claude/commands/capiis-data.md`
 
 Expected: file exists.
 
 **Step 3: Commit**
 
 ```bash
-git add .claude/commands/capis-data.md
-git commit -m "feat: add /capis-data slash command (routing + clear + template)"
+git add .claude/commands/capiis-data.md
+git commit -m "feat: add /capiis-data slash command (routing + clear + template)"
 ```
 
 ---
 
-### Task 5: Create `skills/capis-onboarding/` skill
+### Task 5: Create `skills/capiis-onboarding/` skill
 
 **Files:**
-- Create: `skills/capis-onboarding/SKILL.md`
-- Create: `skills/capis-onboarding/references/data-schema.md` (copy from `skills/capis-portfolio/references/asset-schema.md` with additions)
+- Create: `skills/capiis-onboarding/SKILL.md`
+- Create: `skills/capiis-onboarding/references/data-schema.md` (copy from `skills/capiis-portfolio/references/asset-schema.md` with additions)
 
 **Step 1: Create the skill directory**
 
 ```bash
-mkdir -p ~/Desktop/Capis/skills/capis-onboarding/references
+mkdir -p ~/Desktop/Capiis/skills/capiis-onboarding/references
 ```
 
 **Step 2: Create `references/data-schema.md`**
 
-Copy the existing `skills/capis-portfolio/references/asset-schema.md` content, then append the liability schema and profile schema. This gives the onboarding skill full awareness of all data formats.
+Copy the existing `skills/capiis-portfolio/references/asset-schema.md` content, then append the liability schema and profile schema. This gives the onboarding skill full awareness of all data formats.
 
 ```markdown
-# Capis Data Schemas
+# Capiis Data Schemas
 
 ## Portfolio Data (Excel)
 
@@ -1001,26 +1001,26 @@ Each liability `.xlsx` file has a single sheet named "Liabilities" with these co
 
 ```markdown
 ---
-name: capis-onboarding
-description: Guide users through setting up their financial data in the Capis wealth management dashboard. Triggers when the user wants to enter their personal profile, assets, liabilities, or financial accounts — either through conversation or by importing files (xlsx, pdf, docs, csv, txt). Also triggers on "/capis-data setup" or when the user says things like "help me set up my portfolio" or "I want to enter my financial data".
+name: capiis-onboarding
+description: Guide users through setting up their financial data in the Capiis wealth management dashboard. Triggers when the user wants to enter their personal profile, assets, liabilities, or financial accounts — either through conversation or by importing files (xlsx, pdf, docs, csv, txt). Also triggers on "/capiis-data setup" or when the user says things like "help me set up my portfolio" or "I want to enter my financial data".
 ---
 
-# Capis Onboarding — Guided Data Setup
+# Capiis Onboarding — Guided Data Setup
 
-Walk the user through entering all their financial data into Capis, one step at a time.
+Walk the user through entering all their financial data into Capiis, one step at a time.
 
 ## Data Location
 
-All data files live in `~/Desktop/Capis/data/`. See `references/data-schema.md` for complete schemas.
+All data files live in `~/Desktop/Capiis/data/`. See `references/data-schema.md` for complete schemas.
 
 ## Before Starting: Resume Detection
 
 Check what data already exists:
 
-1. Read `~/Desktop/Capis/data/profile.json`
+1. Read `~/Desktop/Capiis/data/profile.json`
    - If it has `personal.name` → Phase 1 (Profile) is likely complete
    - If it has a non-empty `accounts` array → Phase 2 (Accounts) is likely complete
-2. List xlsx files in `~/Desktop/Capis/data/` and check which have data rows beyond the header
+2. List xlsx files in `~/Desktop/Capiis/data/` and check which have data rows beyond the header
    - Any xlsx with >1 row means that category has been entered
 3. Tell the user what you found:
    - "I see you already have profile data and N asset categories filled in. Want to continue from where you left off, or redo a specific section?"
@@ -1045,7 +1045,7 @@ Ask ONE question at a time. Never batch multiple questions in one message.
 After collecting all answers:
 - Calculate tax rates based on location and filing status (verify with web search for current year rates)
 - Look up: federal bracket, state rate, LTCG rate, STCG rate, NIIT threshold, standard deduction, contribution limits
-- Write `~/Desktop/Capis/data/profile.json` with personal, family (if applicable), location, and tax sections
+- Write `~/Desktop/Capiis/data/profile.json` with personal, family (if applicable), location, and tax sections
 - Show the user what was saved and confirm it looks right
 
 ## Phase 2: Account Inventory
@@ -1086,7 +1086,7 @@ Walk through each asset category in order. For each:
 4. **File import mode**:
    - Ask for the file path
    - Read the file using Claude Code's built-in capabilities:
-     - `.xlsx` / `.csv` → read with xlsx skill, map columns to Capis schema
+     - `.xlsx` / `.csv` → read with xlsx skill, map columns to Capiis schema
      - `.pdf` → read with Read tool (PDF support is built-in)
      - `.docx` → read with built-in docs skill
      - `.txt` / `.md` → read as plain text, parse structured content
@@ -1094,7 +1094,7 @@ Walk through each asset category in order. For each:
    - Ask user to confirm before writing
    - User can say "fix row 3" or "remove that one" before confirming
 
-5. Write confirmed data to `~/Desktop/Capis/data/{category}.xlsx` using the xlsx skill
+5. Write confirmed data to `~/Desktop/Capiis/data/{category}.xlsx` using the xlsx skill
 6. Move to the next category
 
 **Category order:**
@@ -1121,7 +1121,7 @@ Same pattern as Phase 3. For each liability, collect:
 - Monthly payment, due date/maturity date
 - Notes
 
-Write to `~/Desktop/Capis/data/{liability}.xlsx`.
+Write to `~/Desktop/Capiis/data/{liability}.xlsx`.
 
 **Liability order:**
 
@@ -1134,15 +1134,15 @@ Write to `~/Desktop/Capis/data/{liability}.xlsx`.
 
 ## Phase 5: Complete
 
-1. Check if Capis server is running: `lsof -ti:3333`
-   - If not running, start it: `node ~/Desktop/Capis/server.js &` and wait 2 seconds
+1. Check if Capiis server is running: `lsof -ti:3333`
+   - If not running, start it: `node ~/Desktop/Capiis/server.js &` and wait 2 seconds
 
 2. Fetch portfolio summary: `curl -s http://localhost:3333/api/stats`
    - Display: total assets, total liabilities, net worth, positions count, allocation breakdown
 
 3. Use AskUserQuestion: "Your portfolio is set up! What would you like to do?"
    - "Open dashboard" → `open http://localhost:3333`
-   - "Add more data later" → remind about `/capis-data setup`
+   - "Add more data later" → remind about `/capiis-data setup`
    - "Done for now"
 
 ## Important Rules
@@ -1157,15 +1157,15 @@ Write to `~/Desktop/Capis/data/{liability}.xlsx`.
 
 **Step 4: Verify**
 
-Run: `ls -la ~/Desktop/Capis/skills/capis-onboarding/`
+Run: `ls -la ~/Desktop/Capiis/skills/capiis-onboarding/`
 
 Expected: SKILL.md and references/data-schema.md exist.
 
 **Step 5: Commit**
 
 ```bash
-git add skills/capis-onboarding/
-git commit -m "feat: add capis-onboarding skill for guided data setup"
+git add skills/capiis-onboarding/
+git commit -m "feat: add capiis-onboarding skill for guided data setup"
 ```
 
 ---
@@ -1174,16 +1174,16 @@ git commit -m "feat: add capis-onboarding skill for guided data setup"
 
 **Step 1: Test clear**
 
-Run: `node ~/Desktop/Capis/scripts/clear-data.js`
+Run: `node ~/Desktop/Capiis/scripts/clear-data.js`
 
 Verify:
-- `ls ~/Desktop/Capis/data/` shows 14 xlsx + categories.json
+- `ls ~/Desktop/Capiis/data/` shows 14 xlsx + categories.json
 - `curl -s http://localhost:3333/api/portfolio` returns 404 (no data rows)
 - `curl -s http://localhost:3333/api/profile` returns 404
 
 **Step 2: Test template**
 
-Run: `node ~/Desktop/Capis/scripts/seed-data.js`
+Run: `node ~/Desktop/Capiis/scripts/seed-data.js`
 
 Verify:
 - `curl -s http://localhost:3333/api/profile | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['personal']['company'])"` prints "Google"

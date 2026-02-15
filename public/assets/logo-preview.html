@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Capis Logo Variants</title>
+<style>
+  body { background: #faf9f6; font-family: 'Noto Sans', sans-serif; display: flex; flex-direction: column; align-items: center; padding: 40px; gap: 20px; }
+  h1 { color: #2d4a2b; font-family: 'Noto Serif', serif; margin-bottom: 10px; }
+  .grid { display: flex; gap: 40px; flex-wrap: wrap; justify-content: center; }
+  .card { background: #fff; border: 1px solid rgba(45,74,43,0.15); border-radius: 12px; padding: 32px; text-align: center; width: 240px; }
+  .card img { width: 160px; height: 160px; }
+  .card h3 { color: #2d4a2b; margin: 16px 0 4px; font-size: 14px; }
+  .card p { color: #7d8471; font-size: 12px; margin: 0; }
+  .current { opacity: 0.6; }
+  .current h3::after { content: " (current)"; font-weight: 400; }
+</style>
+</head>
+<body>
+  <h1>Capis Logo Variants</h1>
+  <div class="grid">
+    <div class="card current">
+      <img src="favicon.svg" alt="Current">
+      <h3>Current</h3>
+      <p>Nested hexagons + wing lines</p>
+    </div>
+    <div class="card">
+      <img src="logo-v1-honeycomb.svg" alt="V1">
+      <h3>Ver 1 — Honeycomb</h3>
+      <p>Honeycomb cluster + flying bee with trail</p>
+    </div>
+    <div class="card">
+      <img src="logo-v2-cute-bee.svg" alt="V2">
+      <h3>Ver 2 — Cute Bee</h3>
+      <p>Kawaii bee character with blush</p>
+    </div>
+    <div class="card">
+      <img src="logo-v3-pixel-bee.svg" alt="V3">
+      <h3>Ver 3 — Pixel Bee</h3>
+      <p>Pixel art bee with stripes</p>
+    </div>
+  </div>
+</body>
+</html>

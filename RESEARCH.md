@@ -1,4 +1,4 @@
-# Capis - Plugin vs MCP Analysis
+# Capiis - Plugin vs MCP Analysis
 ## Plugin vs MCP：你的複雜場景分析
 
 基於你提到的需求（多個 MCP tools + 背景 agents 協作），讓我解析關鍵差異和限制。
@@ -15,7 +15,7 @@ Plugin 可以做到：
 
 **Plugin 結構範例**：
 ```
-capis-plugin/
+capiis-plugin/
 ├── .claude-plugin/
 │   └── plugin.json          # 宣告 plugin 身份
 ├── .mcp.json                # 定義多個 MCP servers
@@ -50,7 +50,7 @@ capis-plugin/
 > "MCP tools are not available in background subagents."
 
 這對你的設計有重大影響：
-- 如果 agents 需要呼叫你的 Capis MCP tools（portfolio CRUD、signals 等）
+- 如果 agents 需要呼叫你的 Capiis MCP tools（portfolio CRUD、signals 等）
 - **這些 agents 只能在 foreground 執行，會 block 主對話**
 - Background agents 只能用 Claude Code 內建工具（Read、Write、Bash 等） [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_edcf3d77-a87c-4c2b-bb5d-55a2c643e46e/cb7a2672-9096-4604-8132-ff349371f803/pasted-text.txt)
 
@@ -68,7 +68,7 @@ capis-plugin/
 **選擇 Plugin 的原因**：
 
 1. **分發便利性**
-   - 用戶執行 `/plugin install capis` 即可獲得全套功能 [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_edcf3d77-a87c-4c2b-bb5d-55a2c643e46e/cb7a2672-9096-4604-8132-ff349371f803/pasted-text.txt)
+   - 用戶執行 `/plugin install capiis` 即可獲得全套功能 [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_edcf3d77-a87c-4c2b-bb5d-55a2c643e46e/cb7a2672-9096-4604-8132-ff349371f803/pasted-text.txt)
    - 不需要手動編輯 settings.json 註冊 7 個 MCP servers
    - 所有 agents、skills、hooks 一次到位
 
@@ -76,16 +76,16 @@ capis-plugin/
    ```json
    // plugin.json 可以包含多個 MCP servers
    {
-     "name": "capis",
+     "name": "capiis",
      "mcpServers": {
-       "capis-portfolio": {
+       "capiis-portfolio": {
          "command": "${CLAUDE_PLUGIN_ROOT}/servers/portfolio",
-         "args": ["--data-dir", "${HOME}/Desktop/Capis/data"]
+         "args": ["--data-dir", "${HOME}/Desktop/Capiis/data"]
        },
-       "capis-signals": {
+       "capiis-signals": {
          "command": "${CLAUDE_PLUGIN_ROOT}/servers/signals"
        },
-       "capis-analytics": {
+       "capiis-analytics": {
          "command": "${CLAUDE_PLUGIN_ROOT}/servers/analytics"
        }
      }
@@ -103,7 +103,7 @@ capis-plugin/
    - 這是架構層面的限制，Plugin 無法解決
 
 2. **Background agents 無法用 MCP**
-   - 需要呼叫 Capis API 的 agents 只能 foreground 執行 [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_edcf3d77-a87c-4c2b-bb5d-55a2c643e46e/cb7a2672-9096-4604-8132-ff349371f803/pasted-text.txt)
+   - 需要呼叫 Capiis API 的 agents 只能 foreground 執行 [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_edcf3d77-a87c-4c2b-bb5d-55a2c643e46e/cb7a2672-9096-4604-8132-ff349371f803/pasted-text.txt)
    - 可以用 Ctrl+B 手動將 foreground agent 移到背景 [claudefa](https://claudefa.st/blog/guide/agents/async-workflows)
    - 但一旦移到背景，MCP tools 就會失效
 
@@ -123,13 +123,13 @@ capis-plugin/
 
 **實作策略**：
 ```markdown
-# capis-plugin/agents/portfolio-manager.md
+# capiis-plugin/agents/portfolio-manager.md
 ---
 name: portfolio-manager
-description: Manage investment portfolios using Capis MCP tools
+description: Manage investment portfolios using Capiis MCP tools
 mcpServers:
-  - capis-portfolio    # 只載入需要的 MCP servers
-  - capis-signals
+  - capiis-portfolio    # 只載入需要的 MCP servers
+  - capiis-signals
 tools: Read, Write, Bash
 ---
 
@@ -159,7 +159,7 @@ because it needs MCP access.
 
 **設計藍圖**：
 ```
-capis-plugin/
+capiis-plugin/
 ├── .claude-plugin/
 │   └── plugin.json              # 宣告 7 個 MCP servers
 ├── .mcp.json                    # 或在這裡定義
@@ -176,8 +176,8 @@ capis-plugin/
 
 **用戶體驗**：
 ```bash
-/plugin install capis            # 一次安裝
-/capis-portfolio:add AAPL 150    # 使用 skill
+/plugin install capiis            # 一次安裝
+/capiis-portfolio:add AAPL 150    # 使用 skill
 # 或讓 Claude 自動選擇 agent
 "Analyze my portfolio performance" # 觸發 analytics-agent
 ```
@@ -286,24 +286,24 @@ Before implementation, you must:
 
 ```yaml
 ---
-name: capis-portfolio-analysis
+name: capiis-portfolio-analysis
 description: Analyze portfolio and generate rebalancing plan
 allowed-tools:
   - Read
   - Grep
   - Skill
 disable-model-invocation: false  # 允許 Claude 自動呼叫
-user-invocable: true  # 允許用戶用 /capis-portfolio-analysis 呼叫
+user-invocable: true  # 允許用戶用 /capiis-portfolio-analysis 呼叫
 ---
 ```
 
-## 你的 Capis 專案實作建議
+## 你的 Capiis 專案實作建議
 
 ### 策略一：利用 `.claude/settings.json` 預設 Plan Mode
 
-**在 Capis 專案根目錄建立**：
+**在 Capiis 專案根目錄建立**：
 
-檔案：`~/Desktop/Capis/.claude/settings.json`
+檔案：`~/Desktop/Capiis/.claude/settings.json`
 ```json
 {
   "permissions": {
@@ -313,15 +313,15 @@ user-invocable: true  # 允許用戶用 /capis-portfolio-analysis 呼叫
 ```
 
 **效果**：
-- 用戶在 Capis 目錄啟動 `claude` 時自動進入 Plan Mode
+- 用戶在 Capiis 目錄啟動 `claude` 時自動進入 Plan Mode
 - 不需要額外指令或快捷鍵
-- 只影響 Capis 專案，其他專案不受影響
+- 只影響 Capiis 專案，其他專案不受影響
 
-### 策略二：建立 Capis Skill 引導 Plan Mode 行為
+### 策略二：建立 Capiis Skill 引導 Plan Mode 行為
 
 **檔案結構**：
 ```
-~/Desktop/Capis/
+~/Desktop/Capiis/
 ├── .claude/
 │   ├── settings.json
 │   └── skills/
@@ -353,7 +353,7 @@ When user requests portfolio operations (add positions, rebalance, analyze), fol
    - Read `data/signals.json`
    - Read `data/market-data.json` (if exists)
 
-2. Use Bash tool to call Capis API for live data:
+2. Use Bash tool to call Capiis API for live data:
    ```bash
    curl http://localhost:3000/api/portfolio/stats
    ```
@@ -418,18 +418,18 @@ Once approved:
 
 ### 策略三：建立啟動 Wrapper Script
 
-**檔案**：`~/Desktop/Capis/capis-claude.sh`
+**檔案**：`~/Desktop/Capiis/capiis-claude.sh`
 
 ```bash
 #!/bin/bash
 
-# Capis-specific Claude Code launcher with Plan Mode
+# Capiis-specific Claude Code launcher with Plan Mode
 
-echo "🚀 Launching Claude Code for Capis (Plan Mode enabled)"
+echo "🚀 Launching Claude Code for Capiis (Plan Mode enabled)"
 echo "📊 Portfolio management planning active"
 echo ""
 
-cd ~/Desktop/Capis
+cd ~/Desktop/Capiis
 
 # 啟動 Claude Code with Plan Mode
 claude --permission-mode plan \
@@ -439,22 +439,22 @@ claude --permission-mode plan \
 **用法**：
 ```bash
 # 用戶執行
-chmod +x ~/Desktop/Capis/capis-claude.sh
-~/Desktop/Capis/capis-claude.sh
+chmod +x ~/Desktop/Capiis/capiis-claude.sh
+~/Desktop/Capiis/capiis-claude.sh
 
 # 或加到 PATH
-export PATH="$PATH:~/Desktop/Capis"
-capis-claude.sh
+export PATH="$PATH:~/Desktop/Capiis"
+capiis-claude.sh
 ```
 
 ### 策略四：自動觸發 Plan Mode（Auto Plan Mode）
 
 **使用 `--append-system-prompt` 注入計畫要求** [claudelog](https://www.claudelog.com/mechanics/auto-plan-mode/)
 
-檔案：`~/Desktop/Capis/.claude/CLAUDE.md`
+檔案：`~/Desktop/Capiis/.claude/CLAUDE.md`
 
 ```markdown
-# Capis Portfolio Management System
+# Capiis Portfolio Management System
 
 ## CRITICAL WORKFLOW REQUIREMENT
 
@@ -505,7 +505,7 @@ Your Response:
 
 ### 策略五：建立 Slash Command 快速啟動
 
-**檔案**：`~/Desktop/Capis/.claude/commands/plan-portfolio.md`
+**檔案**：`~/Desktop/Capiis/.claude/commands/plan-portfolio.md`
 
 ```markdown
 ---
@@ -557,7 +557,7 @@ Start by reading data/portfolio.json and generating a comprehensive plan.
 
 1. 建立 `.claude/settings.json` 設定預設 Plan Mode [github](https://github.com/anthropics/claude-code/issues/6479)
 2. 建立 `CLAUDE.md` 注入計畫要求 [claudelog](https://www.claudelog.com/mechanics/auto-plan-mode/)
-3. 文件內告訴用戶：在 Capis 目錄啟動 Claude Code 即可
+3. 文件內告訴用戶：在 Capiis 目錄啟動 Claude Code 即可
 
 **進階方案（完整體驗）**：
 
@@ -569,17 +569,17 @@ Start by reading data/portfolio.json and generating a comprehensive plan.
 **用戶文件範例**：
 
 ```markdown
-# Capis Portfolio Management
+# Capiis Portfolio Management
 
 ## Using with Claude Code
 
-Capis integrates with Claude Code's Plan Mode for safe portfolio management.
+Capiis integrates with Claude Code's Plan Mode for safe portfolio management.
 
 ### Quick Start
 
-1. Navigate to Capis directory:
+1. Navigate to Capiis directory:
    ```bash
-   cd ~/Desktop/Capis
+   cd ~/Desktop/Capiis
    ```
 
 2. Start Claude Code (Plan Mode auto-enabled):

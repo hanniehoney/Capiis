@@ -30,7 +30,7 @@ async function fetchPrice(ticker, includeSplits) {
   const events = includeSplits ? '&events=splits' : '';
   const url = `${YAHOO_BASE}/${encodeURIComponent(ticker)}?range=${range}&interval=1d${events}`;
   const res = await fetch(url, {
-    headers: { 'User-Agent': 'Mozilla/5.0 (Capis Wealth Dashboard)' }
+    headers: { 'User-Agent': 'Mozilla/5.0 (Capiis Wealth Dashboard)' }
   });
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   const data = await res.json();

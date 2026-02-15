@@ -1,26 +1,26 @@
 ---
 name: onboarding
-description: Guide users through setting up their financial data in the Capis wealth management dashboard. Triggers when the user wants to enter their personal profile, assets, liabilities, or financial accounts — either through conversation or by importing files (xlsx, pdf, docs, csv, txt). Also triggers on "/capis-data setup" or when the user says things like "help me set up my portfolio" or "I want to enter my financial data".
+description: Guide users through setting up their financial data in the Capiis wealth management dashboard. Triggers when the user wants to enter their personal profile, assets, liabilities, or financial accounts — either through conversation or by importing files (xlsx, pdf, docs, csv, txt). Also triggers on "/capiis-data setup" or when the user says things like "help me set up my portfolio" or "I want to enter my financial data".
 ---
 
-# Capis Onboarding — Guided Data Setup
+# Capiis Onboarding — Guided Data Setup
 
-Walk the user through entering all their financial data into Capis, one step at a time.
+Walk the user through entering all their financial data into Capiis, one step at a time.
 
 ## Data Location
 
-All data files live in `~/Desktop/Capis/data/`. See `references/data-schema.md` for complete schemas.
+All data files live in `~/Desktop/Capiis/data/`. See `references/data-schema.md` for complete schemas.
 
 ## Before Starting: Resume Detection
 
 Check what data already exists:
 
-1. Read `~/Desktop/Capis/data/profile.json`
+1. Read `~/Desktop/Capiis/data/profile.json`
    - If it has `personal.name` → Phase 1 (Profile) is likely complete
    - If it has a non-empty `accounts` array → Phase 2 (Accounts) is likely complete
-2. Read `~/Desktop/Capis/data/profile.md`
+2. Read `~/Desktop/Capiis/data/profile.md`
    - If it exists and has content beyond section headers → Phase 1b (Narrative) is likely complete
-3. List xlsx files in `~/Desktop/Capis/data/` and check which have data rows beyond the header
+3. List xlsx files in `~/Desktop/Capiis/data/` and check which have data rows beyond the header
    - Any xlsx with >1 row means that category has been entered
 4. Tell the user what you found:
    - "I see you already have profile data and N asset categories filled in. Want to continue from where you left off, or redo a specific section?"
@@ -45,12 +45,12 @@ Ask ONE question at a time. Never batch multiple questions in one message.
 After collecting all answers:
 - Calculate tax rates based on location and filing status (verify with web search for current year rates)
 - Look up: federal bracket, state rate, LTCG rate, STCG rate, NIIT threshold, standard deduction, contribution limits
-- Write `~/Desktop/Capis/data/profile.json` with personal, family (if applicable), location, and tax sections
+- Write `~/Desktop/Capiis/data/profile.json` with personal, family (if applicable), location, and tax sections
 - Show the user what was saved and confirm it looks right
 
 ## Phase 1b: Narrative Profile (Optional)
 
-This phase collects soft context that structured data can't capture -- investment philosophy, life goals, and key decisions. It writes to `~/Desktop/Capis/data/profile.md`.
+This phase collects soft context that structured data can't capture -- investment philosophy, life goals, and key decisions. It writes to `~/Desktop/Capiis/data/profile.md`.
 
 **Transition from Phase 1**: After saving profile.json, say something like:
 
@@ -68,7 +68,7 @@ If the user is willing, ask these questions **one at a time**:
 
 4. **Key context**: "Is there anything else that shapes your financial decisions? Career plans, family situation, upcoming big expenses, why you hold certain investments..."
 
-After collecting answers (however many the user provides), write `~/Desktop/Capis/data/profile.md` with the standard section structure:
+After collecting answers (however many the user provides), write `~/Desktop/Capiis/data/profile.md` with the standard section structure:
 
 ```markdown
 # Financial Profile -- {user's name}
@@ -134,7 +134,7 @@ Walk through each asset category in order. For each:
 4. **File import mode**:
    - Ask for the file path
    - Read the file using Claude Code's built-in capabilities:
-     - `.xlsx` / `.csv` → read with xlsx skill, map columns to Capis schema
+     - `.xlsx` / `.csv` → read with xlsx skill, map columns to Capiis schema
      - `.pdf` → read with Read tool (PDF support is built-in)
      - `.docx` → read with built-in docs skill
      - `.txt` / `.md` → read as plain text, parse structured content
@@ -142,7 +142,7 @@ Walk through each asset category in order. For each:
    - Ask user to confirm before writing
    - User can say "fix row 3" or "remove that one" before confirming
 
-5. Write confirmed data to `~/Desktop/Capis/data/{category}.xlsx` using the xlsx skill
+5. Write confirmed data to `~/Desktop/Capiis/data/{category}.xlsx` using the xlsx skill
 6. Move to the next category
 
 **Category order:**
@@ -169,7 +169,7 @@ Same pattern as Phase 3. For each liability, collect:
 - Monthly payment, due date/maturity date
 - Notes
 
-Write to `~/Desktop/Capis/data/{liability}.xlsx`.
+Write to `~/Desktop/Capiis/data/{liability}.xlsx`.
 
 **Liability order:**
 
@@ -182,15 +182,15 @@ Write to `~/Desktop/Capis/data/{liability}.xlsx`.
 
 ## Phase 5: Complete
 
-1. Check if Capis server is running: `lsof -ti:3333`
-   - If not running, start it: `node ~/Desktop/Capis/server.js &` and wait 2 seconds
+1. Check if Capiis server is running: `lsof -ti:3333`
+   - If not running, start it: `node ~/Desktop/Capiis/server.js &` and wait 2 seconds
 
 2. Fetch portfolio summary: `curl -s http://localhost:3333/api/stats`
    - Display: total assets, total liabilities, net worth, positions count, allocation breakdown
 
 3. Use AskUserQuestion: "Your portfolio is set up! What would you like to do?"
    - "Open dashboard" → `open http://localhost:3333`
-   - "Add more data later" → remind about `/capis-data setup`
+   - "Add more data later" → remind about `/capiis-data setup`
    - "Done for now"
 
 ## Important Rules

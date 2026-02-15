@@ -81,7 +81,7 @@ export async function renderProfile(container) {
           <p>No profile configured</p>
           <p style="font-size:0.85rem;color:var(--text-tertiary);margin-top:8px">
             Set up your profile by telling Claude Code:<br>
-            <code style="font-family:var(--font-mono);color:var(--gold-primary)">"Set up my Capis profile"</code>
+            <code style="font-family:var(--font-mono);color:var(--gold-primary)">"Set up my Capiis profile"</code>
           </p>
         </div>
       </div>

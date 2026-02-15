@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none">
+  <!-- Ver 3: Pixel art bee — inspired by the reference pixel creature -->
+
+  <g transform="translate(28, 16)">
+    <!-- Grid unit = 6px -->
+
+    <!-- Antennae -->
+    <rect x="24" y="0" width="6" height="6" fill="#2d4a2b"/>
+    <rect x="42" y="0" width="6" height="6" fill="#2d4a2b"/>
+    <rect x="24" y="6" width="6" height="6" fill="#2d4a2b"/>
+    <rect x="42" y="6" width="6" height="6" fill="#2d4a2b"/>
+
+    <!-- Head row 1 -->
+    <rect x="18" y="12" width="6" height="6" fill="#2d4a2b"/>
+    <rect x="24" y="12" width="6" height="6" fill="#2d4a2b"/>
+    <rect x="30" y="12" width="6" height="6" fill="#2d4a2b"/>
+    <rect x="36" y="12" width="6" height="6" fill="#2d4a2b"/>
+    <rect x="42" y="12" width="6" height="6" fill="#2d4a2b"/>
+    <rect x="48" y="12" width="6" height="6" fill="#2d4a2b"/>
+
+    <!-- Head row 2 (with eyes) -->
+    <rect x="12" y="18" width="6" height="6" fill="#2d4a2b"/>
+    <rect x="18" y="18" width="6" height="6" fill="#2d4a2b"/>
+    <rect x="24" y="18" width="6" height="6" fill="#faf9f6"/><!-- left eye -->
+    <rect x="30" y="18" width="6" height="6" fill="#2d4a2b"/>
+    <rect x="36" y="18" width="6" height="6" fill="#2d4a2b"/>
+    <rect x="42" y="18" width="6" height="6" fill="#faf9f6"/><!-- right eye -->
+    <rect x="48" y="18" width="6" height="6" fill="#2d4a2b"/>
+    <rect x="54" y="18" width="6" height="6" fill="#2d4a2b"/>
+
+    <!-- Head row 3 -->
+    <rect x="12" y="24" width="6" height="6" fill="#2d4a2b"/>
+    <rect x="18" y="24" width="6" height="6" fill="#2d4a2b"/>
+    <rect x="24" y="24" width="6" height="6" fill="#2d4a2b"/>
+    <rect x="30" y="24" width="6" height="6" fill="#2d4a2b"/>
+    <rect x="36" y="24" width="6" height="6" fill="#2d4a2b"/>
+    <rect x="42" y="24" width="6" height="6" fill="#2d4a2b"/>
+    <rect x="48" y="24" width="6" height="6" fill="#2d4a2b"/>
+    <rect x="54" y="24" width="6" height="6" fill="#2d4a2b"/>
+
+    <!-- Body row 1 — wings + stripe 1 (dark) -->
+    <rect x="0" y="30" width="6" height="6" fill="rgba(45,74,43,0.3)"/><!-- left wing -->
+    <rect x="6" y="30" width="6" height="6" fill="rgba(45,74,43,0.3)"/>
+    <rect x="12" y="30" width="6" height="6" fill="#2d4a2b"/>
+    <rect x="18" y="30" width="6" height="6" fill="#2d4a2b"/>
+    <rect x="24" y="30" width="6" height="6" fill="#2d4a2b"/>
+    <rect x="30" y="30" width="6" height="6" fill="#2d4a2b"/>
+    <rect x="36" y="30" width="6" height="6" fill="#2d4a2b"/>
+    <rect x="42" y="30" width="6" height="6" fill="#2d4a2b"/>
+    <rect x="48" y="30" width="6" height="6" fill="#2d4a2b"/>
+    <rect x="54" y="30" width="6" height="6" fill="#2d4a2b"/>
+    <rect x="60" y="30" width="6" height="6" fill="rgba(45,74,43,0.3)"/><!-- right wing -->
+    <rect x="66" y="30" width="6" height="6" fill="rgba(45,74,43,0.3)"/>
+
+    <!-- Body row 2 — stripe 2 (light/olive) -->
+    <rect x="0" y="36" width="6" height="6" fill="rgba(45,74,43,0.2)"/>
+    <rect x="6" y="36" width="6" height="6" fill="rgba(45,74,43,0.2)"/>
+    <rect x="12" y="36" width="6" height="6" fill="#a4ac86"/>
+    <rect x="18" y="36" width="6" height="6" fill="#a4ac86"/>
+    <rect x="24" y="36" width="6" height="6" fill="#a4ac86"/>
+    <rect x="30" y="36" width="6" height="6" fill="#a4ac86"/>
+    <rect x="36" y="36" width="6" height="6" fill="#a4ac86"/>
+    <rect x="42" y="36" width="6" height="6" fill="#a4ac86"/>
+    <rect x="48" y="36" width="6" height="6" fill="#a4ac86"/>
+    <rect x="54" y="36" width="6" height="6" fill="#a4ac86"/>
+    <rect x="60" y="36" width="6" height="6" fill="rgba(45,74,43,0.2)"/>
+    <rect x="66" y="36" width="6" height="6" fill="rgba(45,74,43,0.2)"/>
+
+    <!-- Body row 3 — stripe 3 (dark) -->
+    <rect x="12" y="42" width="6" height="6" fill="#2d4a2b"/>
+    <rect x="18" y="42" width="6" height="6" fill="#2d4a2b"/>
+    <rect x="24" y="42" width="6" height="6" fill="#2d4a2b"/>
+    <rect x="30" y="42" width="6" height="6" fill="#2d4a2b"/>
+    <rect x="36" y="42" width="6" height="6" fill="#2d4a2b"/>
+    <rect x="42" y="42" width="6" height="6" fill="#2d4a2b"/>
+    <rect x="48" y="42" width="6" height="6" fill="#2d4a2b"/>
+    <rect x="54" y="42" width="6" height="6" fill="#2d4a2b"/>
+
+    <!-- Body row 4 — stripe 4 (light) -->
+    <rect x="18" y="48" width="6" height="6" fill="#a4ac86"/>
+    <rect x="24" y="48" width="6" height="6" fill="#a4ac86"/>
+    <rect x="30" y="48" width="6" height="6" fill="#a4ac86"/>
+    <rect x="36" y="48" width="6" height="6" fill="#a4ac86"/>
+    <rect x="42" y="48" width="6" height="6" fill="#a4ac86"/>
+    <rect x="48" y="48" width="6" height="6" fill="#a4ac86"/>
+
+    <!-- Bottom row -->
+    <rect x="18" y="54" width="6" height="6" fill="#2d4a2b"/>
+    <rect x="24" y="54" width="6" height="6" fill="#2d4a2b"/>
+    <rect x="30" y="54" width="6" height="6" fill="#2d4a2b"/>
+    <rect x="36" y="54" width="6" height="6" fill="#2d4a2b"/>
+    <rect x="42" y="54" width="6" height="6" fill="#2d4a2b"/>
+    <rect x="48" y="54" width="6" height="6" fill="#2d4a2b"/>
+
+    <!-- Stinger -->
+    <rect x="30" y="60" width="6" height="6" fill="#1a2e19"/>
+    <rect x="36" y="60" width="6" height="6" fill="#1a2e19"/>
+
+    <!-- Legs -->
+    <rect x="18" y="60" width="6" height="6" fill="#2d4a2b"/>
+    <rect x="18" y="66" width="6" height="6" fill="#2d4a2b"/>
+    <rect x="48" y="60" width="6" height="6" fill="#2d4a2b"/>
+    <rect x="48" y="66" width="6" height="6" fill="#2d4a2b"/>
+  </g>
+
+  <!-- Text -->
+  <text x="64" y="118" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700" fill="#2d4a2b" letter-spacing="3">CAPIS</text>
+</svg>

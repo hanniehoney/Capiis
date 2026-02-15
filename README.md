@@ -1,8 +1,8 @@
-# Capis
+# Capiis
 
 **Capitalis Apis - Where Wealth Swarms.**
 
-Capis is a local-first wealth and asset management dashboard built for the Claude Code ecosystem.  
+Capiis is a local-first wealth and asset management dashboard built for the Claude Code ecosystem.  
 It focuses on portfolio visibility, tax-aware analysis, and decision support (not execution/trading).
 
 ## Quick Start
@@ -22,23 +22,23 @@ npm start
 Or from Claude Code:
 
 ```text
-/capis                  # Launch dashboard
-/capis stop             # Stop server
-/capis reset            # Re-seed template data
-/capis status           # Check server status
+/capiis                  # Launch dashboard
+/capiis stop             # Stop server
+/capiis reset            # Re-seed template data
+/capiis status           # Check server status
 
-/capis-data             # Data management menu
-/capis-data clear       # Wipe all data (keeps schema + empty xlsx shells)
-/capis-data template    # Import demo data (Bay Area tech family)
-/capis-data setup       # Guided step-by-step data entry
+/capiis-data             # Data management menu
+/capiis-data clear       # Wipe all data (keeps schema + empty xlsx shells)
+/capiis-data template    # Import demo data (Bay Area tech family)
+/capiis-data setup       # Guided step-by-step data entry
 ```
 
 ## Runtime Architecture Snapshot
 
 ```text
 Claude Code
-  ├─ /capis command (.claude/commands/capis.md)        # launch / stop / status
-  ├─ /capis-data command (.claude/commands/capis-data.md)  # clear / template / setup
+  ├─ /capiis command (.claude/commands/capiis.md)        # launch / stop / status
+  ├─ /capiis-data command (.claude/commands/capiis-data.md)  # clear / template / setup
   ├─ portfolio-intel skill (skills/portfolio-intel/)      # portfolio analysis & management
   ├─ onboarding skill (skills/onboarding/)               # guided data entry (5-phase)
   ├─ tax-analyst agent (.claude/agents/tax-analyst.md)    # tax analysis
@@ -61,13 +61,13 @@ Data layer (local files)
 ## Project Structure Snapshot
 
 ```text
-Capis/
+Capiis/
 ├── .claude/
 │   ├── agents/
 │   │   └── tax-analyst.md             # Tax analysis agent
 │   └── commands/
-│       ├── capis.md                   # /capis — launch dashboard
-│       └── capis-data.md             # /capis-data — data management
+│       ├── capiis.md                   # /capiis — launch dashboard
+│       └── capiis-data.md             # /capiis-data — data management
 ├── data/                              # All user data (Excel + JSON)
 │   ├── stocks.xlsx                    # Asset: stocks, ETFs
 │   ├── crypto.xlsx                    # Asset: cryptocurrency
@@ -128,7 +128,7 @@ Capis/
 
 ## Data Architecture
 
-Capis uses a hybrid local data model:
+Capiis uses a hybrid local data model:
 
 - Portfolio holdings and liabilities are stored in `data/*.xlsx`.
 - Category/class definitions are stored in `data/categories.json`.
@@ -184,8 +184,8 @@ Drop any new `.xlsx` file into `data/` to add a new category automatically.
 
 | Command | File | Purpose |
 |---------|------|---------|
-| `/capis` | `.claude/commands/capis.md` | Launch / stop / status / reset |
-| `/capis-data` | `.claude/commands/capis-data.md` | Data management: clear, template, guided setup |
+| `/capiis` | `.claude/commands/capiis.md` | Launch / stop / status / reset |
+| `/capiis-data` | `.claude/commands/capiis-data.md` | Data management: clear, template, guided setup |
 
 ### Skills
 
@@ -239,7 +239,7 @@ Frontend view refresh map:
 
 ### Perplexity API Key (Recommended)
 
-Capis agents fact-check tax rates, contribution limits, and deadlines against live data before presenting numbers. This requires a Perplexity API key.
+Capiis agents fact-check tax rates, contribution limits, and deadlines against live data before presenting numbers. This requires a Perplexity API key.
 
 1. Get an API key at https://www.perplexity.ai/settings/api
 2. Add to your Claude Code MCP config (`~/.claude/mcp.json` or project-level `.claude/mcp.json`):

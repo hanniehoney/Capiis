@@ -22,7 +22,7 @@ export async function renderLegal(container) {
               <div>
                 <div style="font-weight:600;margin-bottom:4px">Profile not configured</div>
                 <div style="font-size:0.85rem;color:var(--text-secondary)">
-                  Tax calculations require your location and filing status. Tell Claude Code: <code style="font-family:var(--font-mono);color:var(--gold-primary)">"Set up my Capis profile"</code>
+                  Tax calculations require your location and filing status. Tell Claude Code: <code style="font-family:var(--font-mono);color:var(--gold-primary)">"Set up my Capiis profile"</code>
                 </div>
               </div>
             </div>

@@ -1,11 +1,11 @@
 ---
 name: portfolio-intel
-description: Analyze and manage portfolio data for the Capis wealth management dashboard. Use this skill when the user asks about their investment portfolio, wants to check allocation, asks for rebalancing suggestions, wants to add/remove positions, or needs portfolio performance analysis. Also triggers when the user mentions stocks, crypto, startup investments, or asset allocation in the context of their personal finances.
+description: Analyze and manage portfolio data for the Capiis wealth management dashboard. Use this skill when the user asks about their investment portfolio, wants to check allocation, asks for rebalancing suggestions, wants to add/remove positions, or needs portfolio performance analysis. Also triggers when the user mentions stocks, crypto, startup investments, or asset allocation in the context of their personal finances.
 ---
 
-# Capis Portfolio Intelligence
+# Capiis Portfolio Intelligence
 
-Analyze portfolio holdings, generate signals, and provide investment overview intelligence for the Capis wealth dashboard.
+Analyze portfolio holdings, generate signals, and provide investment overview intelligence for the Capiis wealth dashboard.
 
 ## Data Location
 

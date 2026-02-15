@@ -21,7 +21,7 @@ function writeEmptyExcel(filename, headers, sheetName) {
   console.log(`  created empty ${filename}`);
 }
 
-console.log('\nClearing Capis data...\n');
+console.log('\nClearing Capiis data...\n');
 
 for (const f of JSON_FILES) {
   const fp = path.join(DATA_DIR, f);

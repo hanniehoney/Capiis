@@ -104,7 +104,7 @@ export async function renderSidebar(container) {
           <polygon points="18,8 27,13 27,23 18,28 9,23 9,13" stroke="#2d4a2b" stroke-width="1" fill="rgba(45,74,43,0.12)" />
           <circle cx="18" cy="18" r="3" fill="#2d4a2b" />
         </svg>
-        <h1>Capis</h1>
+        <h1>Capiis</h1>
       </div>
       <div class="brand-tagline">Where Wealth Swarms</div>
     </div>

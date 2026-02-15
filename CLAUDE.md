@@ -1,4 +1,4 @@
-# Capis -- Project Guide
+# Capiis -- Project Guide
 
 **Capitalis Apis: Where Wealth Swarms**
 
@@ -9,13 +9,13 @@ A wealth & asset management dashboard built on the Claude Code ecosystem.
 - `npm start` -- starts Express server on http://localhost:3333
 - `npm run seed` -- imports default template (Alex). Use `node scripts/seed-data.js --list` to see all personas.
 - `npm run clear` -- wipes all user data, preserves empty xlsx shells + categories.json
-- `/capis` -- slash command to launch (starts server + opens browser)
-- `/capis stop` -- stops the server
-- `/capis reset` -- resets template data
-- `/capis-data` -- data management (clear / template / guided setup)
-- `/capis-data clear` -- wipes all data (confirms first)
-- `/capis-data template` -- imports demo data (choose from multiple personas)
-- `/capis-data setup` -- guided step-by-step data entry (invokes onboarding skill)
+- `/capiis` -- slash command to launch (starts server + opens browser)
+- `/capiis stop` -- stops the server
+- `/capiis reset` -- resets template data
+- `/capiis-data` -- data management (clear / template / guided setup)
+- `/capiis-data clear` -- wipes all data (confirms first)
+- `/capiis-data template` -- imports demo data (choose from multiple personas)
+- `/capiis-data setup` -- guided step-by-step data entry (invokes onboarding skill)
 
 ## Project Structure
 
@@ -23,8 +23,8 @@ A wealth & asset management dashboard built on the Claude Code ecosystem.
 - `lib/excel.js` -- Excel reader module (xlsx), converts .xlsx to JSON for the API
 - `public/` -- Frontend (vanilla HTML/CSS/JS, no build step, ES modules)
 - `data/` -- Excel files (portfolio) + JSON files (signals, feed, watchlist, tax, profile)
-- `.claude/commands/capis.md` -- Slash command: launch dashboard
-- `.claude/commands/capis-data.md` -- Slash command: data management (clear / template / setup)
+- `.claude/commands/capiis.md` -- Slash command: launch dashboard
+- `.claude/commands/capiis-data.md` -- Slash command: data management (clear / template / setup)
 - `.claude/agents/` -- Independent subagents (tax, etc.) with isolated context
 - `skills/portfolio-intel/` -- Portfolio intelligence skill (interactive)
 - `skills/onboarding/` -- Guided data entry skill (5-phase: profile → accounts → assets → liabilities → complete)
@@ -40,7 +40,7 @@ A wealth & asset management dashboard built on the Claude Code ecosystem.
 | Alex | `alex` | 37, Taiwanese. Staff Engineer (L7) @ Google, ex-Meta E6. Married, 2 kids. Cupertino homeowner. NW ~$5.5M. Green card holder, no US-Taiwan treaty. META stock concentration. |
 | Sophia | `sophia` | 32, British. Staff Research Engineer @ Anthropic (ex-DeepMind London). Single, SF renter. NW ~$4.3M. O-1A visa. Private company stock, ISOs, AMT risk. UK pension/accounts. |
 
-Import with: `node scripts/seed-data.js [persona-key]` or use `/capis-data template` for guided selection.
+Import with: `node scripts/seed-data.js [persona-key]` or use `/capiis-data template` for guided selection.
 
 ## Data Architecture (Hybrid)
 
@@ -184,7 +184,7 @@ New categories get auto-assigned fallback colors from the forest palette.
 
 ## Agent Architecture
 
-Capis uses independent subagents defined in `.claude/agents/`. Each agent has its own isolated context, reads data autonomously, and returns a structured analysis. Agents can run **in parallel** -- Claude delegates to multiple agents simultaneously.
+Capiis uses independent subagents defined in `.claude/agents/`. Each agent has its own isolated context, reads data autonomously, and returns a structured analysis. Agents can run **in parallel** -- Claude delegates to multiple agents simultaneously.
 
 ### Available Agents
 
@@ -225,9 +225,9 @@ Multiple agents run concurrently when invoked together. Each agent reads its own
 
 ### Session Hook: Auto-Orchestration
 
-A `SessionStart` hook (`.claude/hooks/session-check.sh`) runs on every new/resumed session. It checks data freshness and upcoming deadlines, then outputs `[capis-auto]` triggers.
+A `SessionStart` hook (`.claude/hooks/session-check.sh`) runs on every new/resumed session. It checks data freshness and upcoming deadlines, then outputs `[capiis-auto]` triggers.
 
-**When you see `[capis-auto]` output, act on it:**
+**When you see `[capiis-auto]` output, act on it:**
 
 | Trigger | Action |
 |---------|--------|
@@ -254,7 +254,7 @@ Do NOT present two separate reports. Merge agent results into one coherent, prio
 | Skill | Path | Purpose |
 |-------|------|---------|
 | **Portfolio Intelligence** | `skills/portfolio-intel/SKILL.md` | Interactive portfolio analysis, position management, signal generation |
-| **Onboarding** | `skills/onboarding/SKILL.md` | Guided data entry: 5-phase flow (profile → accounts → assets → liabilities → complete). Supports dialogue + file import (xlsx/pdf/docs/csv/txt). Invoked by `/capis-data setup` |
+| **Onboarding** | `skills/onboarding/SKILL.md` | Guided data entry: 5-phase flow (profile → accounts → assets → liabilities → complete). Supports dialogue + file import (xlsx/pdf/docs/csv/txt). Invoked by `/capiis-data setup` |
 | **Tax Professional** | `skills/tax-professional/SKILL.md` | General US tax knowledge base (deductions, strategies, audit risk) |
 
 Agents can preload skills for domain knowledge via the `skills` frontmatter field. The Tax Agent preloads Tax Professional for deep tax law questions.
@@ -359,7 +359,7 @@ Agents with web search access (e.g., Tax Agent) should verify data against curre
 
 ## Compliance Guardrails
 
-Capis is a **Personal Financial Management (PFM)** tool — it organizes, visualizes, and analyzes the user's own data. It is NOT an investment advisor. All agents and skills must stay within these boundaries.
+Capiis is a **Personal Financial Management (PFM)** tool — it organizes, visualizes, and analyzes the user's own data. It is NOT an investment advisor. All agents and skills must stay within these boundaries.
 
 ### Role: Financial Analyst Assistant
 
@@ -391,7 +391,7 @@ Never present AI-generated interpretations as facts.
 
 ## MCP: Perplexity for Fact-Checking
 
-Capis agents that output financial figures (tax liability, deduction amounts, contribution limits) **must fact-check against current data before presenting numbers to the user.** Users may act on these numbers — incorrect figures cause real financial harm.
+Capiis agents that output financial figures (tax liability, deduction amounts, contribution limits) **must fact-check against current data before presenting numbers to the user.** Users may act on these numbers — incorrect figures cause real financial harm.
 
 ### Why Perplexity over WebFetch/WebSearch
 

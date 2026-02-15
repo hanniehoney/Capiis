@@ -107,7 +107,7 @@ if (!fs.existsSync(personaPath)) {
 const persona = require(personaPath);
 
 // --- Write all data ---
-console.log(`\nSeeding Capis data: ${persona.meta.name} (${persona.meta.tagline})...\n`);
+console.log(`\nSeeding Capiis data: ${persona.meta.name} (${persona.meta.tagline})...\n`);
 
 writeJSON('categories.json', persona.categoriesConfig);
 

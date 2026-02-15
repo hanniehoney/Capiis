@@ -1,19 +1,19 @@
-# /capis-data — Data Management Slash Command
+# /capiis-data — Data Management Slash Command
 
 ## Overview
 
-A single slash command `/capis-data` with three subcommands for managing all Capis data: clear, template import, and guided user input.
+A single slash command `/capiis-data` with three subcommands for managing all Capiis data: clear, template import, and guided user input.
 
-**File**: `.claude/commands/capis-data.md`
+**File**: `.claude/commands/capiis-data.md`
 
 ## Command Interface
 
 | Invocation | Action |
 |------------|--------|
-| `/capis-data` | Interactive menu (AskUserQuestion) to pick subcommand |
-| `/capis-data clear` | Clear all data with confirmation |
-| `/capis-data template` | Import Bay Area family template |
-| `/capis-data setup` | Guided step-by-step data entry |
+| `/capiis-data` | Interactive menu (AskUserQuestion) to pick subcommand |
+| `/capiis-data clear` | Clear all data with confirmation |
+| `/capiis-data template` | Import Bay Area family template |
+| `/capiis-data setup` | Guided step-by-step data entry |
 
 ---
 
@@ -33,7 +33,7 @@ A single slash command `/capis-data` with three subcommands for managing all Cap
      - 4 liability files: credit-cards, mortgage, auto-loan, student-loan
    - This requires a new script or extending seed-data.js with a `--clear` flag
 
-3. **Report**: list deleted files, suggest `/capis-data template` or `/capis-data setup`
+3. **Report**: list deleted files, suggest `/capiis-data template` or `/capiis-data setup`
 
 ### What Gets Cleared
 
@@ -74,9 +74,9 @@ A single slash command `/capis-data` with three subcommands for managing all Cap
    - If yes → `AskUserQuestion`: "Existing data detected. Template import will overwrite everything. Continue?"
    - If empty → proceed directly
 
-2. Run `node ~/Desktop/Capis/scripts/seed-data.js` (seed script will be rewritten with new template persona)
+2. Run `node ~/Desktop/Capiis/scripts/seed-data.js` (seed script will be rewritten with new template persona)
 
-3. Report: "Template imported — Alex Chen's Bay Area family portfolio. Run `/capis` to open dashboard."
+3. Report: "Template imported — Alex Chen's Bay Area family portfolio. Run `/capiis` to open dashboard."
 
 ### Implementation
 
@@ -113,7 +113,7 @@ Walk through categories one by one:
 2. For each: "Do you have {category}?" → user can skip with "no"
 3. User can provide data by:
    - Answering Claude's questions directly
-   - Providing a file path → Claude uses built-in xlsx/pdf/docs reading skills to parse, shows summary for confirmation, then converts to Capis xlsx format
+   - Providing a file path → Claude uses built-in xlsx/pdf/docs reading skills to parse, shows summary for confirmation, then converts to Capiis xlsx format
 4. Each category written immediately to `data/{category}.xlsx`
 
 #### Phase 4: Liabilities
@@ -128,20 +128,20 @@ Same pattern:
 #### Phase 5: Confirm & Complete
 
 1. Call `curl localhost:3333/api/stats` to show portfolio overview (net worth, allocation)
-2. Ask if user wants to open dashboard (`/capis`)
-3. Suggest `/capis-data setup` to add more later
+2. Ask if user wants to open dashboard (`/capiis`)
+3. Suggest `/capiis-data setup` to add more later
 
 ### File-Assisted Input
 
 When user provides a file path during Phase 3 or 4:
 - The command doc instructs Claude to use built-in xlsx / pdf / docs reading skills
-- Claude reads file → summarizes extracted data → user confirms → writes Capis-format xlsx
+- Claude reads file → summarizes extracted data → user confirms → writes Capiis-format xlsx
 - Supported: .xlsx, .csv, .pdf, .docx, .txt, .md
 
 ### Resume Support
 
 - Each phase writes data immediately to disk
-- On next `/capis-data setup`, Claude checks which data files exist and have content
+- On next `/capiis-data setup`, Claude checks which data files exist and have content
 - Skips completed phases, resumes from first missing section
 - User can override: "I want to redo my stocks"
 
@@ -153,22 +153,22 @@ When user provides a file path during Phase 3 or 4:
 
 | File | Action |
 |------|--------|
-| `.claude/commands/capis-data.md` | **Create** — slash command (routing + clear + template) |
-| `skills/capis-onboarding/SKILL.md` | **Create** — guided setup skill (5-phase data entry) |
-| `skills/capis-onboarding/references/data-schema.md` | **Create** — complete data schema reference |
+| `.claude/commands/capiis-data.md` | **Create** — slash command (routing + clear + template) |
+| `skills/capiis-onboarding/SKILL.md` | **Create** — guided setup skill (5-phase data entry) |
+| `skills/capiis-onboarding/references/data-schema.md` | **Create** — complete data schema reference |
 | `scripts/seed-data.js` | **Rewrite** — new Bay Area family template persona |
 | `scripts/clear-data.js` | **Create** — generates header-only xlsx shells + keeps categories.json |
 | `package.json` | **Modify** — add `clear` npm script |
 
 ### Architecture
 
-- **Slash command** (`capis-data.md`): thin routing layer. Handles `clear` and `template` directly. Delegates `setup` to the `capis-onboarding` skill.
-- **Skill** (`capis-onboarding`): full 5-phase guided data entry with resume detection, dialogue + file import modes, and immediate disk writes.
+- **Slash command** (`capiis-data.md`): thin routing layer. Handles `clear` and `template` directly. Delegates `setup` to the `capiis-onboarding` skill.
+- **Skill** (`capiis-onboarding`): full 5-phase guided data entry with resume detection, dialogue + file import modes, and immediate disk writes.
 - **References** (`data-schema.md`): complete schema doc for all data types, available to the skill for accurate data writing.
 
 ### Dependencies on Built-in Skills
 
-The `capis-onboarding` skill's file import relies on Claude Code's built-in capabilities:
+The `capiis-onboarding` skill's file import relies on Claude Code's built-in capabilities:
 - xlsx reading (built-in xlsx skill)
 - PDF reading (Read tool supports PDF)
 - docs/docx reading (built-in docs skill)

@@ -1,5 +1,5 @@
 #!/bin/bash
-# Capis Session Check Hook
+# Capiis Session Check Hook
 # Runs on SessionStart — checks data freshness and upcoming deadlines
 # Outputs context for Claude to decide which agents to auto-run
 
@@ -94,25 +94,25 @@ if [ "$INTEL_STALE_HOURS" -gt 12 ]; then
 fi
 
 # Always output status
-echo "[capis-check] Profile: ${PROFILE_NAME:-Unknown} | Prices: ${STALE_HOURS}h old | Intel: ${INTEL_STALE_HOURS}h old | Apr 15: ${DAYS_TO_APR15} days | Signals: ${ACTIVE_SIGNALS} active (${HIGH_SIGNALS} high)"
+echo "[capiis-check] Profile: ${PROFILE_NAME:-Unknown} | Prices: ${STALE_HOURS}h old | Intel: ${INTEL_STALE_HOURS}h old | Apr 15: ${DAYS_TO_APR15} days | Signals: ${ACTIVE_SIGNALS} active (${HIGH_SIGNALS} high)"
 
 if [ -n "$TRIGGERS" ]; then
-  echo "[capis-auto] Triggers detected: ${TRIGGERS}"
+  echo "[capiis-auto] Triggers detected: ${TRIGGERS}"
 
   if echo "$TRIGGERS" | grep -q "STALE_PRICES"; then
-    echo "[capis-auto] Prices are ${STALE_HOURS}h stale (>24h threshold). Run price-tracker agent to update."
+    echo "[capiis-auto] Prices are ${STALE_HOURS}h stale (>24h threshold). Run price-tracker agent to update."
   fi
 
   if echo "$TRIGGERS" | grep -q "TAX_SEASON"; then
-    echo "[capis-auto] Tax filing deadline in ${DAYS_TO_APR15} days. Run tax-analyst agent for time-sensitive briefing."
+    echo "[capiis-auto] Tax filing deadline in ${DAYS_TO_APR15} days. Run tax-analyst agent for time-sensitive briefing."
   fi
 
   if echo "$TRIGGERS" | grep -q "STALE_INTEL"; then
-    echo "[capis-auto] Intel feed is ${INTEL_STALE_HOURS}h stale (>12h threshold). Run feed-analyst agent to scan."
+    echo "[capiis-auto] Intel feed is ${INTEL_STALE_HOURS}h stale (>12h threshold). Run feed-analyst agent to scan."
   fi
 
   if echo "$TRIGGERS" | grep -q "STALE_PRICES" && echo "$TRIGGERS" | grep -q "TAX_SEASON"; then
-    echo "[capis-auto] Both agents can run in parallel. Merge results into a unified briefing."
+    echo "[capiis-auto] Both agents can run in parallel. Merge results into a unified briefing."
   fi
 fi
 

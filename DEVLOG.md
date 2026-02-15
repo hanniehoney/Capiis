@@ -1,4 +1,4 @@
-# Capis — Build Log
+# Capiis — Build Log
 
 **Built with Opus 4.6: A Claude Code Hackathon**
 Hosted by Cerebral Valley x Anthropic | Feb 10–16, 2026 | Virtual
@@ -14,7 +14,7 @@ Hit a snag right away: API credits weren't showing up for everyone. Some partici
 ### What I did
 
 - Attended the virtual kickoff (12:00–12:30 PM EST)
-- Scaffolded the full Capis project end-to-end: Express server, vanilla JS frontend, JSON data layer, SSE real-time sync, Claude Code slash command + portfolio intelligence skill
+- Scaffolded the full Capiis project end-to-end: Express server, vanilla JS frontend, JSON data layer, SSE real-time sync, Claude Code slash command + portfolio intelligence skill
 - First working version live — dashboard renders portfolio, intelligence feed, and tax views
 
 ### What's next
@@ -27,7 +27,7 @@ Hit a snag right away: API credits weren't showing up for everyone. Some partici
 ### Blockers
 
 - Need to decide frontend evolution path: stay vanilla JS, adopt Web Components, or migrate to React/Next.js — deferred until scope is clearer
-- `/capis` slash command only works inside the project directory — want it to be a global plugin any Claude Code user can invoke from anywhere, need to rethink the command/skill hierarchy
+- `/capiis` slash command only works inside the project directory — want it to be a global plugin any Claude Code user can invoke from anywhere, need to rethink the command/skill hierarchy
 
 ### Time spent
 
@@ -112,6 +112,34 @@ Focused on onboarding realism and portfolio data usability: profile templates (t
 ---
 
 ## 2026-02-13 (Day 4)
+
+(TBD)
+
+### What I did
+-
+
+### What's next
+- ~~[ ] Automate the intelligence feed with real sources (kill the mock data)~~
+
+### Blockers
+-
+
+### Time spent
+| Task | Duration |
+|------|----------|
+| | |
+| Total | **TBD** |
+
+---
+
+
+## 2026-02-14 (Day 5)
+
+Happy Vanlinetine's Day
+
+---
+
+## 2026-02-15 (Day 6)
 
 (TBD)
 

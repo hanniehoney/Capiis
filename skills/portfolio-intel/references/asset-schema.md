@@ -1,4 +1,4 @@
-# Capis Data Schemas
+# Capiis Data Schemas
 
 ## Portfolio Data (Excel)
 

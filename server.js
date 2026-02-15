@@ -10,7 +10,7 @@ function loadFeedSources() {
   if (src && Array.isArray(src.sources)) return src.sources.map(s => s.url).filter(Boolean);
   return [];
 }
-const RSS_CACHE_TTL_MS = Number(process.env.CAPIS_RSS_TTL_MS) || 5 * 60 * 1000;
+const RSS_CACHE_TTL_MS = Number(process.env.CAPIIS_RSS_TTL_MS || process.env.CAPIS_RSS_TTL_MS) || 5 * 60 * 1000;
 let rssCache = { fetchedAt: 0, data: null };
 
 // --- SSE ---
@@ -47,7 +47,7 @@ async function getRssFeed() {
   const results = await Promise.allSettled(
     RSS_FEEDS.map(async (feedUrl) => {
       const res = await fetch(feedUrl, {
-        headers: { 'User-Agent': 'Mozilla/5.0 (Capis Wealth Dashboard)' }
+        headers: { 'User-Agent': 'Mozilla/5.0 (Capiis Wealth Dashboard)' }
       });
       if (!res.ok) throw new Error(`RSS HTTP ${res.status} from ${feedUrl}`);
       const xml = await res.text();
@@ -482,5 +482,5 @@ app.get('*', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`\n  Capis is running at http://localhost:${PORT}\n`);
+  console.log(`\n  Capiis is running at http://localhost:${PORT}\n`);
 });
