@@ -145,15 +145,14 @@ h1, h2, h3, h4 {
 }
 
 .sidebar-brand {
-  padding: 24px 20px 20px;
-  border-bottom: 1px solid var(--border);
+  padding: 24px 20px 12px;
 }
 
 .sidebar-brand .brand-mark {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 4px;
+  margin-bottom: 0;
 }
 
 .sidebar-brand .brand-icon {
@@ -182,7 +181,7 @@ h1, h2, h3, h4 {
 }
 
 .sidebar-nav {
-  padding: 16px 12px;
+  padding: 12px 12px;
   flex: 1;
 }
 

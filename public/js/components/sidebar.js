@@ -99,14 +99,30 @@ export async function renderSidebar(container) {
   container.innerHTML = `
     <div class="sidebar-brand">
       <div class="brand-mark">
-        <svg class="brand-icon" viewBox="0 0 36 36" fill="none">
-          <polygon points="18,2 32,10 32,26 18,34 4,26 4,10" stroke="#2d4a2b" stroke-width="1.5" fill="rgba(45,74,43,0.08)" />
-          <polygon points="18,8 27,13 27,23 18,28 9,23 9,13" stroke="#2d4a2b" stroke-width="1" fill="rgba(45,74,43,0.12)" />
-          <circle cx="18" cy="18" r="3" fill="#2d4a2b" />
+        <svg class="brand-icon" viewBox="0 0 84 84" fill="none">
+          <g transform="translate(0,2)">
+            <rect x="0" y="14" width="6" height="6" fill="rgba(45,74,43,0.08)"/><rect x="6" y="14" width="6" height="6" fill="rgba(45,74,43,0.10)"/>
+            <rect x="0" y="20" width="6" height="6" fill="rgba(45,74,43,0.10)"/><rect x="6" y="20" width="6" height="6" fill="rgba(45,74,43,0.14)"/>
+            <rect x="72" y="14" width="6" height="6" fill="rgba(45,74,43,0.10)"/><rect x="78" y="14" width="6" height="6" fill="rgba(45,74,43,0.08)"/>
+            <rect x="72" y="20" width="6" height="6" fill="rgba(45,74,43,0.14)"/><rect x="78" y="20" width="6" height="6" fill="rgba(45,74,43,0.10)"/>
+            <rect x="0" y="56" width="6" height="6" fill="rgba(45,74,43,0.10)"/><rect x="6" y="56" width="6" height="6" fill="rgba(45,74,43,0.14)"/>
+            <rect x="72" y="56" width="6" height="6" fill="rgba(45,74,43,0.14)"/><rect x="78" y="56" width="6" height="6" fill="rgba(45,74,43,0.10)"/>
+            <rect x="24" y="0" width="6" height="6" fill="#2d4a2b"/><rect x="48" y="0" width="6" height="6" fill="#2d4a2b"/>
+            <rect x="24" y="6" width="6" height="6" fill="#2d4a2b"/><rect x="48" y="6" width="6" height="6" fill="#2d4a2b"/>
+            <rect x="18" y="12" width="6" height="6" fill="#2d4a2b"/><rect x="24" y="12" width="6" height="6" fill="#2d4a2b"/><rect x="30" y="12" width="6" height="6" fill="#2d4a2b"/><rect x="36" y="12" width="6" height="6" fill="#2d4a2b"/><rect x="42" y="12" width="6" height="6" fill="#2d4a2b"/><rect x="48" y="12" width="6" height="6" fill="#2d4a2b"/><rect x="54" y="12" width="6" height="6" fill="#2d4a2b"/>
+            <rect x="12" y="18" width="6" height="6" fill="#2d4a2b"/><rect x="18" y="18" width="6" height="6" fill="#2d4a2b"/><rect x="24" y="18" width="6" height="6" fill="#faf9f6"/><rect x="30" y="18" width="6" height="6" fill="#2d4a2b"/><rect x="36" y="18" width="6" height="6" fill="#2d4a2b"/><rect x="42" y="18" width="6" height="6" fill="#2d4a2b"/><rect x="48" y="18" width="6" height="6" fill="#faf9f6"/><rect x="54" y="18" width="6" height="6" fill="#2d4a2b"/><rect x="60" y="18" width="6" height="6" fill="#2d4a2b"/>
+            <rect x="12" y="24" width="6" height="6" fill="#2d4a2b"/><rect x="18" y="24" width="6" height="6" fill="#2d4a2b"/><rect x="24" y="24" width="6" height="6" fill="#2d4a2b"/><rect x="30" y="24" width="6" height="6" fill="#2d4a2b"/><rect x="36" y="24" width="6" height="6" fill="#2d4a2b"/><rect x="42" y="24" width="6" height="6" fill="#2d4a2b"/><rect x="48" y="24" width="6" height="6" fill="#2d4a2b"/><rect x="54" y="24" width="6" height="6" fill="#2d4a2b"/><rect x="60" y="24" width="6" height="6" fill="#2d4a2b"/>
+            <rect x="0" y="30" width="6" height="6" fill="rgba(45,74,43,0.25)"/><rect x="6" y="30" width="6" height="6" fill="rgba(45,74,43,0.25)"/><rect x="12" y="30" width="6" height="6" fill="#2d4a2b"/><rect x="18" y="30" width="6" height="6" fill="#2d4a2b"/><rect x="24" y="30" width="6" height="6" fill="#2d4a2b"/><rect x="30" y="30" width="6" height="6" fill="#2d4a2b"/><rect x="36" y="30" width="6" height="6" fill="#2d4a2b"/><rect x="42" y="30" width="6" height="6" fill="#2d4a2b"/><rect x="48" y="30" width="6" height="6" fill="#2d4a2b"/><rect x="54" y="30" width="6" height="6" fill="#2d4a2b"/><rect x="60" y="30" width="6" height="6" fill="#2d4a2b"/><rect x="66" y="30" width="6" height="6" fill="rgba(45,74,43,0.25)"/><rect x="72" y="30" width="6" height="6" fill="rgba(45,74,43,0.25)"/>
+            <rect x="12" y="36" width="6" height="6" fill="#a4ac86"/><rect x="18" y="36" width="6" height="6" fill="#8a9a6e"/><rect x="24" y="36" width="6" height="6" fill="#a4ac86"/><rect x="30" y="36" width="6" height="6" fill="#8a9a6e"/><rect x="36" y="36" width="6" height="6" fill="#a4ac86"/><rect x="42" y="36" width="6" height="6" fill="#8a9a6e"/><rect x="48" y="36" width="6" height="6" fill="#a4ac86"/><rect x="54" y="36" width="6" height="6" fill="#8a9a6e"/><rect x="60" y="36" width="6" height="6" fill="#a4ac86"/>
+            <rect x="12" y="42" width="6" height="6" fill="#2d4a2b"/><rect x="18" y="42" width="6" height="6" fill="#2d4a2b"/><rect x="24" y="42" width="6" height="6" fill="#2d4a2b"/><rect x="30" y="42" width="6" height="6" fill="#2d4a2b"/><rect x="36" y="42" width="6" height="6" fill="#2d4a2b"/><rect x="42" y="42" width="6" height="6" fill="#2d4a2b"/><rect x="48" y="42" width="6" height="6" fill="#2d4a2b"/><rect x="54" y="42" width="6" height="6" fill="#2d4a2b"/><rect x="60" y="42" width="6" height="6" fill="#2d4a2b"/>
+            <rect x="18" y="48" width="6" height="6" fill="#8a9a6e"/><rect x="24" y="48" width="6" height="6" fill="#a4ac86"/><rect x="30" y="48" width="6" height="6" fill="#8a9a6e"/><rect x="36" y="48" width="6" height="6" fill="#a4ac86"/><rect x="42" y="48" width="6" height="6" fill="#8a9a6e"/><rect x="48" y="48" width="6" height="6" fill="#a4ac86"/><rect x="54" y="48" width="6" height="6" fill="#8a9a6e"/>
+            <rect x="18" y="54" width="6" height="6" fill="#2d4a2b"/><rect x="24" y="54" width="6" height="6" fill="#2d4a2b"/><rect x="30" y="54" width="6" height="6" fill="#2d4a2b"/><rect x="36" y="54" width="6" height="6" fill="#2d4a2b"/><rect x="42" y="54" width="6" height="6" fill="#2d4a2b"/><rect x="48" y="54" width="6" height="6" fill="#2d4a2b"/><rect x="54" y="54" width="6" height="6" fill="#2d4a2b"/>
+            <rect x="30" y="60" width="6" height="6" fill="#1a2e19"/><rect x="36" y="60" width="6" height="6" fill="#1a2e19"/><rect x="42" y="60" width="6" height="6" fill="#1a2e19"/>
+            <rect x="18" y="60" width="6" height="6" fill="#2d4a2b"/><rect x="18" y="66" width="6" height="6" fill="#2d4a2b"/><rect x="54" y="60" width="6" height="6" fill="#2d4a2b"/><rect x="54" y="66" width="6" height="6" fill="#2d4a2b"/>
+          </g>
         </svg>
         <h1>Capiis</h1>
       </div>
-      <div class="brand-tagline">Where Wealth Swarms</div>
     </div>
 
     <nav class="sidebar-nav">
