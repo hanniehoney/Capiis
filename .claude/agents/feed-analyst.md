@@ -22,10 +22,10 @@ Follow this sequence exactly. Do NOT skip steps.
 Fetch live data from the server and read profile context:
 
 ```bash
-# Feed items (RSS)
+# Feed items (RSS) — returns { items: [...] }, NOT a bare array
 curl -s http://localhost:3333/api/feed
 
-# Portfolio holdings
+# Portfolio holdings — returns { holdings: [...], assets: [...], liabilities: [...] }
 curl -s http://localhost:3333/api/portfolio
 ```
 
