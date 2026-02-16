@@ -3,7 +3,10 @@ import { getFeed, getSignals, dismissSignal } from '../utils/api.js';
 let currentTab = 'all';
 
 export async function renderFeed(container) {
-  container.innerHTML = `<div class="loading-state"><div class="hex-spinner"></div><p>Loading intel feed...</p></div>`;
+  const isRefresh = container?.dataset?.feedLoaded === 'true';
+  if (!isRefresh) {
+    container.innerHTML = `<div class="loading-state"><div class="hex-spinner"></div><p>Loading intel feed...</p></div>`;
+  }
 
   try {
     const [feedData, signalsData] = await Promise.all([
@@ -29,7 +32,9 @@ export async function renderFeed(container) {
         </div>
 
         <div class="feed-grid" id="feed-content">
-          ${currentTab === 'signals' ? renderSignalsTab(activeSignals) : renderAllTab(feed)}
+          ${currentTab === 'signals'
+            ? renderSignalsTab(activeSignals, !isRefresh)
+            : renderAllTab(feed, !isRefresh)}
         </div>
       </div>
     `;
@@ -45,20 +50,21 @@ export async function renderFeed(container) {
         tab.classList.add('active');
         const content = document.getElementById('feed-content');
         content.innerHTML = filter === 'signals'
-          ? renderSignalsTab(activeSignals)
-          : renderAllTab(feed);
+          ? renderSignalsTab(activeSignals, false)
+          : renderAllTab(feed, false);
         if (filter === 'signals') bindDismissHandlers();
       });
     }
 
     if (currentTab === 'signals') bindDismissHandlers();
+    container.dataset.feedLoaded = 'true';
   } catch (e) {
     container.innerHTML = `<div class="empty-state"><div class="empty-icon">\u26A0</div><p>Failed to load feed</p></div>`;
     console.error(e);
   }
 }
 
-function renderAllTab(feed) {
+function renderAllTab(feed, animate = true) {
   if (!feed.length) {
     return `<div class="empty-state"><div class="empty-icon">\u25C7</div><p>No feed items yet</p></div>`;
   }
@@ -71,7 +77,7 @@ function renderAllTab(feed) {
     const summary = escapeHTML(item.summary || '');
     const source = escapeHTML(item.source || '');
     const url = item.url && item.url !== '#' ? item.url : '';
-    const stagger = `animate-in stagger-${Math.min(i + 1, 8)}`;
+    const stagger = animate ? `animate-in stagger-${Math.min(i + 1, 8)}` : '';
 
     const titleHTML = url
       ? `<a href="${escapeHTML(url)}" target="_blank" rel="noopener">${headline} <span class="feed-external-icon">\u2197</span></a>`
@@ -92,7 +98,7 @@ function renderAllTab(feed) {
   }).join('');
 }
 
-function renderSignalsTab(signals) {
+function renderSignalsTab(signals, animate = true) {
   if (!signals.length) {
     return `<div class="empty-state"><div class="empty-icon">\u25C7</div><p>No active signals</p></div>`;
   }
@@ -104,7 +110,7 @@ function renderSignalsTab(signals) {
     const title = escapeHTML(signal.title || '');
     const body = signal.body || signal.message || '';
     const fullBody = escapeHTML(body);
-    const stagger = `animate-in stagger-${Math.min(i + 1, 8)}`;
+    const stagger = animate ? `animate-in stagger-${Math.min(i + 1, 8)}` : '';
 
     const affects = [...new Set(
       (signal.relatedAssets || [])
