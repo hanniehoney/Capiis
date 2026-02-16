@@ -8,20 +8,26 @@ All portfolio data stays on your machine (Excel + JSON). Claude Code handles the
 
 ## Quick Start
 
+Requires [Claude Code](https://docs.anthropic.com/en/docs/claude-code) and Node.js 18+.
+
 ```bash
 git clone https://github.com/hanniehoney/Capiis.git
 cd Capiis
 npm install
-npm run seed       # Import demo portfolio (Bay Area tech worker)
-npm start          # http://localhost:3333
+claude                   # Open Claude Code in the project
 ```
 
-Or launch from Claude Code:
+Then inside Claude Code:
 
 ```
-/capiis                  # Start server + open dashboard
+/capiis                  # Launch dashboard (auto-starts server + opens browser)
+```
+
+First launch detects empty data and offers guided setup — import a demo persona or enter your own data step by step.
+
+```
 /capiis-data             # Data management menu
-/capiis-data template    # Import demo persona
+/capiis-data template    # Import demo persona (Alex or Sophia)
 /capiis-data setup       # Guided step-by-step data entry
 ```
 
@@ -102,10 +108,7 @@ Capiis/
 | AI | Claude Code commands + skills + agents |
 | Fact-Checking | Perplexity MCP (Sonar Pro) |
 
-## Prerequisites
-
-- **Node.js** (18+)
-- **Claude Code** ([install guide](https://docs.anthropic.com/en/docs/claude-code))
+## Optional Setup
 
 ### Perplexity API Key (Recommended)
 
