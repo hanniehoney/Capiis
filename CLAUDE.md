@@ -113,10 +113,6 @@ Light ivory + forest green earth tones. All tokens in `:root` CSS variables in `
 
 Use CSS variables (`var(--gold-primary)`, `var(--bg-card)`, etc.) not hardcoded hex. The `--gold-*` names map to forest green (kept for compatibility).
 
-## UI Notes
-
-- 在設計前端 UI 的時候要考量到有些資訊不用補充太多在 UI 上面,因為大部分的文字資訊是可以透過命令行那邊去做文字的補充的。比如說用戶想要知道什麼叫做 Tax-Free Gains,他就直接在命令行問了。
-
 ## Agent Architecture
 
 Independent subagents in `.claude/agents/`. Each has isolated context, reads data autonomously, returns structured analysis. Can run in parallel.
