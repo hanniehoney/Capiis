@@ -1,0 +1,22 @@
+{
+  "name": "create-capiis",
+  "version": "0.1.0",
+  "description": "Create a new Capiis wealth management dashboard project",
+  "bin": {
+    "create-capiis": "./bin/create-capiis.js"
+  },
+  "keywords": [
+    "capiis",
+    "wealth",
+    "portfolio",
+    "claude-code",
+    "dashboard"
+  ],
+  "author": "hanniehoney",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hanniehoney/Capiis.git",
+    "directory": "packages/create-capiis"
+  }
+}

@@ -11,10 +11,18 @@ All portfolio data stays on your machine (Excel + JSON). Claude Code handles the
 Requires [Claude Code](https://docs.anthropic.com/en/docs/claude-code) and Node.js 18+.
 
 ```bash
+npx create-capiis my-wealth
+cd my-wealth
+claude
+```
+
+Or clone manually:
+
+```bash
 git clone https://github.com/hanniehoney/Capiis.git
 cd Capiis
 npm install
-claude                   # Open Claude Code in the project
+claude
 ```
 
 Then inside Claude Code:
