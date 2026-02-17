@@ -153,7 +153,7 @@ Agents preload skills via `skills` frontmatter. All agents/skills should read `d
 
 The Feed page is an **intelligence capture layer**, not a content reader. Aggregates user's trusted RSS sources so agents can cross-reference against portfolio.
 
-**Design:** 情報捕捉層，不是內容閱讀器。Headlines + signals only. Sources curated in CLI, not UI.
+**Design:** An intelligence-capture layer, not a content reader. Headlines + signals only. Sources curated in CLI, not UI.
 
 **Feed UI:** Two tabs — **All** (chronological RSS cards) and **Signals** (undismissed AI signals with priority dots, affected tickers, expand/collapse body, dismiss button).
 

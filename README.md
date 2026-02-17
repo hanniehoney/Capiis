@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs/assets/capiis-banner.png" alt="Capiis banner" width="900" />
+</p>
+
 # Capiis
 
 **Capitalis Apis - Where Wealth Swarms.**
@@ -38,6 +42,14 @@ First launch detects empty data and offers guided setup — import a demo person
 /capiis-data template    # Import demo persona (Alex or Sophia)
 /capiis-data setup       # Guided step-by-step data entry
 ```
+
+## Requirements
+
+- Device: macOS, Linux, or Windows laptop/desktop
+- Runtime: Node.js 18+ and npm
+- AI runtime: [Claude Code](https://docs.anthropic.com/en/docs/claude-code)
+- Browser: Any modern browser (Chrome, Safari, Edge, Firefox)
+- Optional: Perplexity API key for faster fact-checking
 
 ## Architecture
 
@@ -157,6 +169,10 @@ Get a key at https://www.perplexity.ai/settings/api. Without it, agents fall bac
 - [ ] Asset expansion: bonds, treasuries, commodities, multi-portfolio
 - [ ] Agent suite: split tax agent, add wealth planning agent, real-time query agent
 - [ ] Commercial model for advanced tax outcomes
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=hanniehoney/Capiis&type=Date)](https://star-history.com/#hanniehoney/Capiis&Date)
 
 ## License
 

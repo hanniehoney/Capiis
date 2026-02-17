@@ -113,22 +113,31 @@ Focused on onboarding realism and portfolio data usability: profile templates (t
 
 ## 2026-02-13 (Day 4)
 
-(TBD)
 
 ### What I did
--
+- Walked the end-to-end user journey to validate the core flow.
+- Added a Text Fact Check agent and compared WebFetch vs. Perplexity-style reasoning search.
+- Found WebFetch too slow for fact check due to direct crawling; reasoning search is faster and smoother for UX.
+- Verified dashboard numbers match CLI report numbers.
+- Updated Intelligence Feed design and data flow (UI + backend) to support RSS import.
+- Positioned Intelligence Feed as a future knowledge base for Asset/Portfolio Management agents.
 
 ### What's next
 - ~~[ ] Automate the intelligence feed with real sources (kill the mock data)~~
 
 ### Blockers
--
+- App packaging not finalized yet: we still need a simple NPM package format and must decide between a plugin or MCP approach.
 
 ### Time spent
 | Task | Duration |
 |------|----------|
-| | |
-| Total | **TBD** |
+| User journey test | 1h |
+| Text Fact Check agent | 1h |
+| Search API comparison (WebFetch vs reasoning search) | 45m |
+| Dashboard vs CLI number validation | 20m |
+| Feed UI + RSS import update | 15m |
+| Intelligence Feed as knowledge base design | 10m |
+| Total | **3h 30m** |
 
 ---
 
@@ -141,22 +150,27 @@ Happy Vanlinetine's Day
 
 ## 2026-02-15 (Day 6)
 
-(TBD)
+Happy Wrap Up.
 
 ### What I did
--
+- Wrapped up the project for demo day.
+- Renamed the project from single “i” to double “i” (Capiis).
+- Refined the logo and captured updated screenshots/terminal config.
+- Built the demo slide structure.
+- Spent the rest of the day editing the 3-minute demo video.
 
 ### What's next
-- [ ] Automate the intelligence feed with real sources (kill the mock data)
+- None (wrap-up day)
 
 ### Blockers
--
+- None
 
 ### Time spent
 | Task | Duration |
 |------|----------|
-| | |
-| Total | **TBD** |
+| Change name to Capiis, logo/screenshot/terminal config, slide structure | 2h 30m |
+| Demo video editing | 6h 30m |
+| Total | **9h** |
 
 ---
 
