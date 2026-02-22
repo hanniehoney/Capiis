@@ -74,7 +74,7 @@ A single slash command `/capiis-data` with three subcommands for managing all Ca
    - If yes → `AskUserQuestion`: "Existing data detected. Template import will overwrite everything. Continue?"
    - If empty → proceed directly
 
-2. Run `node ~/Desktop/Capiis/scripts/seed-data.js` (seed script will be rewritten with new template persona)
+2. Run `node ./scripts/seed-data.js` (seed script will be rewritten with new template persona)
 
 3. Report: "Template imported — Alex Chen's Bay Area family portfolio. Run `/capiis` to open dashboard."
 

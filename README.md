@@ -4,11 +4,11 @@
 
 # Capiis
 
-**Capitalis Apis - Where Wealth Swarms.**
+Local-first wealth and asset management dashboard for [Claude Code](https://docs.anthropic.com/en/docs/claude-code). Tracks portfolio holdings, runs tax analysis, updates prices, and generates insights — all through the CLI. No cloud database, no trading, no execution. Your data stays on your machine in Excel and JSON files.
 
-A local-first wealth and asset management dashboard built for the [Claude Code](https://docs.anthropic.com/en/docs/claude-code) ecosystem. Portfolio visibility, tax-aware analysis, and decision support — not execution or trading.
+Built during the [Built with Opus 4.6: A Claude Code Hackathon](https://cerebralvalley.ai/e/claude-code-hackathon) hosted by Cerebral Valley × Anthropic (Feb 10–16, 2026).
 
-All portfolio data stays on your machine (Excel + JSON). Claude Code handles the intelligence layer: tax analysis, price tracking, portfolio insights, and guided data entry through slash commands, skills, and agents.
+**[Build Log →](https://www.hannieliu.com/story/260210-cc-hackathon)** · **[3-min Demo Video →](https://youtu.be/8f0CH2Tf1Dg)**
 
 ## Quick Start
 
@@ -45,10 +45,9 @@ First launch detects empty data and offers guided setup — import a demo person
 
 ## Requirements
 
-- Device: macOS, Linux, or Windows laptop/desktop
-- Runtime: Node.js 18+ and npm
-- AI runtime: [Claude Code](https://docs.anthropic.com/en/docs/claude-code)
-- Browser: Any modern browser (Chrome, Safari, Edge, Firefox)
+- Node.js 18+ and npm
+- [Claude Code](https://docs.anthropic.com/en/docs/claude-code)
+- Any modern browser
 - Optional: Perplexity API key for faster fact-checking
 
 ## Architecture
@@ -104,8 +103,8 @@ Capiis/
 │   ├── commands/                     Slash commands (capiis, capiis-data)
 │   ├── agents/                       Subagents (tax, price, feed)
 │   └── hooks/                        Session auto-orchestration
-├── CLAUDE.md                         AI development guide
-└── DEVLOG.md                         Hackathon build log
+├── packages/create-capiis/           npx scaffolding tool
+└── CLAUDE.md                         AI development guide
 ```
 
 ## Template Personas

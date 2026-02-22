@@ -68,7 +68,7 @@ console.log('\nDone. Data cleared. 14 empty xlsx shells created. categories.json
 
 **Step 2: Run and verify**
 
-Run: `node ~/Desktop/Capiis/scripts/clear-data.js`
+Run: `node ./scripts/clear-data.js`
 
 Expected output:
 ```
@@ -86,11 +86,11 @@ Clearing Capiis data...
 Done. Data cleared. 14 empty xlsx shells created. categories.json preserved.
 ```
 
-Verify: `ls ~/Desktop/Capiis/data/` should show 14 xlsx + categories.json only.
+Verify: `ls ./data/` should show 14 xlsx + categories.json only.
 
 **Step 3: Re-seed to restore data**
 
-Run: `node ~/Desktop/Capiis/scripts/seed-data.js`
+Run: `node ./scripts/seed-data.js`
 
 Verify data is restored.
 
@@ -723,7 +723,7 @@ console.log('\nDone. Alex Chen family (Cupertino, CA) template seeded.\n');
 
 **Step 2: Run and verify**
 
-Run: `node ~/Desktop/Capiis/scripts/seed-data.js`
+Run: `node ./scripts/seed-data.js`
 
 Expected: 20 files written, "Alex Chen family (Cupertino, CA) template seeded."
 
@@ -759,7 +759,7 @@ allowed-tools: Bash(node:*), Bash(npm:*), Bash(curl:*), Bash(ls:*), Bash(rm:*), 
 
 Manage data for the Capiis wealth & asset management dashboard.
 
-The Capiis project lives at `~/Desktop/Capiis`. Data files are in `~/Desktop/Capiis/data/`.
+The Capiis project lives at `~/Desktop/Capiis`. Data files are in `./data/`.
 
 ## Routing
 
@@ -788,7 +788,7 @@ Based on $ARGUMENTS:
 
 3. If confirmed, run:
    ```
-   node ~/Desktop/Capiis/scripts/clear-data.js
+   node ./scripts/clear-data.js
    ```
 
 4. Report:
@@ -800,14 +800,14 @@ Based on $ARGUMENTS:
 ## Import Template
 
 1. Check if data/ already has user data:
-   - Check if `~/Desktop/Capiis/data/profile.json` exists and has a `personal.name` value
+   - Check if `./data/profile.json` exists and has a `personal.name` value
    - If existing data found, use AskUserQuestion:
      - "Existing data detected. Importing the template will OVERWRITE all current data with the demo portfolio (Alex Chen family, Cupertino CA). Continue?"
      - Options: "Cancel" / "Overwrite and import"
 
 2. If confirmed (or no existing data), run:
    ```
-   node ~/Desktop/Capiis/scripts/seed-data.js
+   node ./scripts/seed-data.js
    ```
 
 3. Report: "Template imported — Alex Chen family, Senior SWE @ Google, Cupertino CA. Net worth ~$1.86M across 28 positions."
@@ -816,7 +816,7 @@ Based on $ARGUMENTS:
 
 **Step 2: Verify**
 
-Run: `ls -la ~/Desktop/Capiis/.claude/commands/capiis-data.md`
+Run: `ls -la ./.claude/commands/capiis-data.md`
 
 Expected: file exists.
 
@@ -838,7 +838,7 @@ git commit -m "feat: add /capiis-data slash command (routing + clear + template)
 **Step 1: Create the skill directory**
 
 ```bash
-mkdir -p ~/Desktop/Capiis/skills/capiis-onboarding/references
+mkdir -p ./skills/capiis-onboarding/references
 ```
 
 **Step 2: Create `references/data-schema.md`**
@@ -1011,16 +1011,16 @@ Walk the user through entering all their financial data into Capiis, one step at
 
 ## Data Location
 
-All data files live in `~/Desktop/Capiis/data/`. See `references/data-schema.md` for complete schemas.
+All data files live in `./data/`. See `references/data-schema.md` for complete schemas.
 
 ## Before Starting: Resume Detection
 
 Check what data already exists:
 
-1. Read `~/Desktop/Capiis/data/profile.json`
+1. Read `./data/profile.json`
    - If it has `personal.name` → Phase 1 (Profile) is likely complete
    - If it has a non-empty `accounts` array → Phase 2 (Accounts) is likely complete
-2. List xlsx files in `~/Desktop/Capiis/data/` and check which have data rows beyond the header
+2. List xlsx files in `./data/` and check which have data rows beyond the header
    - Any xlsx with >1 row means that category has been entered
 3. Tell the user what you found:
    - "I see you already have profile data and N asset categories filled in. Want to continue from where you left off, or redo a specific section?"
@@ -1045,7 +1045,7 @@ Ask ONE question at a time. Never batch multiple questions in one message.
 After collecting all answers:
 - Calculate tax rates based on location and filing status (verify with web search for current year rates)
 - Look up: federal bracket, state rate, LTCG rate, STCG rate, NIIT threshold, standard deduction, contribution limits
-- Write `~/Desktop/Capiis/data/profile.json` with personal, family (if applicable), location, and tax sections
+- Write `./data/profile.json` with personal, family (if applicable), location, and tax sections
 - Show the user what was saved and confirm it looks right
 
 ## Phase 2: Account Inventory
@@ -1094,7 +1094,7 @@ Walk through each asset category in order. For each:
    - Ask user to confirm before writing
    - User can say "fix row 3" or "remove that one" before confirming
 
-5. Write confirmed data to `~/Desktop/Capiis/data/{category}.xlsx` using the xlsx skill
+5. Write confirmed data to `./data/{category}.xlsx` using the xlsx skill
 6. Move to the next category
 
 **Category order:**
@@ -1121,7 +1121,7 @@ Same pattern as Phase 3. For each liability, collect:
 - Monthly payment, due date/maturity date
 - Notes
 
-Write to `~/Desktop/Capiis/data/{liability}.xlsx`.
+Write to `./data/{liability}.xlsx`.
 
 **Liability order:**
 
@@ -1135,7 +1135,7 @@ Write to `~/Desktop/Capiis/data/{liability}.xlsx`.
 ## Phase 5: Complete
 
 1. Check if Capiis server is running: `lsof -ti:3333`
-   - If not running, start it: `node ~/Desktop/Capiis/server.js &` and wait 2 seconds
+   - If not running, start it: `node ./server.js &` and wait 2 seconds
 
 2. Fetch portfolio summary: `curl -s http://localhost:3333/api/stats`
    - Display: total assets, total liabilities, net worth, positions count, allocation breakdown
@@ -1157,7 +1157,7 @@ Write to `~/Desktop/Capiis/data/{liability}.xlsx`.
 
 **Step 4: Verify**
 
-Run: `ls -la ~/Desktop/Capiis/skills/capiis-onboarding/`
+Run: `ls -la ./skills/capiis-onboarding/`
 
 Expected: SKILL.md and references/data-schema.md exist.
 
@@ -1174,16 +1174,16 @@ git commit -m "feat: add capiis-onboarding skill for guided data setup"
 
 **Step 1: Test clear**
 
-Run: `node ~/Desktop/Capiis/scripts/clear-data.js`
+Run: `node ./scripts/clear-data.js`
 
 Verify:
-- `ls ~/Desktop/Capiis/data/` shows 14 xlsx + categories.json
+- `ls ./data/` shows 14 xlsx + categories.json
 - `curl -s http://localhost:3333/api/portfolio` returns 404 (no data rows)
 - `curl -s http://localhost:3333/api/profile` returns 404
 
 **Step 2: Test template**
 
-Run: `node ~/Desktop/Capiis/scripts/seed-data.js`
+Run: `node ./scripts/seed-data.js`
 
 Verify:
 - `curl -s http://localhost:3333/api/profile | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['personal']['company'])"` prints "Google"
