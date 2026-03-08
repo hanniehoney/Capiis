@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const XLSX = require('xlsx');
+const { writeWorksheetFile } = require('../lib/workbook');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 
@@ -13,36 +13,39 @@ const EQUITY_FILES = ['employee-equity'];
 const LIABILITY_FILES = ['credit-cards', 'mortgage', 'auto-loan', 'student-loan'];
 const JSON_FILES = ['profile.json', 'tax-summary.json', 'signals.json', 'feed.json', 'watchlist.json'];
 
-function writeEmptyExcel(filename, headers, sheetName) {
-  const ws = XLSX.utils.aoa_to_sheet([headers]);
-  const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, sheetName);
-  XLSX.writeFile(wb, path.join(DATA_DIR, filename));
+async function writeEmptyExcel(filename, headers, sheetName) {
+  await writeWorksheetFile({
+    filePath: path.join(DATA_DIR, filename),
+    sheetName,
+    headers,
+    rows: []
+  });
   console.log(`  created empty ${filename}`);
 }
 
-console.log('\nClearing Capiis data...\n');
+async function main() {
+  console.log('\nClearing Capiis data...\n');
 
-for (const f of JSON_FILES) {
-  const fp = path.join(DATA_DIR, f);
-  if (fs.existsSync(fp)) {
-    fs.unlinkSync(fp);
-    console.log(`  deleted ${f}`);
+  for (const f of JSON_FILES) {
+    const fp = path.join(DATA_DIR, f);
+    if (fs.existsSync(fp)) {
+      fs.unlinkSync(fp);
+      console.log(`  deleted ${f}`);
+    }
   }
-}
 
-for (const cat of ASSET_FILES) {
-  writeEmptyExcel(`${cat}.xlsx`, ASSET_HEADERS, 'Holdings');
-}
-for (const cat of EQUITY_FILES) {
-  writeEmptyExcel(`${cat}.xlsx`, EQUITY_HEADERS, 'Holdings');
-}
-for (const cat of LIABILITY_FILES) {
-  writeEmptyExcel(`${cat}.xlsx`, LIABILITY_HEADERS, 'Liabilities');
-}
+  for (const cat of ASSET_FILES) {
+    await writeEmptyExcel(`${cat}.xlsx`, ASSET_HEADERS, 'Holdings');
+  }
+  for (const cat of EQUITY_FILES) {
+    await writeEmptyExcel(`${cat}.xlsx`, EQUITY_HEADERS, 'Holdings');
+  }
+  for (const cat of LIABILITY_FILES) {
+    await writeEmptyExcel(`${cat}.xlsx`, LIABILITY_HEADERS, 'Liabilities');
+  }
 
-// Write profile.md template
-const PROFILE_MD_TEMPLATE = `# Profile Memory
+  // Write profile.md template
+  const PROFILE_MD_TEMPLATE = `# Profile Memory
 
 > Last updated: (not yet set)
 
@@ -71,7 +74,13 @@ const PROFILE_MD_TEMPLATE = `# Profile Memory
 (Life changes, job switches, major purchases — Claude will update this from conversations)
 `;
 
-fs.writeFileSync(path.join(DATA_DIR, 'profile.md'), PROFILE_MD_TEMPLATE);
-console.log('  reset profile.md to template');
+  fs.writeFileSync(path.join(DATA_DIR, 'profile.md'), PROFILE_MD_TEMPLATE);
+  console.log('  reset profile.md to template');
 
-console.log('\nDone. Data cleared. 14 empty xlsx shells created. profile.md reset. categories.json preserved.\n');
+  console.log('\nDone. Data cleared. 14 empty xlsx shells created. profile.md reset. categories.json preserved.\n');
+}
+
+main().catch((error) => {
+  console.error(`\nFailed to clear data: ${error.message}\n`);
+  process.exit(1);
+});

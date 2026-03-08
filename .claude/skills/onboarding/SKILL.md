@@ -34,7 +34,7 @@ Ask ONE question at a time. Never batch multiple questions in one message.
 2. "What do you do? (job title, company, years of experience)"
 3. "Where do you live? (city, state, country)"
    - After getting the state, use web search to look up the current state income tax rate
-4. "What's your filing status?" — use AskUserQuestion with options:
+4. "What's your filing status?" - use the native question or choice tool if available, otherwise ask directly with these options:
    - Single
    - Married filing jointly
    - Married filing separately
@@ -96,7 +96,7 @@ Fill in sections based on what the user actually said. Leave sections sparse if 
 
 ## Phase 2: Account Inventory
 
-1. Ask: "Let's go through your financial accounts — brokerage, bank, retirement, crypto exchange, anything that holds money or investments. You can list them all at once, or we'll go one by one."
+1. Ask: "Let's go through your financial accounts - brokerage, bank, retirement, crypto exchange, anything that holds money or investments. You can list them all at once, or we'll go one by one."
 
 2. For each account, determine:
    - `id`: auto-generate as `acct-{institution-slug}` (e.g., `acct-schwab-brokerage`)
@@ -113,13 +113,13 @@ Fill in sections based on what the user actually said. Leave sections sparse if 
 
 Walk through each asset category in order. For each:
 
-1. Ask: "Do you have any {category}?" — user can say "no" or "skip"
+1. Ask: "Do you have any {category}?" - user can say "no" or "skip"
 
-2. If yes, use AskUserQuestion:
+2. If yes, use the native question or choice tool if available:
    - "How would you like to enter your {category} data?"
    - Options:
-     - "I'll tell you" — dialogue mode
-     - "I have a file" — file import mode
+     - "I'll tell you" - dialogue mode
+     - "I have a file" - file import mode
      - "Skip for now"
 
 3. **Dialogue mode**: For each holding, collect:
@@ -133,16 +133,16 @@ Walk through each asset category in order. For each:
 
 4. **File import mode**:
    - Ask for the file path
-   - Read the file using Claude Code's built-in capabilities:
-     - `.xlsx` / `.csv` → read with xlsx skill, map columns to Capiis schema
-     - `.pdf` → read with Read tool (PDF support is built-in)
-     - `.docx` → read with built-in docs skill
-     - `.txt` / `.md` → read as plain text, parse structured content
+   - Read the file using the current CLI's built-in file tools:
+     - `.xlsx` / `.csv` -> read and map columns to the Capiis schema
+     - `.pdf` -> read with available document or file tools
+     - `.docx` -> read with available document or file tools
+     - `.txt` / `.md` -> read as plain text and parse structured content
    - Show the extracted data as a table for the user to review
    - Ask user to confirm before writing
    - User can say "fix row 3" or "remove that one" before confirming
 
-5. Write confirmed data to `data/{category}.xlsx` using the xlsx skill
+5. Write confirmed data to `data/{category}.xlsx` using the current CLI's spreadsheet or file editing tools
 6. Move to the next category
 
 **Category order:**
@@ -152,7 +152,7 @@ Walk through each asset category in order. For each:
 | 1 | stocks | "Do you have any stock investments? (individual stocks, ETFs, index funds)" |
 | 2 | crypto | "Do you hold any cryptocurrency?" |
 | 3 | employee-equity | "Do you have employee stock/equity? (RSUs, ISOs, ESPP)" |
-| 4 | real-estate | "Do you own any real estate? (homes, rental properties, land — note: REIT ETFs like VNQ go under stocks)" |
+| 4 | real-estate | "Do you own any real estate? (homes, rental properties, land - note: REIT ETFs like VNQ go under stocks)" |
 | 5 | angel-investment | "Have you made any angel or startup investments?" |
 | 6 | cash | "What are your cash balances? (checking accounts, brokerage sweep cash)" |
 | 7 | savings | "What about savings? (HYSA, CDs, 529 plans, money market)" |
@@ -188,7 +188,7 @@ Write to `data/{liability}.xlsx`.
 2. Fetch portfolio summary: `curl -s http://localhost:3333/api/stats`
    - Display: total assets, total liabilities, net worth, positions count, allocation breakdown
 
-3. Use AskUserQuestion: "Your portfolio is set up! What would you like to do?"
+3. Use the native question or choice tool if available: "Your portfolio is set up! What would you like to do?"
    - "Open dashboard" → `open http://localhost:3333`
    - "Add more data later" → remind about `/capiis-data setup`
    - "Done for now"
@@ -199,5 +199,5 @@ Write to `data/{liability}.xlsx`.
 - **Write data after each phase/category.** Never batch all writes to the end.
 - **User can go back.** If they say "I want to redo my stocks" or "go back to profile", honor it.
 - **Accept approximations.** If user says "about 100 shares, not sure of exact cost", accept it and add a note.
-- **Confirm before writing files.** Especially for file imports — always show parsed data first.
+- **Confirm before writing files.** Especially for file imports - always show parsed data first.
 - **Preserve existing data.** When updating profile.json, read first, merge changes, write back. Don't overwrite unrelated fields.

@@ -1,15 +1,28 @@
 {
   "name": "capiis",
-  "version": "0.1.0",
-  "description": "Capitalis Apis - Where Wealth Swarms. Wealth & asset management dashboard for Claude Code.",
+  "version": "0.2.0",
+  "description": "CLI-native personal wealth intelligence workspace for Claude Code and OpenCode.",
   "main": "server.js",
+  "keywords": [
+    "capiis",
+    "wealth-management",
+    "portfolio",
+    "claude-code",
+    "opencode",
+    "cli",
+    "local-first",
+    "excel"
+  ],
   "scripts": {
     "start": "node server.js",
     "seed": "node scripts/seed-data.js",
     "clear": "node scripts/clear-data.js"
   },
   "dependencies": {
-    "express": "^4.21.0",
-    "xlsx": "^0.18.5"
+    "exceljs": "^4.4.0",
+    "express": "^4.21.0"
+  },
+  "overrides": {
+    "qs": "^6.15.0"
   }
 }

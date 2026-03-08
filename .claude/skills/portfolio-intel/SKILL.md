@@ -76,7 +76,7 @@ When analyzing the portfolio or market conditions:
 When the user wants to add, remove, or update a position:
 1. **Classify first**: Determine the correct category using the classification rules in `../onboarding/references/classification-rules.md`. Classify by trading mechanism, not thematic exposure (e.g., REIT ETFs → `stocks.xlsx`, not `real-estate.xlsx`). If ambiguous, ask the user.
 2. Read the appropriate Excel file in `data/` (e.g., `stocks.xlsx` for stocks)
-3. Apply the change using Claude Code's xlsx skill (add row, update values, or remove row)
+3. Apply the change using the current CLI's spreadsheet or file editing tools (add row, update values, or remove row)
 4. Maintain the schema: id, name, ticker, quantity, avgCost, currentPrice, notes
 5. The server's file watcher will auto-detect changes and broadcast SSE to refresh the dashboard
 6. Generate any relevant signals triggered by the change
@@ -93,7 +93,7 @@ When the user asks to set up or update their profile:
 1. Gather relevant info through conversation
 2. Write/update `data/profile.json` with the profile structure
 3. The server's file watcher will auto-detect changes and broadcast SSE to refresh the dashboard
-4. Profile is read-only in the dashboard — all edits happen through Claude Code
+4. Profile is read-only in the dashboard - all edits happen through the CLI workflow
 
 Account types for holdings: `taxable`, `roth-ira`, `traditional-401k`, `traditional-ira`, `roth-401k`, `hsa`, `529`, `direct`, `checking`, `savings`
 
@@ -117,4 +117,4 @@ When the user reveals new investment-relevant context during conversation, updat
 - New financial goal → append to `## Goals & Priorities`
 - Career change, family event, or life milestone → append to `## Recent Changes & Events`
 
-Always read the file first and merge — never overwrite existing content. Add a date stamp to new entries in `## Recent Changes & Events` and `## Key Decisions & Context`.
+Always read the file first and merge - never overwrite existing content. Add a date stamp to new entries in `## Recent Changes & Events` and `## Key Decisions & Context`.

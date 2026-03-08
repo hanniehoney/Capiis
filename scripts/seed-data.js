@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const XLSX = require('xlsx');
+const { writeWorksheetFile } = require('../lib/workbook');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
@@ -11,7 +11,7 @@ function writeJSON(filename, data) {
   console.log(`  wrote data/${filename}`);
 }
 
-function writeExcel(filename, rows) {
+async function writeExcel(filename, rows) {
   const hasEquityFields = rows.some(r => r.equityType);
   const headers = [
     'id', 'name', 'ticker', 'quantity', 'avgCost', 'currentPrice', 'notes',
@@ -41,23 +41,25 @@ function writeExcel(filename, rows) {
     }
     return row;
   });
-  const ws = XLSX.utils.json_to_sheet(data, { header: headers });
-  const cols = [
-    { wch: 20 }, { wch: 20 }, { wch: 10 }, { wch: 10 }, { wch: 12 },
-    { wch: 14 }, { wch: 50 },
-    { wch: 16 }, { wch: 22 }, { wch: 12 }, { wch: 12 }, { wch: 12 }
+  const widths = [
+    20, 20, 10, 10, 12,
+    14, 50,
+    16, 22, 12, 12, 12
   ];
   if (hasEquityFields) {
-    cols.push({ wch: 10 }, { wch: 12 }, { wch: 20 }, { wch: 12 }, { wch: 12 }, { wch: 14 }, { wch: 14 });
+    widths.push(10, 12, 20, 12, 12, 14, 14);
   }
-  ws['!cols'] = cols;
-  const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, 'Holdings');
-  XLSX.writeFile(wb, path.join(DATA_DIR, filename));
+  await writeWorksheetFile({
+    filePath: path.join(DATA_DIR, filename),
+    sheetName: 'Holdings',
+    headers,
+    rows: data,
+    widths
+  });
   console.log(`  wrote data/${filename} (${rows.length} rows)`);
 }
 
-function writeExcelLiability(filename, rows) {
+async function writeExcelLiability(filename, rows) {
   const headers = ['id', 'name', 'type', 'originalAmount', 'currentBalance', 'interestRate', 'monthlyPayment', 'dueDate', 'notes'];
   const data = rows.map(r => ({
     id: r.id, name: r.name, type: r.type,
@@ -65,14 +67,13 @@ function writeExcelLiability(filename, rows) {
     interestRate: r.interestRate, monthlyPayment: r.monthlyPayment,
     dueDate: r.dueDate, notes: r.notes || ''
   }));
-  const ws = XLSX.utils.json_to_sheet(data, { header: headers });
-  ws['!cols'] = [
-    { wch: 20 }, { wch: 30 }, { wch: 15 }, { wch: 15 }, { wch: 15 },
-    { wch: 12 }, { wch: 15 }, { wch: 12 }, { wch: 50 }
-  ];
-  const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, 'Liabilities');
-  XLSX.writeFile(wb, path.join(DATA_DIR, filename));
+  await writeWorksheetFile({
+    filePath: path.join(DATA_DIR, filename),
+    sheetName: 'Liabilities',
+    headers,
+    rows: data,
+    widths: [20, 30, 15, 15, 15, 12, 15, 12, 50]
+  });
   console.log(`  wrote data/${filename} (${rows.length} rows)`);
 }
 
@@ -106,38 +107,44 @@ if (!fs.existsSync(personaPath)) {
 
 const persona = require(personaPath);
 
-// --- Write all data ---
-console.log(`\nSeeding Capiis data: ${persona.meta.name} (${persona.meta.tagline})...\n`);
+async function main() {
+  console.log(`\nSeeding Capiis data: ${persona.meta.name} (${persona.meta.tagline})...\n`);
 
-writeJSON('categories.json', persona.categoriesConfig);
+  writeJSON('categories.json', persona.categoriesConfig);
 
-// Asset xlsx
-writeExcel('stocks.xlsx', persona.stocks);
-writeExcel('crypto.xlsx', persona.crypto);
-writeExcel('angel-investment.xlsx', persona.angelInvestment);
-writeExcel('employee-equity.xlsx', persona.employeeEquity);
-writeExcel('real-estate.xlsx', persona.realEstate);
-writeExcel('cash.xlsx', persona.cash);
-writeExcel('savings.xlsx', persona.savings);
-writeExcel('vehicles.xlsx', persona.vehicles);
-writeExcel('jewelry.xlsx', persona.jewelry);
-writeExcel('art.xlsx', persona.art);
+  // Asset xlsx
+  await writeExcel('stocks.xlsx', persona.stocks);
+  await writeExcel('crypto.xlsx', persona.crypto);
+  await writeExcel('angel-investment.xlsx', persona.angelInvestment);
+  await writeExcel('employee-equity.xlsx', persona.employeeEquity);
+  await writeExcel('real-estate.xlsx', persona.realEstate);
+  await writeExcel('cash.xlsx', persona.cash);
+  await writeExcel('savings.xlsx', persona.savings);
+  await writeExcel('vehicles.xlsx', persona.vehicles);
+  await writeExcel('jewelry.xlsx', persona.jewelry);
+  await writeExcel('art.xlsx', persona.art);
 
-// Liability xlsx
-writeExcelLiability('credit-cards.xlsx', persona.creditCards);
-writeExcelLiability('mortgage.xlsx', persona.mortgage);
-writeExcelLiability('auto-loan.xlsx', persona.autoLoan);
-writeExcelLiability('student-loan.xlsx', persona.studentLoan);
+  // Liability xlsx
+  await writeExcelLiability('credit-cards.xlsx', persona.creditCards);
+  await writeExcelLiability('mortgage.xlsx', persona.mortgage);
+  await writeExcelLiability('auto-loan.xlsx', persona.autoLoan);
+  await writeExcelLiability('student-loan.xlsx', persona.studentLoan);
 
-// JSON
-writeJSON('signals.json', persona.signals);
-writeJSON('feed.json', persona.feed);
-writeJSON('watchlist.json', persona.watchlist);
-writeJSON('tax-summary.json', persona.taxSummary);
-writeJSON('profile.json', persona.profile);
+  // JSON
+  writeJSON('signals.json', persona.signals);
+  writeJSON('feed.json', persona.feed);
+  writeJSON('watchlist.json', persona.watchlist);
+  writeJSON('tax-summary.json', persona.taxSummary);
+  writeJSON('profile.json', persona.profile);
 
-// Profile memory
-fs.writeFileSync(path.join(DATA_DIR, 'profile.md'), persona.profileMemory.trim() + '\n');
-console.log('  wrote data/profile.md');
+  // Profile memory
+  fs.writeFileSync(path.join(DATA_DIR, 'profile.md'), persona.profileMemory.trim() + '\n');
+  console.log('  wrote data/profile.md');
 
-console.log(`\nDone. ${persona.meta.name} — ${persona.meta.tagline}\n`);
+  console.log(`\nDone. ${persona.meta.name} — ${persona.meta.tagline}\n`);
+}
+
+main().catch((error) => {
+  console.error(`\nFailed to seed data: ${error.message}\n`);
+  process.exit(1);
+});

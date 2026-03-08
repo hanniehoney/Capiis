@@ -1,15 +1,18 @@
 {
   "name": "create-capiis",
-  "version": "0.1.0",
-  "description": "Create a new Capiis wealth management dashboard project",
+  "version": "0.2.0",
+  "description": "Scaffold a CLI-native Capiis wealth intelligence project for Claude Code or OpenCode",
   "bin": {
     "create-capiis": "./bin/create-capiis.js"
   },
   "keywords": [
     "capiis",
     "wealth",
+    "wealth-management",
     "portfolio",
     "claude-code",
+    "opencode",
+    "cli",
     "dashboard"
   ],
   "author": "hanniehoney",

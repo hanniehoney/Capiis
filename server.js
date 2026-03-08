@@ -4,7 +4,18 @@ const fs = require('fs');
 const { readAllPortfolioData, readCategoriesConfig, discoverExcelFiles, DATA_DIR } = require('./lib/excel');
 
 const app = express();
-const PORT = 3333;
+const PORT = Number(process.env.PORT) || 3333;
+const SIGNAL_TEXT_FIELDS = {
+  title: 200,
+  body: 4000,
+  message: 4000,
+  priority: 20,
+  category: 40,
+  type: 40,
+  severity: 20,
+  source: 80
+};
+
 function loadFeedSources() {
   const src = readJSON('feed-sources.json');
   if (src && Array.isArray(src.sources)) return src.sources.map(s => s.url).filter(Boolean);
@@ -21,7 +32,8 @@ function broadcast(resource) {
   sseClients.forEach(res => res.write(`data: ${data}\n\n`));
 }
 
-app.use(express.json());
+app.disable('x-powered-by');
+app.use(express.json({ limit: '64kb' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // --- Helpers (JSON files only: signals, feed, watchlist, tax) ---
@@ -33,6 +45,66 @@ function readJSON(filename) {
 
 function writeJSON(filename, data) {
   fs.writeFileSync(path.join(DATA_DIR, filename), JSON.stringify(data, null, 2));
+}
+
+function sanitizeSignalText(value, maxLen) {
+  if (typeof value !== 'string') return undefined;
+  const normalized = value.trim().replace(/\s+/g, ' ');
+  if (!normalized) return undefined;
+  return normalized.slice(0, maxLen);
+}
+
+function sanitizeSignalStringArray(value, maxItems = 20, maxLen = 160) {
+  if (!Array.isArray(value)) return [];
+  const seen = new Set();
+  const result = [];
+
+  value.forEach((item) => {
+    const sanitized = sanitizeSignalText(item, maxLen);
+    if (!sanitized || seen.has(sanitized)) return;
+    seen.add(sanitized);
+    if (result.length < maxItems) result.push(sanitized);
+  });
+
+  return result;
+}
+
+function validateSignalCreateInput(body) {
+  if (!body || typeof body !== 'object' || Array.isArray(body)) {
+    throw new Error('Signal payload must be a JSON object');
+  }
+
+  const signal = {};
+  Object.entries(SIGNAL_TEXT_FIELDS).forEach(([field, maxLen]) => {
+    const sanitized = sanitizeSignalText(body[field], maxLen);
+    if (sanitized) signal[field] = sanitized;
+  });
+
+  if (typeof body.sourceRef === 'string') {
+    signal.sourceRef = sanitizeSignalStringArray([body.sourceRef], 10, 240);
+  } else {
+    signal.sourceRef = sanitizeSignalStringArray(body.sourceRef, 10, 240);
+  }
+
+  signal.relatedAssets = sanitizeSignalStringArray(body.relatedAssets, 25, 120);
+  signal.dismissed = false;
+
+  if (!signal.title) throw new Error('Signal title is required');
+  if (!signal.body && !signal.message) {
+    throw new Error('Signal body or message is required');
+  }
+
+  return signal;
+}
+
+function validateSignalPatchInput(body) {
+  if (!body || typeof body !== 'object' || Array.isArray(body)) {
+    throw new Error('Signal patch payload must be a JSON object');
+  }
+  if (!Object.prototype.hasOwnProperty.call(body, 'dismissed') || typeof body.dismissed !== 'boolean') {
+    throw new Error('Only dismissed:boolean can be updated');
+  }
+  return { dismissed: body.dismissed };
 }
 
 // --- RSS Helpers ---
@@ -266,9 +338,9 @@ app.get('/api/events', (req, res) => {
 // --- API Routes ---
 
 // Portfolio (read-only, from Excel)
-app.get('/api/portfolio', (req, res) => {
+app.get('/api/portfolio', async (req, res) => {
   try {
-    const data = readAllPortfolioData();
+    const data = await readAllPortfolioData();
     if (!data.assets.length && !data.liabilities.length) return res.status(404).json({ error: 'No portfolio data' });
     res.json({
       lastUpdated: data.lastUpdated,
@@ -302,28 +374,35 @@ app.get('/api/signals', (req, res) => {
 });
 
 app.post('/api/signals', (req, res) => {
-  const data = readJSON('signals.json') || { signals: [] };
-  const signal = {
-    id: `sig-${Date.now()}`,
-    timestamp: new Date().toISOString(),
-    dismissed: false,
-    ...req.body
-  };
-  data.signals.unshift(signal);
-  writeJSON('signals.json', data);
-  broadcast('signals');
-  res.status(201).json(signal);
+  try {
+    const data = readJSON('signals.json') || { signals: [] };
+    const signal = {
+      id: `sig-${Date.now()}`,
+      timestamp: new Date().toISOString(),
+      ...validateSignalCreateInput(req.body)
+    };
+    data.signals.unshift(signal);
+    writeJSON('signals.json', data);
+    broadcast('signals');
+    res.status(201).json(signal);
+  } catch (e) {
+    res.status(400).json({ error: e.message });
+  }
 });
 
 app.patch('/api/signals/:id', (req, res) => {
-  const data = readJSON('signals.json');
-  if (!data) return res.status(404).json({ error: 'No signals data' });
-  const signal = data.signals.find(s => s.id === req.params.id);
-  if (!signal) return res.status(404).json({ error: 'Signal not found' });
-  Object.assign(signal, req.body);
-  writeJSON('signals.json', data);
-  broadcast('signals');
-  res.json(signal);
+  try {
+    const data = readJSON('signals.json');
+    if (!data) return res.status(404).json({ error: 'No signals data' });
+    const signal = data.signals.find(s => s.id === req.params.id);
+    if (!signal) return res.status(404).json({ error: 'Signal not found' });
+    Object.assign(signal, validateSignalPatchInput(req.body));
+    writeJSON('signals.json', data);
+    broadcast('signals');
+    res.json(signal);
+  } catch (e) {
+    res.status(400).json({ error: e.message });
+  }
 });
 
 // Feed
@@ -379,9 +458,9 @@ app.get('/api/profile/memory', (req, res) => {
 });
 
 // Aggregated stats (from Excel)
-app.get('/api/stats', (req, res) => {
+app.get('/api/stats', async (req, res) => {
   try {
-    const portfolio = readAllPortfolioData();
+    const portfolio = await readAllPortfolioData();
     if (!portfolio.assets.length && !portfolio.liabilities.length) {
       return res.status(404).json({ error: 'No portfolio data' });
     }

@@ -35,7 +35,7 @@ export async function renderLegal(container) {
             <div class="stat-label">Est. Tax Liability</div>
             <div class="stat-value" style="color:var(--gold-primary)">$${formatNumber(tax.estimatedTaxLiability)}</div>
             <div class="stat-change" style="color:var(--text-tertiary)">
-              Amount likely owed for tax year ${tax.taxYear} (${tax.jurisdiction})${tax.lastComputed ? ` · as of ${new Date(tax.lastComputed).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}` : ''}
+              Amount likely owed for tax year ${tax.taxYear} (${escapeHTML(tax.jurisdiction)})${tax.lastComputed ? ` · as of ${new Date(tax.lastComputed).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}` : ''}
             </div>
           </div>
 
@@ -337,10 +337,10 @@ function renderHiddenTaxLiabilityTable(positions) {
       <tbody>
         ${positions.map(p => `
           <tr>
-            <td><strong>${p.name}</strong> <span style="color:var(--text-tertiary);font-size:0.78rem">${p.ticker}</span>${p.isCollectible ? ' <span style="font-size:0.7rem;color:var(--teal);font-style:italic">collectible</span>' : ''}</td>
-            <td style="font-size:0.82rem">${p.accountName}</td>
+            <td><strong>${escapeHTML(p.name)}</strong> <span style="color:var(--text-tertiary);font-size:0.78rem">${escapeHTML(p.ticker)}</span>${p.isCollectible ? ' <span style="font-size:0.7rem;color:var(--teal);font-style:italic">collectible</span>' : ''}</td>
+            <td style="font-size:0.82rem">${escapeHTML(p.accountName)}</td>
             <td class="mono align-right change-positive">+$${formatNumber(p.gain)}</td>
-            <td><span class="feed-category-tag">${p.term}</span></td>
+            <td><span class="feed-category-tag">${escapeHTML(p.term)}</span></td>
             <td class="mono align-right" style="font-size:0.82rem;color:var(--text-tertiary)">${(p.effectiveRate * 100).toFixed(1)}%</td>
             <td class="mono align-right change-negative">$${formatNumber(p.estTax)}</td>
           </tr>
@@ -365,12 +365,12 @@ function renderTaxableEventsTable(tax, animationClass = 'animate-in stagger-7') 
     return `${yearRow}
       <tr>
         <td class="mono">${formatDate(evt.date)}</td>
-        <td><span class="feed-category-tag ${evt.type === 'loss' ? 'crypto' : 'earnings'}">${evt.type.toUpperCase()}</span></td>
-        <td><strong>${evt.asset}</strong></td>
+        <td><span class="feed-category-tag ${evt.type === 'loss' ? 'crypto' : 'earnings'}">${escapeHTML(evt.type.toUpperCase())}</span></td>
+        <td><strong>${escapeHTML(evt.asset)}</strong></td>
         <td class="mono align-right">$${formatNumber(evt.amount)}</td>
         <td class="mono align-right">$${formatNumber(evt.costBasis)}</td>
         <td class="mono align-right ${gainClass}">${isGain ? '+' : ''}$${formatNumber(evt.gain)}</td>
-        <td><span class="feed-category-tag">${evt.term}</span></td>
+        <td><span class="feed-category-tag">${escapeHTML(evt.term)}</span></td>
       </tr>`;
   }).join('');
 

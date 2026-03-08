@@ -22,7 +22,7 @@ export async function renderFeed(container) {
         <div class="feed-header">
           <div>
             <div class="feed-title">Intel Feed</div>
-            <div class="feed-note">Sources managed in Claude Code CLI.</div>
+            <div class="feed-note">Sources managed in your CLI via data/feed-sources.json.</div>
           </div>
         </div>
 
@@ -76,7 +76,7 @@ function renderAllTab(feed, animate = true) {
     const headline = escapeHTML(item.headline || item.title || '');
     const summary = escapeHTML(item.summary || '');
     const source = escapeHTML(item.source || '');
-    const url = item.url && item.url !== '#' ? item.url : '';
+    const url = sanitizeExternalUrl(item.url);
     const stagger = animate ? `animate-in stagger-${Math.min(i + 1, 8)}` : '';
 
     const titleHTML = url
@@ -129,10 +129,10 @@ function renderSignalsTab(signals, animate = true) {
 
     return `
       <div class="${stagger}">
-        <div class="signal-card" data-signal-id="${signal.id}">
+        <div class="signal-card" data-signal-id="${escapeAttr(signal.id)}">
           <div class="signal-card-header">
             <span class="signal-date">${date}</span>
-            <button class="signal-dismiss-x" data-signal-id="${signal.id}" title="Dismiss">\u00D7</button>
+            <button class="signal-dismiss-x" data-signal-id="${escapeAttr(signal.id)}" title="Dismiss">\u00D7</button>
           </div>
           <div class="signal-title">${title}</div>
           ${affectsHTML}
@@ -235,10 +235,25 @@ function parseTimestamp(timestamp) {
   return Number.isFinite(time) ? time : 0;
 }
 
+function sanitizeExternalUrl(value) {
+  if (!value || value === '#') return '';
+  try {
+    const url = new URL(value);
+    if (url.protocol !== 'http:' && url.protocol !== 'https:') return '';
+    return url.toString();
+  } catch {
+    return '';
+  }
+}
+
 function escapeHTML(text) {
   return String(text || '')
     .replace(/&/g, '&amp;')
     .replace(/"/g, '&quot;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
+}
+
+function escapeAttr(text) {
+  return escapeHTML(text).replace(/'/g, '&#39;');
 }

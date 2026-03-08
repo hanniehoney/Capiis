@@ -121,9 +121,9 @@ function renderCategoryHeader(category, count, totalValue, gainLoss, isLiability
   return `
     <div class="category-detail-header animate-in stagger-1">
       <div class="category-detail-identity">
-        <div class="asset-icon ${category}" style="width:40px;height:40px;font-size:0.85rem">${icon}</div>
+        <div class="asset-icon ${safeClassName(category)}" style="width:40px;height:40px;font-size:0.85rem">${escapeHTML(icon)}</div>
         <div>
-          <h2 style="margin:0;font-size:1.2rem">${label}</h2>
+          <h2 style="margin:0;font-size:1.2rem">${escapeHTML(label)}</h2>
           <span style="font-size:0.8rem;color:var(--text-tertiary)">${count} ${unit}</span>
         </div>
       </div>
@@ -191,10 +191,10 @@ function renderCell(col, h, row) {
       return `
         <td>
           <div class="asset-name-cell">
-            <div class="asset-icon ${h.category}">${h.ticker.slice(0, 2)}</div>
+            <div class="asset-icon ${safeClassName(h.category)}">${escapeHTML(h.ticker.slice(0, 2))}</div>
             <div>
-              <div class="asset-name">${h.name}</div>
-              <div class="asset-ticker">${h.ticker}</div>
+              <div class="asset-name">${escapeHTML(h.name)}</div>
+              <div class="asset-ticker">${escapeHTML(h.ticker)}</div>
             </div>
           </div>
         </td>`;
@@ -203,10 +203,10 @@ function renderCell(col, h, row) {
       return `
         <td>
           <div class="asset-name-cell">
-            <div class="asset-icon ${h.category}">${h.name.slice(0, 2)}</div>
+            <div class="asset-icon ${safeClassName(h.category)}">${escapeHTML(h.name.slice(0, 2))}</div>
             <div>
-              <div class="asset-name">${h.name}</div>
-              ${h.accountName && h.accountName !== h.name ? `<div class="asset-ticker">${h.accountName}</div>` : ''}
+              <div class="asset-name">${escapeHTML(h.name)}</div>
+              ${h.accountName && h.accountName !== h.name ? `<div class="asset-ticker">${escapeHTML(h.accountName)}</div>` : ''}
             </div>
           </div>
         </td>`;
@@ -217,7 +217,7 @@ function renderCell(col, h, row) {
       return `
         <td>
           <span class="account-type-badge ${badgeClass}">${badgeLabel}</span>
-          ${h.accountName ? `<div style="font-size:0.7rem;color:var(--text-tertiary);margin-top:2px">${h.accountName}</div>` : ''}
+          ${h.accountName ? `<div style="font-size:0.7rem;color:var(--text-tertiary);margin-top:2px">${escapeHTML(h.accountName)}</div>` : ''}
         </td>`;
     }
 
@@ -225,17 +225,17 @@ function renderCell(col, h, row) {
       return `
         <td>
           <div class="asset-name-cell">
-            <div class="asset-icon ${h.category}">${h.ticker.slice(0, 2)}</div>
+            <div class="asset-icon ${safeClassName(h.category)}">${escapeHTML(h.ticker.slice(0, 2))}</div>
             <div>
-              <div class="asset-name">${h.name}</div>
-              <div class="asset-ticker">${h.ticker}</div>
+              <div class="asset-name">${escapeHTML(h.name)}</div>
+              <div class="asset-ticker">${escapeHTML(h.ticker)}</div>
             </div>
           </div>
         </td>`;
 
     case 'equityType': {
       const typeBadge = h.equityType
-        ? `<span class="equity-type-badge equity-${h.equityType.toLowerCase()}">${h.equityType}</span>`
+        ? `<span class="equity-type-badge equity-${safeClassName(h.equityType)}">${escapeHTML(h.equityType)}</span>`
         : '';
       return `<td>${typeBadge}</td>`;
     }
@@ -244,10 +244,10 @@ function renderCell(col, h, row) {
       return `
         <td>
           <div class="asset-name-cell">
-            <div class="asset-icon ${h.category}">${h.name.slice(0, 2)}</div>
+            <div class="asset-icon ${safeClassName(h.category)}">${escapeHTML(h.name.slice(0, 2))}</div>
             <div>
-              <div class="asset-name">${h.name}</div>
-              <div class="asset-ticker">${h.ticker === 'PRIVATE' ? 'Private' : h.ticker}</div>
+              <div class="asset-name">${escapeHTML(h.name)}</div>
+              <div class="asset-ticker">${escapeHTML(h.ticker === 'PRIVATE' ? 'Private' : h.ticker)}</div>
             </div>
           </div>
         </td>`;
@@ -256,10 +256,10 @@ function renderCell(col, h, row) {
       return `
         <td>
           <div class="asset-name-cell">
-            <div class="asset-icon ${h.category}">${h.name.slice(0, 2)}</div>
+            <div class="asset-icon ${safeClassName(h.category)}">${escapeHTML(h.name.slice(0, 2))}</div>
             <div>
-              <div class="asset-name">${h.name}</div>
-              <div class="asset-ticker">${h.ticker}</div>
+              <div class="asset-name">${escapeHTML(h.name)}</div>
+              <div class="asset-ticker">${escapeHTML(h.ticker)}</div>
             </div>
           </div>
         </td>`;
@@ -356,10 +356,10 @@ function renderLiabilitiesTable(liabilities) {
       <tr>
         <td>
           <div class="asset-name-cell">
-            <div class="asset-icon liability ${l.category}">${l.name.slice(0, 2)}</div>
+            <div class="asset-icon liability ${safeClassName(l.category)}">${escapeHTML(l.name.slice(0, 2))}</div>
             <div>
-              <div class="asset-name">${l.name}</div>
-              <div class="asset-ticker">${l.type}</div>
+              <div class="asset-name">${escapeHTML(l.name)}</div>
+              <div class="asset-ticker">${escapeHTML(l.type)}</div>
             </div>
           </div>
         </td>
@@ -403,6 +403,18 @@ function formatDueDate(dateStr) {
   } catch {
     return dateStr;
   }
+}
+
+function escapeHTML(text) {
+  return String(text || '')
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+function safeClassName(value) {
+  return String(value || '').toLowerCase().replace(/[^a-z0-9-]/g, '');
 }
 
 function getAccountBadgeClass(accountType) {

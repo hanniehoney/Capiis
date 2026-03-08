@@ -4,7 +4,7 @@
 
 Portfolio data lives in `data/*.xlsx` files. Each file represents one asset category (filename = category). The server reads these on every API request via `lib/excel.js`.
 
-**To manage portfolio data, use Claude Code's xlsx skill to read/write the Excel files directly.**
+**To manage portfolio data, use the current CLI's spreadsheet or file editing tools to read and write the Excel files directly.**
 
 ### Excel Column Schema
 

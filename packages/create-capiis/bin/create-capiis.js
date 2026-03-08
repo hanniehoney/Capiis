@@ -44,7 +44,8 @@ try {
 console.log(green('  Done!\n'));
 console.log(`  ${bold('Next steps:')}\n`);
 console.log(`    cd ${name}`);
-console.log(`    claude`);
+console.log(`    claude   ${dim('# Claude Code')}`);
+console.log(`    opencode ${dim('# OpenCode')}`);
 console.log(`    ${dim('then type')} /capiis ${dim('to launch the dashboard')}\n`);
-console.log(`  ${dim('First launch will guide you through setup —')}`);
+console.log(`  ${dim('First launch will guide you through setup -')}`);
 console.log(`  ${dim('import a demo persona or enter your own data.')}\n`);

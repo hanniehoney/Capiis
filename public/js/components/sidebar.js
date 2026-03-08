@@ -66,9 +66,10 @@ export async function renderSidebar(container) {
     const color = getCategoryColor(cat);
     const label = getCategoryLabel(cat);
     const isActive = currentHash === `category-${cat}`;
-    return `<a href="#category-${cat}" class="nav-sub-item ${isActive ? 'active' : ''}" data-view="category-${cat}" data-group="assets">
+    const safeCat = safeHashSegment(cat);
+    return `<a href="#category-${safeCat}" class="nav-sub-item ${isActive ? 'active' : ''}" data-view="category-${safeCat}" data-group="assets">
       <span class="nav-dot" style="background:${color}"></span>
-      ${label}
+      ${escapeHTML(label)}
     </a>`;
   }).join('');
 
@@ -76,9 +77,10 @@ export async function renderSidebar(container) {
     const color = getCategoryColor(cat);
     const label = getCategoryLabel(cat);
     const isActive = currentHash === `category-${cat}`;
-    return `<a href="#category-${cat}" class="nav-sub-item ${isActive ? 'active' : ''}" data-view="category-${cat}" data-group="liabilities">
+    const safeCat = safeHashSegment(cat);
+    return `<a href="#category-${safeCat}" class="nav-sub-item ${isActive ? 'active' : ''}" data-view="category-${safeCat}" data-group="liabilities">
       <span class="nav-dot" style="background:${color}"></span>
-      ${label}
+      ${escapeHTML(label)}
     </a>`;
   }).join('');
 
@@ -193,6 +195,18 @@ function getAssetCategories(config) {
     return cats;
   }
   return ['stocks', 'crypto', 'angel-investment', 'employee-equity', 'real-estate', 'cash', 'savings', 'vehicles', 'jewelry', 'art'];
+}
+
+function escapeHTML(text) {
+  return String(text || '')
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+function safeHashSegment(value) {
+  return String(value || '').toLowerCase().replace(/[^a-z0-9-]/g, '');
 }
 
 function getLiabilityCategories(config) {

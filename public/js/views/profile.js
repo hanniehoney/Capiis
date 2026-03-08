@@ -189,8 +189,8 @@ function escapeHTML(text) {
 function renderField(label, value) {
   return `
     <div class="profile-field">
-      <div class="profile-field-label">${label}</div>
-      <div class="profile-field-value">${value || '\u2014'}</div>
+      <div class="profile-field-label">${escapeHTML(label)}</div>
+      <div class="profile-field-value">${escapeHTML(value || '\u2014')}</div>
     </div>
   `;
 }
@@ -200,10 +200,10 @@ function renderAccountRow(acct) {
   const badgeClass = treatment.class;
   return `
     <tr>
-      <td><strong>${acct.name}</strong></td>
-      <td class="mono" style="font-size:0.82rem">${acct.type}</td>
-      <td>${acct.institution}</td>
-      <td><span class="account-type-badge ${badgeClass}">${treatment.label}</span></td>
+      <td><strong>${escapeHTML(acct.name)}</strong></td>
+      <td class="mono" style="font-size:0.82rem">${escapeHTML(acct.type)}</td>
+      <td>${escapeHTML(acct.institution)}</td>
+      <td><span class="account-type-badge ${badgeClass}">${escapeHTML(treatment.label)}</span></td>
     </tr>
   `;
 }
