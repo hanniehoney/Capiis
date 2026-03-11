@@ -1,8 +1,7 @@
 # Capiis
 
-Capiis is a CLI-native personal wealth intelligence workspace for Claude Code
-and OpenCode. The user interacts in the terminal, launches `/capiis`, and the
-project starts a local dashboard on `127.0.0.1:3333`.
+Agent-facing operating guide for Capiis. For product overview, setup, and
+user-facing usage, see `README.md`.
 
 ## Product Model
 

@@ -2,7 +2,7 @@
 
 Shared project context lives in `AGENTS.md`. Use that file as the canonical
 source for product framing, repo layout, data files, API endpoints, and shared
-runtime conventions.
+runtime conventions. User-facing overview and setup live in `README.md`.
 
 ## Claude Code Specific Files
 

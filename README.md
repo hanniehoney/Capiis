@@ -4,49 +4,113 @@
 
 # Capiis
 
-*Originally built as a Claude Code Hackathon open-source project, Capiis has since evolved into a CLI-native personal wealth intelligence workspace for [Claude Code](https://docs.anthropic.com/en/docs/claude-code) and [OpenCode](https://opencode.ai).*
+*Originally built as a Cloud Code Hackathon open-source project ([Built with Opus 4.6: a Claude Code hackathon](https://cerebralvalley.ai/e/claude-code-hackathon)). You can see the [Build Log](https://www.hannieliu.com/story/260210-cc-hackathon) and the [3-min Demo Video](https://youtu.be/8f0CH2Tf1Dg).*
 
-**[Build Log ->](https://www.hannieliu.com/story/260210-cc-hackathon)** ·
-**[3-min Demo Video ->](https://youtu.be/8f0CH2Tf1Dg)**
-
-Capiis is a personal-side wealth intelligence workspace for individual investors
-and high-net-worth households. You interact with it from your coding CLI, and
+Capiis is a CLI-native personal wealth intelligence workspace for individual investors
+and high-net-worth households. You interact with it from your coding CLI using [Claude Code](https://docs.anthropic.com/en/docs/claude-code) or [OpenCode](https://opencode.ai), and
 it opens a real-time local browser dashboard backed by your own Excel and JSON
-files.
+data.
+It uses a built-in visualization dashboard, so you can review allocation once and see how taxes and market signals change without vibe coding a UI.
 
-It helps you review assets, tax exposure, and market signals in one place using
-your local data rather than institutional data platforms. Capiis is not tax
-filing software, not trading execution infrastructure, and not an advisor-side
-client reporting tool. It helps you understand your assets, tax exposure, and
-allocation choices more clearly.
+Capiis focuses on personal asset allocation and wealth management. It is not
+personal tax filing software, not a trading execution bot, and not an advisor-side
+client reporting tool. It helps you allocate wealth and assets more intelligently.
 
-## Core Workflows
+### Features:
 
-### Portfolio
+- **Onboarding**: Start from a persona template if you are new, or build your data through
+  guided CLI conversations that progressively structure your local files.
+- **Portfolio**: A clean, visual view of holdings, liabilities, concentration risk, and allocation
+  across accounts and asset classes so you can review your balance sheet quickly.
+- **Tax**: Shows how different allocation choices can change tax exposure, with attention to
+  tax events and timing. It supports planning but does not prepare or file returns.
+- **Feed**: Add trusted RSS sources (news, analysis, reports). Capiis generates signals
+  tied to your own assets so market context stays personal and actionable.
 
-Personal wealth management starts with a clean view of holdings, liabilities,
-concentration risk, and allocation across account types and asset classes.
-Capiis helps you inspect the current state of your balance sheet so you can make
-better allocation decisions with your own local data.
 
-### Tax
+## Quick Start
 
-Asset decisions create tax consequences, so tax belongs inside portfolio
-intelligence rather than outside it. Capiis surfaces capital gains timing,
-quarterly tax awareness, tax bucket visibility, and tax-loss harvesting cues to
-support planning and ongoing management. It does not prepare or file returns.
+### Option A: Scaffold a new workspace
 
-### Onboarding
+```bash
+npx create-capiis my-wealth
+cd my-wealth
+claude      # or: opencode
+```
 
-Most people start with scattered spreadsheets, account exports, and partial
-notes. Capiis onboarding is designed to turn those local files into a working
-wealth intelligence workspace quickly, so the system can reason over a usable
-baseline instead of a pile of disconnected documents.
+Inside either CLI:
 
-Onboarding organizes the data, portfolio makes the assets legible, and tax
-makes the consequences legible.
+```text
+/capiis
+/capiis-data
+/capiis status
+```
 
-## Feed Intelligence
+### Option B: Clone this repository
+
+```bash
+git clone https://github.com/hanniehoney/Capiis.git
+cd Capiis
+npm install
+claude      # or: opencode
+```
+
+Next steps:
+
+1. Start `claude` or `opencode` in your Capiis project directory.
+2. Run `/capiis` to launch the dashboard at `http://localhost:3333`.
+3. Run `/capiis status` when you want a terminal summary instead of reading the browser.
+4. Use `/capiis-data` any time you need guided setup, templates, or data management.
+
+Fastest first-run setup:
+
+```text
+/capiis-data template
+/capiis-data setup
+```
+
+Optional: seed sample data:
+
+```bash
+npm run seed
+node scripts/seed-data.js sophia
+```
+
+Claude Code and OpenCode are supported; both launch the local server on `127.0.0.1:3333`.
+For agent and CLI internals, see `AGENTS.md` and `CLAUDE.md`.
+
+## Requirements
+
+- Node.js 18+ and npm
+- Claude Code or OpenCode
+- Any modern browser
+- Optional: Perplexity API key for live fact-checking in Claude Code
+
+
+## Optional Setup
+
+### Live fact-checking (Perplexity MCP)
+
+Tax and price workflows can fact-check figures against live sources. Add
+Perplexity MCP to your Claude Code config:
+
+```json
+{
+  "mcpServers": {
+    "perplexity": {
+      "command": "npx",
+      "args": ["-y", "@anthropic/perplexity-mcp"],
+      "env": {
+        "PERPLEXITY_API_KEY": "pplx-..."
+      }
+    }
+  }
+}
+```
+
+Get a key at https://www.perplexity.ai/settings/api.
+
+### Feed intelligence (RSS sources)
 
 Portfolio decisions do not happen in a vacuum. Capiis includes an Intel Feed
 that connects your RSS sources to your holdings, profile, and generated
@@ -93,85 +157,17 @@ Good feed examples:
 After you add a source, run `/capiis` again or refresh the Feed view in the
 browser to confirm the items are loading.
 
-## Quick Start
+## Template Personas
 
-### Option A: Scaffold a new workspace
+Start with a persona template if you want a guided dataset before importing
+your own files.
 
-```bash
-npx create-capiis my-wealth
-cd my-wealth
-claude      # or: opencode
-```
+| Persona | Command | Description |
+|---------|---------|-------------|
+| **Alex** | `npm run seed` | 37, Taiwanese. Staff Engineer (L7) at Google. Married, 2 kids. Cupertino homeowner. Net worth about $5.5M. META stock concentration and cross-border tax complexity. |
+| **Sophia** | `node scripts/seed-data.js sophia` | 32, British. Staff Research at Anthropic. Single, SF renter. Net worth about $4.3M. O-1A visa, ISO concentration, AMT exposure, UK accounts. |
 
-Inside either CLI:
-
-```text
-/capiis
-/capiis-data
-/capiis status
-```
-
-### Option B: Clone this repository
-
-```bash
-git clone https://github.com/hanniehoney/Capiis.git
-cd Capiis
-npm install
-claude      # or: opencode
-```
-
-Then launch the workspace:
-
-```text
-/capiis
-/capiis-data
-/capiis status
-```
-
-## Requirements
-
-- Node.js 18+ and npm
-- Claude Code or OpenCode
-- Any modern browser
-- Optional: Perplexity API key for live fact-checking in Claude Code
-
-## Project Setup
-
-### Minimal operating flow
-
-1. Start `claude` or `opencode` in your Capiis project directory.
-2. Seed a demo persona or import your own local files.
-3. Run `/capiis` to launch the dashboard at `http://localhost:3333`.
-4. Run `/capiis status` when you want a terminal summary instead of reading the browser.
-5. Use `/capiis-data` any time you need guided setup, templates, or data management.
-
-For first-run setup, these commands are the fastest path:
-
-```text
-/capiis-data template
-/capiis-data setup
-```
-
-You can also seed sample data directly:
-
-```bash
-npm run seed
-node scripts/seed-data.js sophia
-```
-
-### Repo and CLI behavior
-
-- Claude Code reads `CLAUDE.md`, `.claude/commands/`, `.claude/skills/`, and
-  `.claude/agents/` from this repo.
-- OpenCode reads `AGENTS.md`, `.opencode/commands/`, and the shared
-  `.claude/skills/` from this repo.
-- Both CLIs launch the same local Express server on `127.0.0.1:3333` and open
-  the browser dashboard at `http://localhost:3333`.
-- Shared product logic lives in the app itself and the shared skills; Claude
-  Code currently has additional Claude-only subagents for tax, price, and feed
-  tasks.
-
-## Example Workflows
+## Example Scenarios
 
 ### High-net-worth allocation review
 
@@ -214,42 +210,9 @@ a CPA. It helps you prepare, not file.
 Help me prepare for filing with Capiis. Build a document checklist from my current accounts, highlight tax items I should verify, and tell me whether this looks like a DIY software case or a CPA case.
 ```
 
-## Template Personas
+## Architecture
 
-Use the personas below to explore the workflows above before importing your own
-files.
-
-| Persona | Command | Description |
-|---------|---------|-------------|
-| **Alex** | `npm run seed` | 37, Taiwanese. Staff Engineer (L7) at Google. Married, 2 kids. Cupertino homeowner. Net worth about $5.5M. META stock concentration and cross-border tax complexity. |
-| **Sophia** | `node scripts/seed-data.js sophia` | 32, British. Staff Research at Anthropic. Single, SF renter. Net worth about $4.3M. O-1A visa, ISO concentration, AMT exposure, UK accounts. |
-
-## Optional Setup
-
-### Perplexity API Key for live fact-checking
-
-Tax and price workflows can fact-check figures against live sources. Add
-Perplexity MCP to your Claude Code config:
-
-```json
-{
-  "mcpServers": {
-    "perplexity": {
-      "command": "npx",
-      "args": ["-y", "@anthropic/perplexity-mcp"],
-      "env": {
-        "PERPLEXITY_API_KEY": "pplx-..."
-      }
-    }
-  }
-}
-```
-
-Get a key at https://www.perplexity.ai/settings/api.
-
-## Technical Appendix
-
-### Architecture
+### System Architecture
 
 ```text
 Claude Code or OpenCode (CLI layer)
@@ -327,41 +290,12 @@ Capiis/
 
 ## Roadmap
 
-### Portfolio Allocation Intelligence
-
-- Account-aware allocation across taxable, retirement, and cash buckets
-- Concentration management and deployment planning for large positions
-- Multi-portfolio support and fund-allocation workflows
-
-### Tax Scenario Simulator
-
-- Sale timing analysis for short-term versus long-term gains
-- Withholding versus estimated payment planning
-- RSU, ISO, and AMT-aware scenario modeling
-
-### Liquidity and Leverage
-
-- Cash planning around concentrated positions
-- Stock-backed borrowing and margin-aware stress analysis
-- Downside and maintenance-risk modeling for leverage decisions
-
-### DIY Filing Copilot
-
-- Document checklist and form-mapping support
-- Software-choice guidance and common error flags
-- Filing-prep assistance without becoming e-file or return-preparation software
-
-### Confidence and Escalation
-
-- Clear boundaries for when Capiis can guide directly
-- Explicit escalation prompts for CPA, tax attorney, lender, or broker review
-- Better confidence cues around tax-sensitive recommendations
-
-### Multi-Agent Workspace
-
-- Dedicated portfolio, tax, and allocation agents over the same local dataset
-- More coordinated analysis between market signals, tax context, and portfolio state
-- Stronger cross-workflow orchestration inside Claude Code and OpenCode
+- [ ] Portfolio allocation intelligence: account-aware allocation across taxable, retirement, and cash buckets; concentration management; multi-portfolio support.
+- [ ] Tax scenario simulator: sale timing analysis; withholding vs estimated payment planning; RSU/ISO/AMT-aware scenarios.
+- [ ] Liquidity and leverage: cash planning around concentrated positions; stock-backed borrowing; downside and maintenance-risk modeling.
+- [ ] DIY filing copilot: document checklist and form-mapping support; software-choice guidance; filing-prep assistance without e-file or return preparation.
+- [ ] Confidence and escalation: clear guidance boundaries; escalation prompts for CPA/tax attorney/lender/broker review; stronger confidence cues.
+- [ ] Multi-agent workspace: dedicated portfolio, tax, and allocation agents; coordinated analysis across signals, tax context, and portfolio state.
 
 ## Star History
 

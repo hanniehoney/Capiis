@@ -1,6 +1,6 @@
 {
   "name": "create-capiis",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Scaffold a CLI-native Capiis wealth intelligence project for Claude Code or OpenCode",
   "bin": {
     "create-capiis": "./bin/create-capiis.js"
